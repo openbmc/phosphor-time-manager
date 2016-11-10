@@ -188,9 +188,7 @@ int TimeManager::setTime(sd_bus_message* m, void* userdata,
         if (config.getCurrTimeOwner() == TimeConfig::timeOwners::SPLIT)
         {
             iv_HostOffset = time.getChangedOffset();
-            r = config.writeData<decltype(iv_HostOffset.count())>
-                (cv_HostOffsetFile,
-                 iv_HostOffset.count());
+            r = config.writeData(cv_HostOffsetFile, iv_HostOffset.count());
             if (r < 0)
             {
                 // probably does not make sense to crash on these..
@@ -491,9 +489,8 @@ int TimeManager::processTimeChange(sd_event_source* es, int fd,
         tmgr->updateUptimeUsec(uptimeUsec);
 
         // Persist this
-        auto r = tmgr->config.writeData<decltype(tmgr->getHostOffset().count())>
-                 (TimeManager::cv_HostOffsetFile,
-                  tmgr->getHostOffset().count());
+        auto r = tmgr->config.writeData(TimeManager::cv_HostOffsetFile,
+                                        tmgr->getHostOffset().count());
         if (r < 0)
         {
             std::cerr << "Error saving host_offset: "
@@ -510,9 +507,7 @@ int TimeManager::processTimeChange(sd_event_source* es, int fd,
 int TimeManager::resetHostOffset()
 {
     iv_HostOffset = std::chrono::microseconds(0);
-    auto r = config.writeData<decltype(iv_HostOffset.count())>
-             (cv_HostOffsetFile,
-              iv_HostOffset.count());
+    auto r = config.writeData(cv_HostOffsetFile, iv_HostOffset.count());
     config.updateSplitModeFlag(false);
     return r;
 }
@@ -865,9 +860,7 @@ int TimeManager::readPersistentData()
     if (config.isSplitModeChanged())
     {
         iv_HostOffset = microseconds(0);
-        auto r = config.writeData<decltype(iv_HostOffset.count())>
-                 (cv_HostOffsetFile,
-                  iv_HostOffset.count());
+        auto r = config.writeData(cv_HostOffsetFile, iv_HostOffset.count());
         if (r < 0)
         {
             std::cerr <<" Error saving offset to file" << std::endl;

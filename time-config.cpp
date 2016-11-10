@@ -265,7 +265,7 @@ int TimeConfig::updateNetworkSettings(const std::string& useDhcpNtp)
         std::cout <<"Successfully updated UseNtp=["
                   << useDhcpNtp << "]" << std::endl;
 
-        r = writeData<decltype(useDhcpNtp)>(cv_DhcpNtpFile, useDhcpNtp);
+        r = writeData(cv_DhcpNtpFile, useDhcpNtp);
     }
 
     return 0;

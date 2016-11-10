@@ -119,7 +119,7 @@ public:
      *                      - Exception
      */
     template <typename T>
-    auto writeData(const char* fileName, const T&& data)
+    auto writeData(const char* fileName, T&& data)
     {
         std::ofstream file(fileName, std::ios::out);
         file << data;
