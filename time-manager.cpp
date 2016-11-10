@@ -150,8 +150,6 @@ int TimeManager::getTime(sd_bus_message* m, void* userdata,
 int TimeManager::setTime(sd_bus_message* m, void* userdata,
                          sd_bus_error* retError)
 {
-    long long int timeInUsec {};
-
     const char* target = nullptr;
     auto r = sd_bus_message_read(m, "s", &target);
     if (r < 0)
@@ -518,7 +516,6 @@ int TimeManager::processPgoodChange(sd_bus_message* m, void* userdata,
 {
     auto tmgr = static_cast<TimeManager*>(userdata);
     const char* key = nullptr;
-    const char* value = nullptr;
 
     auto newPgood = -1;
     auto r = 0;
