@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <mapper.h>
+#include <cassert>
 #include "time-manager.hpp"
 
 std::map<std::string, TimeConfig::FUNCTOR> TimeConfig::iv_TimeParams = {
@@ -47,7 +48,7 @@ TimeConfig::timeModes TimeConfig::getTimeMode(const char* timeMode)
 }
 
 // Accepts a timeMode enum and returns it's string value
-const char* TimeConfig::modeStr(const TimeConfig::timeModes timeMode)
+const char* TimeConfig::modeStr(TimeConfig::timeModes timeMode)
 {
     switch(timeMode)
     {
@@ -60,6 +61,9 @@ const char* TimeConfig::modeStr(const TimeConfig::timeModes timeMode)
             return "MANUAL";
         }
     }
+
+    assert(false);
+    return nullptr;
 }
 
 // Given a owner string, returns it's equivalent owner enum
@@ -84,7 +88,7 @@ TimeConfig::timeOwners TimeConfig::getTimeOwner(const char* timeOwner)
 }
 
 // Accepts a timeOwner enum and returns it's string value
-const char* TimeConfig::ownerStr(const timeOwners timeOwner)
+const char* TimeConfig::ownerStr(timeOwners timeOwner)
 {
     switch(timeOwner)
     {
@@ -105,6 +109,9 @@ const char* TimeConfig::ownerStr(const timeOwners timeOwner)
             return "BOTH";
         }
     }
+
+    assert(false);
+    return nullptr;
 }
 
 // Returns the busname that hosts objPath
