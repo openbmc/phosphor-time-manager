@@ -533,11 +533,11 @@ int TimeConfig::modifyNtpSettings(const timeModes& newTimeMode)
         // TODO : https://github.com/openbmc/phosphor-time-manager/issues/1
         if (ntpChangeOp)
         {
-            system("systemctl restart systemd-timesyncd &");
+            r = system("systemctl restart systemd-timesyncd &");
         }
         else
         {
-            system("systemctl stop systemd-timesyncd &");
+            r = system("systemctl stop systemd-timesyncd &");
         }
     }
     return r;
