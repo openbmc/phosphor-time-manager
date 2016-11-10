@@ -528,7 +528,7 @@ int TimeConfig::modifyNtpSettings(const timeModes& newTimeMode)
     else
     {
         std::cout << "SUCCESS. NTP setting is now: " <<
-                  (ntpChangeOp) ? "Enabled" : "Disabled";
+                  ((ntpChangeOp) ? "Enabled" : "Disabled");
 
         // TODO : https://github.com/openbmc/phosphor-time-manager/issues/1
         if (ntpChangeOp)
