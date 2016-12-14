@@ -6,6 +6,11 @@
 #include <cassert>
 #include "time-manager.hpp"
 
+namespace phosphor
+{
+namespace time
+{
+
 std::map<std::string, TimeConfig::FUNCTOR> TimeConfig::iv_TimeParams = {
     {   "time_mode", std::make_tuple(&TimeConfig::getSystemSettings,
         &TimeConfig::updateTimeMode)
@@ -595,3 +600,6 @@ int TimeConfig::readPersistentData()
     }
     return 0;
 }
+
+} // namespace time
+} // namespace phosphor

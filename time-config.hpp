@@ -1,6 +1,11 @@
 #include <map>
 #include <systemd/sd-bus.h>
 
+namespace phosphor
+{
+namespace time
+{
+
 /** @class TimeConfig
  *  @brief Maintains various time modes and time owners.
  */
@@ -311,3 +316,7 @@ private:
      */
     int processPgoodChange(const std::string& newPgood);
 };
+
+
+} // namespace time
+} // namespace phosphor

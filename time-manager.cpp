@@ -10,8 +10,22 @@
 #include <systemd/sd-event.h>
 #include <systemd/sd-bus.h>
 #include <systemd/sd-daemon.h>
-#include "time-register.hpp"
 #include "time-manager.hpp"
+#include "xyz/openbmc_project/Time/EpochTime/server.hpp"
+
+namespace phosphor
+{
+namespace time
+{
+
+
+/*
+TimeCommon::TimeCommon()
+{}
+
+TimeCommon::~TimeCommon()
+{}
+*/
 
 // Neeed to do this since its not exported outside of the kernel.
 // Refer : https://gist.github.com/lethean/446cea944b7441228298
@@ -25,19 +39,19 @@
 // Used in time-register.c
 extern sd_bus_vtable timeServicesVtable[];
 
-Time::Time(const TimeConfig& timeConfig) : config(timeConfig)
+
+TimeCommon::TimeCommon(const TimeConfig& timeConfig) : config(timeConfig)
 {
-    // Nothing to do here
 }
 
-BmcTime::BmcTime(const TimeConfig& timeConfig) : Time(timeConfig)
+BmcTime::BmcTime(const TimeConfig& timeConfig) : TimeCommon(timeConfig)
 {
     // Nothing to do here
 }
 
 HostTime::HostTime(const TimeConfig& timeConfig,
                    const std::chrono::microseconds& hostOffset)
-    : Time(timeConfig),
+    : TimeCommon(timeConfig),
       iv_Offset(hostOffset)
 {
     // Nothing to do here
@@ -52,6 +66,9 @@ TimeManager::TimeManager() :
     assert(setupTimeManager() >= 0);
 }
 
+
+
+#if 0
 // Needed to be standalone extern "C" to register
 // as a callback routine with sd_bus_vtable
 int GetTime(sd_bus_message* m, void* userdata,
@@ -67,6 +84,8 @@ int SetTime(sd_bus_message* m, void* userdata,
     auto tmgr = static_cast<TimeManager*>(userdata);
     return tmgr->setTime(m, userdata, retError);
 }
+#endif
+
 
 // Property reader
 int getCurrTimeModeProperty(sd_bus* bus, const char* path,
@@ -109,6 +128,7 @@ int getReqTimeOwnerProperty(sd_bus* bus, const char* path,
                                  TimeConfig::ownerStr(tmgr->config.getRequestedTimeOwner()));
 }
 
+/*
 int TimeManager::getTime(sd_bus_message* m, void* userdata,
                          sd_bus_error* retError)
 {
@@ -198,8 +218,17 @@ int TimeManager::setTime(sd_bus_message* m, void* userdata,
     }
     return sd_bus_reply_method_return(m, "i", 0);
 }
+*/
 
-int Time::setTimeOfDay(const std::chrono::microseconds& timeOfDayUsec)
+/**
+    Time -> TimeCommon
+**/
+
+/*************
+ New binding
+**************/
+
+int TimeCommon::setTimeOfDay(const std::chrono::microseconds& timeOfDayUsec)
 {
     // These 2 are for bypassing some policy
     // checking in the timedate1 service
@@ -219,14 +248,30 @@ int Time::setTimeOfDay(const std::chrono::microseconds& timeOfDayUsec)
                               interactive);    // bypass polkit checks
 }
 
+/*****
+    This is New implementation
+*****/
+
 // Common routine for BMC and HOST Get Time operations
-std::chrono::microseconds Time::getBaseTime()
+std::chrono::microseconds TimeCommon::getBaseTime()
 {
     auto currBmcTime = std::chrono::system_clock::now();
     return std::chrono::duration_cast<std::chrono::microseconds>
            (currBmcTime.time_since_epoch());
 }
 
+/*
+// Common routine for Get Time operations
+std::chrono::microseconds EpochTime::getBaseTime() const
+{
+    auto currBmcTime = std::chrono::system_clock::now();
+    return std::chrono::duration_cast<std::chrono::microseconds>
+           (currBmcTime.time_since_epoch());
+}
+*/
+
+// Below 1 is no need.
+/*
 // Accepts the time in microseconds and converts to Human readable format.
 std::string Time::convertToStr(const std::chrono::microseconds& timeInUsec)
 {
@@ -243,19 +288,26 @@ std::string Time::convertToStr(const std::chrono::microseconds& timeInUsec)
     std::cout << timeStr.c_str() << std::endl;
     return timeStr;
 }
+*/ 
 
 // Reads timeofday and returns time string
 // and also number of microseconds.
 // Ex : Tue Aug 16 22:49:43 2016
-int BmcTime::getTime(sd_bus_message *m, sd_bus_error *retError)
+//int BmcTime::getTime(sd_bus_message *m, sd_bus_error *retError
+uint64_t BmcTime::getTime()
 {
     std::cout << "Request to get BMC time: ";
 
+#if 0
     // Get BMC time
     auto timeInUsec = getBaseTime();
     auto timeStr = convertToStr(timeInUsec);
     return sd_bus_reply_method_return(
                m, "sx", timeStr.c_str(), (uint64_t)timeInUsec.count());
+#else
+    auto timeInUsec = getBaseTime();
+    return (uint64_t)timeInUsec.count();
+#endif
 }
 
 // Designated to be called by IPMI_GET_SEL time from host
@@ -891,12 +943,62 @@ int TimeManager::waitForClientRequest()
     return sd_event_loop(iv_Event);
 }
 
-int main(int argc, char* argv[])
+
+
+
+
+// api for get time call.
+//uint64_t EpochTime::elapsed() :TimeManager const
+uint64_t EpochTime::elapsed() const
 {
-    auto tmgr = std::make_unique<TimeManager>();
+//  std::cout << "Request to get elapsed time: ";
 
-    // Wait for the work
-    auto r = tmgr->waitForClientRequest();
+/*    TimeCommon tObj(timeConfig);
 
-    return r < 0 ? EXIT_FAILURE : EXIT_SUCCESS;
+    std::cerr << objpath << "Epoch-time"<< std::endl;
+    auto timeInUsec = tObj.getBaseTime();
+*/
+#if 0
+    auto time = std::make_unique<BmcTime>();
+    auto timeInUsec = time.getBaseTime();
+    return (uint64_t)timeInUsec.count();
+//#else if
+#else
+
+    auto time = BmcTime(tmg.config);
+    //return time.getTime(m, retError);
+    return time.getTime();
+
+#endif
 }
+
+EpochTime::EpochTime(sdbusplus::bus::bus &&bus,
+                 const char* busname,
+                 const char* obj) :
+    detail::ServerObject<detail::EpochTimeIface>(bus, obj),
+    _bus(std::move(bus)),
+    _manager(sdbusplus::server::manager::manager(_bus, obj))
+{
+    _bus.request_name(busname);
+    objpath = obj;
+}
+
+void EpochTime::run() noexcept
+{
+    while(true)
+    {
+        try
+        {
+            _bus.process_discard();
+            _bus.wait();
+        }
+        catch (std::exception &e)
+        {
+            std::cerr << e.what() << std::endl;
+        }
+    }
+}
+
+} // namespace time
+} // namespace phosphor
+

@@ -1,11 +1,9 @@
-AM_DEFAULT_SOURCE_EXT = .cpp
-
-sbin_PROGRAMS = \
-	timemanager
+sbin_PROGRAMS = timemanager
 
 timemanager_SOURCES = \
-	time-register.c \
-	time-config.cpp \
-	time-manager.cpp
+	xyz.openbmc_project.Time.EpochTime.cpp \
+	time-manager.cpp \
+	time-manager_main.cpp
 
-timemanager_LDFLAGS = $(SYSTEMD_LIBS) $(libmapper_LIBS)
+# systemd required for journal interfaces
+timemanager_LDFLAGS = $(SYSTEMD_LIBS)
