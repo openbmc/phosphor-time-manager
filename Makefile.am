@@ -1,11 +1,9 @@
-AM_DEFAULT_SOURCE_EXT = .cpp
+sbin_PROGRAMS = phosphor-time-manager
 
-sbin_PROGRAMS = \
-	timemanager
+phosphor_time_manager_SOURCES = \
+	xyz.openbmc_project.Time.EpochTime.cpp \
+	time-manager.cpp \
+	time-manager_main.cpp
 
-timemanager_SOURCES = \
-	time-register.c \
-	time-config.cpp \
-	time-manager.cpp
-
-timemanager_LDFLAGS = $(SYSTEMD_LIBS) $(libmapper_LIBS)
+# systemd required for journal interfaces
+phosphor_time_manager_LDFLAGS = $(SYSTEMD_LIBS)
