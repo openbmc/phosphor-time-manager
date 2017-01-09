@@ -4,8 +4,11 @@ sbin_PROGRAMS = \
 	timemanager
 
 timemanager_SOURCES = \
-	time-register.c \
-	time-config.cpp \
-	time-manager.cpp
+	main.cpp \
+	time_manager.cpp \
+	xyz.openbmc_project.Time.EpochTime.cpp
 
-timemanager_LDFLAGS = $(SYSTEMD_LIBS) $(libmapper_LIBS)
+
+timemanager_LDFLAGS = $(SYSTEMD_LIBS)
+
+SUBDIRS = test
