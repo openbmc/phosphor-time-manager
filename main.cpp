@@ -1,12 +1,12 @@
 #include <sdbusplus/bus.hpp>
 
 #include "config.h"
-#include "time_manager.hpp"
+#include "bmc_epoch.hpp"
 
 int main()
 {
     auto bus = sdbusplus::bus::new_default();
-    phosphor::time::Manager manager(bus, BUSNAME, OBJPATH);
+    phosphor::time::BmcEpoch bmc(bus, OBJPATH_BMC);
 
     bus.request_name(BUSNAME);
 
