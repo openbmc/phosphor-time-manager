@@ -5,7 +5,8 @@ sbin_PROGRAMS = \
 
 timemanager_SOURCES = \
 	main.cpp \
-	time_manager.cpp \
+	epoch_base.cpp \
+	bmc_epoch.cpp \
 	xyz.openbmc_project.Time.EpochTime.cpp
 
 

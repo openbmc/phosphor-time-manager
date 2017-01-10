@@ -45,12 +45,16 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
 AX_CXX_COMPILE_STDCXX_14([noext])
 AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
-AC_ARG_VAR(BUSNAME, [The time manager Dbus busname to own])
-AS_IF([test "x$BUSNAME" == "x"], [BUSNAME="xyz.openbmc_project.Time.TimeManager"])
-AC_DEFINE_UNQUOTED([BUSNAME], ["$BUSNAME"], [The time manager DBus busname to own])
-AC_ARG_VAR(OBJPATH, [The time manager Dbus root])
-AS_IF([test "x$OBJPATH" == "x"], [OBJPATH="/xyz/openbmc_project/time/manager"])
-AC_DEFINE_UNQUOTED([OBJPATH], ["$OBJPATH"], [The time manager Dbus root])
+# DBUS interface
+AC_ARG_VAR(BUSNAME, [The Time Manager Dbus busname to own])
+AS_IF([test "x$BUSNAME" == "x"], [BUSNAME="xyz.openbmc_project.Time.Manager"])
+AC_DEFINE_UNQUOTED([BUSNAME], ["$BUSNAME"], [The Time Manager DBus busname to own])
+AC_ARG_VAR(OBJPATH_BMC, [The bmc epoch Dbus root])
+AS_IF([test "x$OBJPATH_BMC" == "x"], [OBJPATH_BMC="/xyz/openbmc_project/time/bmc_epoch"])
+AC_DEFINE_UNQUOTED([OBJPATH_BMC], ["$OBJPATH_BMC"], [The bmc epoch Dbus root])
+AC_ARG_VAR(OBJPATH_HOST, [The host epoch Dbus root])
+AS_IF([test "x$OBJPATH_HOST" == "x"], [OBJPATH_HOST="/xyz/openbmc_project/time/host_epoch"])
+AC_DEFINE_UNQUOTED([OBJPATH_HOST], ["$OBJPATH_HOST"], [The host epoch Dbus root])
 
 # Check for header files.
 AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find systemd/sd-bus.h...systemd developement package required])])
