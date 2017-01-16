@@ -9,6 +9,7 @@ namespace phosphor
 namespace time
 {
 
+using namespace std::chrono;
 class TestBmcEpoch : public testing::Test
 {
     public:
@@ -34,6 +35,14 @@ class TestBmcEpoch : public testing::Test
         {
             return bmcEpoch.timeOwner;
         }
+        void setTimeOwner(Owner owner)
+        {
+            bmcEpoch.timeOwner = owner;
+        }
+        void setTimeMode(Mode mode)
+        {
+            bmcEpoch.timeMode = mode;
+        }
 };
 
 TEST_F(TestBmcEpoch, empty)
@@ -50,6 +59,27 @@ TEST_F(TestBmcEpoch, getElapsed)
     EXPECT_GE(t2, t1);
 }
 
+TEST_F(TestBmcEpoch, setElapsedNotAllowed)
+{
+    auto epochNow = duration_cast<microseconds>(
+        system_clock::now().time_since_epoch()).count();
+    // In NTP mode, setting time is not allowed
+    auto ret = bmcEpoch.elapsed(epochNow);
+    EXPECT_EQ(0, ret);
+
+    // In Host owner, setting time is not allowed
+    setTimeMode(Mode::MANUAL);
+    setTimeOwner(Owner::HOST);
+    ret = bmcEpoch.elapsed(epochNow);
+    EXPECT_EQ(0, ret);
+}
+
+TEST_F(TestBmcEpoch, setElapsedOK)
+{
+    // TODO: setting time will call sd-bus functions and it will fail on host
+    // if we have gmock for sdbusplus::bus, we can test setElapsed.
+    // But for now we can not test it
+}
 
 }
 }
