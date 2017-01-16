@@ -18,43 +18,28 @@ BmcEpoch::BmcEpoch(sdbusplus::bus::bus& bus,
 
 uint64_t BmcEpoch::elapsed() const
 {
-    // TODO: get time based on current time mode and owner
-    uint64_t time = 0;
-    switch (timeOwner)
-    {
-        case Owner::BMC:
-        {
-            time = getTime().count();
-            break;
-        }
-        case Owner::HOST:
-            break;
-        case Owner::SPLIT:
-            break;
-        case Owner::BOTH:
-            break;
-    }
-    return time;
+    // It does not needs to check owner when getting time
+    return getTime().count();
 }
 
 uint64_t BmcEpoch::elapsed(uint64_t value)
 {
-    // TODO: set time based on current time mode and owner
-    auto time = std::chrono::microseconds(value);
-    switch (timeOwner)
+    if (timeMode == Mode::NTP)
     {
-        case Owner::BMC:
-        {
-            // TODO: check return value, and throw exception on error
-            setTime(time);
-            break;
-        }
-        case Owner::HOST:
-            break;
-        case Owner::SPLIT:
-            break;
-        case Owner::BOTH:
-            break;
+        log<level::ERR>("Setting BmcTime in NTP mode is not allowed");
+        // TODO: throw NotAllowed exception
+        return 0;
+    }
+    if (timeOwner == Owner::HOST)
+    {
+        log<level::ERR>("Setting BmcTime in HOST owner is not allowed");
+        // TODO: throw NotAllowed exception
+        return 0;
+    }
+    auto time = std::chrono::microseconds(value);
+    if (!setTime(time)) {
+        log<level::ERR>("Failed to set BmcTime");
+        // TODO: throw InternalError exception
     }
     server::EpochTime::elapsed(value);
     return value;
