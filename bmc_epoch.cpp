@@ -24,23 +24,22 @@ uint64_t BmcEpoch::elapsed() const
 
 uint64_t BmcEpoch::elapsed(uint64_t value)
 {
-    // TODO: set time based on current time mode and owner
-    auto time = std::chrono::microseconds(value);
-    switch (timeOwner)
+    if (timeMode == Mode::NTP)
     {
-        case Owner::BMC:
-        {
-            setTime(time);
-            break;
-        }
-        // TODO: below caese are to be implemented
-        case Owner::HOST:
-            break;
-        case Owner::SPLIT:
-            break;
-        case Owner::BOTH:
-            break;
+        log<level::ERR>("Setting BmcTime with NTP mode is not allowed");
+        // TODO: throw NotAllowed exception
+        return 0;
     }
+    if (timeOwner == Owner::HOST)
+    {
+        log<level::ERR>("Setting BmcTime with HOST owner is not allowed");
+        // TODO: throw NotAllowed exception
+        return 0;
+    }
+
+    auto time = std::chrono::microseconds(value);
+    setTime(time);
+
     server::EpochTime::elapsed(value);
     return value;
 }
