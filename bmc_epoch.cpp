@@ -10,8 +10,9 @@ using namespace sdbusplus::xyz::openbmc_project::Time;
 using namespace phosphor::logging;
 
 BmcEpoch::BmcEpoch(sdbusplus::bus::bus& bus,
-                   const char* objPath)
-    : EpochBase(bus, objPath)
+                   const char* objPath,
+                   Manager* manager)
+    : EpochBase(bus, objPath, manager)
 {
     // Empty
 }
