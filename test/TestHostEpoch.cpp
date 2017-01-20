@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "host_epoch.hpp"
+#include "utils.hpp"
 #include "config.h"
 
 namespace phosphor
@@ -49,16 +50,6 @@ class TestHostEpoch : public testing::Test
         {
             return hostEpoch.timeOwner;
         }
-        template <typename T>
-        T readData(const char* fileName)
-        {
-            return HostEpoch::readData<T>(fileName);
-        }
-        template <typename T>
-        void writeData(const char* fileName, T&& data)
-        {
-            HostEpoch::writeData<T>(fileName, std::forward<T>(data));
-        }
         microseconds getOffset()
         {
             return hostEpoch.offset;
@@ -79,7 +70,7 @@ TEST_F(TestHostEpoch, readDataFileNotExist)
 {
     // When file does not exist, the default offset shall be 0
     microseconds offset(0);
-    auto value = readData<decltype(offset)::rep>(FILE_NOT_EXIST);
+    auto value = utils::readData<decltype(offset)::rep>(FILE_NOT_EXIST);
     EXPECT_EQ(0, value);
 }
 
@@ -87,12 +78,13 @@ TEST_F(TestHostEpoch, writeAndReadData)
 {
     // Write offset to file
     microseconds offsetToWrite(1234567);
-    writeData<decltype(offsetToWrite)::rep>(FILE_OFFSET, offsetToWrite.count());
+    utils::writeData<decltype(offsetToWrite)::rep>(
+        FILE_OFFSET, offsetToWrite.count());
 
     // Read it back
     microseconds offsetToRead;
     offsetToRead = microseconds(
-        readData<decltype(offsetToRead)::rep>(FILE_OFFSET));
+        utils::readData<decltype(offsetToRead)::rep>(FILE_OFFSET));
     EXPECT_EQ(offsetToWrite, offsetToRead);
 }
 
