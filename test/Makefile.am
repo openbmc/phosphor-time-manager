@@ -8,8 +8,12 @@ check_PROGRAMS += test
 test_SOURCES = \
     TestEpochBase.cpp \
     TestBmcEpoch.cpp \
+    TestHostEpoch.cpp \
+	TestManager.cpp \
     ../epoch_base.cpp \
     ../bmc_epoch.cpp \
+    ../host_epoch.cpp \
+    ../manager.cpp \
     ../xyz.openbmc_project.Time.EpochTime.cpp
 
 test_CPPFLAGS = -Igtest $(GTEST_CPPFLAGS) $(AM_CPPFLAGS)
