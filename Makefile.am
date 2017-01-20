@@ -5,7 +5,8 @@ sbin_PROGRAMS = phosphor-timemanager
 noinst_LTLIBRARIES = libtimemanager.la
 
 libtimemanager_la_SOURCES = \
-	epoch_base.cpp
+	epoch_base.cpp \
+	bmc_epoch.cpp
 
 phosphor_timemanager_SOURCES = \
 	main.cpp
