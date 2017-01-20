@@ -27,13 +27,21 @@ class Manager
     private:
         sdbusplus::bus::bus& bus;
         sdbusplus::server::match::match propertyChangeMatch;
+        sdbusplus::server::match::match pgoodChangeMatch;
         std::set<PropertyChangeListner*> listeners;
+        bool isHostOn;
 
+        void initPgood();
         void onPropertyChanged(const std::string& key,
                                const std::string& value);
+        void onPgoodChanged(bool pgood);
+
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
                                      sd_bus_error* retError);
+        static int onPgoodChanged(sd_bus_message* msg,
+                                  void* userData,
+                                  sd_bus_error* retError);
         static const std::set<std::string> managedProperties;
 };
 
