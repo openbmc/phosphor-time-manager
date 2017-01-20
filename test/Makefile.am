@@ -9,6 +9,7 @@ test_SOURCES = \
     TestEpochBase.cpp \
     TestBmcEpoch.cpp \
     TestHostEpoch.cpp \
+    TestTimeManager.cpp \
     ../epoch_base.cpp \
     ../bmc_epoch.cpp \
     ../host_epoch.cpp \
