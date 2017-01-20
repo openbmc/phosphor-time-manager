@@ -6,6 +6,7 @@ sbin_PROGRAMS = \
 phosphor_timemanager_SOURCES = \
 	main.cpp \
 	epoch_base.cpp \
+	bmc_epoch.cpp \
 	xyz.openbmc_project.Time.EpochTime.cpp
 
 
