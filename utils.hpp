@@ -31,6 +31,27 @@ void writeData(const char* fileName, T&& data)
     }
 }
 
+template <typename T>
+T getProperty(sdbusplus::bus::bus& bus,
+              const char* service,
+              const char* path,
+              const char* interface,
+              const char* propertyName)
+{
+    sdbusplus::message::variant<T> value{};
+    auto method = bus.new_method_call(service,
+                                      path,
+                                      "org.freedesktop.DBus.Properties",
+                                      "Get");
+    method.append(interface, propertyName);
+    auto reply = bus.call(method);
+    if (reply)
+    {
+        reply.read(value);
+    }
+    return value.template get<T>();
+}
+
 }
 }
 }
