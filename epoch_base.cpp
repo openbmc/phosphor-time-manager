@@ -1,4 +1,5 @@
 #include "epoch_base.hpp"
+#include "utils.hpp"
 
 #include <log.hpp>
 
@@ -10,8 +11,6 @@ namespace // anonymous
 constexpr const char* SETTINGS_SERVICE = "org.openbmc.settings.Host";
 constexpr const char* SETTINGS_PATH = "/org/openbmc/settings/host0";
 constexpr const char* SETTINGS_INTERFACE = SETTINGS_SERVICE;
-constexpr const char* PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
-constexpr const char* METHOD_GET = "Get";
 }
 
 namespace phosphor
@@ -19,7 +18,8 @@ namespace phosphor
 namespace time
 {
 
-const std::map<std::string, EpochBase::Updater> EpochBase::propertyUpdaters = {
+const std::map<std::string, EpochBase::Updater> EpochBase::propertyUpdaters =
+{
     {"time_mode", &EpochBase::setCurrentTimeMode},
     {"time_owner", &EpochBase::setCurrentTimeOwner},
 };
@@ -27,7 +27,8 @@ const std::map<std::string, EpochBase::Updater> EpochBase::propertyUpdaters = {
 using namespace phosphor::logging;
 
 const std::map<std::string, EpochBase::Owner>
-EpochBase::ownerMap = {
+EpochBase::ownerMap =
+{
     { "BMC", EpochBase::Owner::BMC },
     { "HOST", EpochBase::Owner::HOST },
     { "SPLIT", EpochBase::Owner::SPLIT },
@@ -48,9 +49,10 @@ void EpochBase::onPropertyChange(const std::string& key,
                                  const std::string& value)
 {
     auto iterator = propertyUpdaters.find(key);
-    if (iterator == propertyUpdaters.end()) {
+    if (iterator == propertyUpdaters.end())
+    {
         log<level::ERR>("Unsupported property",
-                       entry("PROPERTY=%s", key.c_str()));
+                        entry("PROPERTY=%s", key.c_str()));
         return;
     }
     (this->*(iterator->second))(value);
@@ -78,19 +80,8 @@ void EpochBase::initialize()
 
 std::string EpochBase::getSettings(const char* value) const
 {
-    sdbusplus::message::variant<std::string> mode;
-    auto method = bus.new_method_call(SETTINGS_SERVICE,
-                                      SETTINGS_PATH,
-                                      PROPERTY_INTERFACE,
-                                      METHOD_GET);
-    method.append(SETTINGS_INTERFACE, value);
-    auto reply = bus.call(method);
-    if (reply)
-    {
-        reply.read(mode);
-    }
-
-    return mode.get<std::string>();
+    return utils::getProperty<std::string>(
+               bus, SETTINGS_SERVICE, SETTINGS_PATH, SETTINGS_INTERFACE, value);
 }
 
 EpochBase::Mode EpochBase::convertToMode(const std::string& mode)
