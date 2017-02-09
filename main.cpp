@@ -8,6 +8,13 @@
 int main()
 {
     auto bus = sdbusplus::bus::new_default();
+    sd_event* event = nullptr;
+
+    // acquire a referece to the default event loop
+    sd_event_default(&event);
+
+    // attach bus to this event loop
+    bus.attach_event(event, SD_EVENT_PRIORITY_NORMAL);
 
     // Add sdbusplus ObjectManager
     sdbusplus::server::manager::manager bmcEpochObjManager(bus, OBJPATH_BMC);
@@ -19,13 +26,15 @@ int main()
 
     manager.addListener(&bmc);
     manager.addListener(&host);
+    bmc.setBcmTimeChangeListener(&host);
 
     bus.request_name(BUSNAME);
 
-    while (true)
-    {
-        bus.process_discard();
-        bus.wait();
-    }
+    // Start event loop for all sd-bus events and timer event
+    sd_event_loop(bus.get_event());
+
+    bus.detach_event();
+    sd_event_unref(event);
+
     return 0;
 }
