@@ -26,6 +26,18 @@ uint64_t HostEpoch::elapsed() const
 
 uint64_t HostEpoch::elapsed(uint64_t value)
 {
+    /*
+        Mode  | Owner | Set Host Time
+        ----- | ----- | -------------
+        NTP   | BMC   | Not allowed
+        NTP   | HOST  | Invalid case
+        NTP   | SPLIT | OK, and just save offset
+        NTP   | BOTH  | OK, and set time to BMC
+        MANUAL| BMC   | Not allowed
+        MANUAL| HOST  | OK, and set time to BMC
+        MANUAL| SPLIT | OK, and just save offset
+        MANUAL| BOTH  | OK, and set time to BMC
+    */
     if (timeOwner == Owner::BMC)
     {
         log<level::ERR>("Setting HostTime in BMC owner is not allowed");
@@ -33,11 +45,25 @@ uint64_t HostEpoch::elapsed(uint64_t value)
         return 0;
     }
 
-    auto time = std::chrono::microseconds(value);
-    offset = time - getTime();
+    if (timeOwner == Owner::HOST && timeMode == Mode::NTP)
+    {
+        log<level::WARNING>("Ignore time mode NTP when owner is HOST");
+        return 0;
+    }
 
-    // Store the offset to file
-    utils::writeData(offsetFile, offset.count());
+    auto time = std::chrono::microseconds(value);
+    if (timeOwner == Owner::SPLIT)
+    {
+        // Just save offset
+        offset = time - getTime();
+        // Store the offset to file
+        utils::writeData(offsetFile, offset.count());
+    }
+    else
+    {
+        // Set time to BMC
+        setTime(time);
+    }
 
     server::EpochTime::elapsed(value);
     return value;
