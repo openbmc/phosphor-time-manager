@@ -3,6 +3,7 @@
 
 #include "bmc_epoch.hpp"
 #include "config.h"
+#include "types.hpp"
 
 namespace phosphor
 {
@@ -13,9 +14,6 @@ using namespace std::chrono;
 class TestBmcEpoch : public testing::Test
 {
     public:
-        using Mode = EpochBase::Mode;
-        using Owner = EpochBase::Owner;
-
         sdbusplus::bus::bus bus;
         BmcEpoch bmcEpoch;
 
