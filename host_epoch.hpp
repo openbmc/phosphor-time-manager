@@ -1,5 +1,6 @@
 #pragma once
 
+#include "bmc_time_change_listener.hpp"
 #include "config.h"
 #include "epoch_base.hpp"
 
@@ -15,7 +16,7 @@ namespace time
  *  @details A concrete implementation for xyz.openbmc_project.Time.EpochTime
  *  DBus API for HOST's epoch time.
  */
-class HostEpoch : public EpochBase
+class HostEpoch : public EpochBase, public BmcTimeChangeListener
 {
     public:
         friend class TestHostEpoch;
@@ -37,9 +38,26 @@ class HostEpoch : public EpochBase
          **/
         uint64_t elapsed(uint64_t value) override;
 
+        /** @brief Notified on time owner changed */
+        void onOwnerChanged(Owner owner) override;
+
+        /** @brief Notified on bmc time is changed */
+        void onBmcTimeChanged(std::chrono::microseconds bmcTime) override;
+
     private:
         /** @brief The diff between BMC and Host time */
         std::chrono::microseconds offset;
+
+        /**
+         * @brief The diff between host time and steady clock
+         * @details This diff is used to calculate the host time if BMC time
+         * is changed and the owner is SPLIT.
+         * Without this the host time is lost if BMC time is changed.
+        */
+        std::chrono::microseconds diffToSteadyClock;
+
+        /** @brief Save the offset value into offsetFile */
+        void saveOffset();
 
         /** @brief The file to store the offset in File System.
          *  Read back when starts
