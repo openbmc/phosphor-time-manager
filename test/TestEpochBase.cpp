@@ -1,6 +1,7 @@
 #include <sdbusplus/bus.hpp>
 #include <gtest/gtest.h>
 
+#include "types.hpp"
 #include "epoch_base.hpp"
 
 namespace phosphor
@@ -11,9 +12,6 @@ namespace time
 class TestEpochBase : public testing::Test
 {
     public:
-        using Mode = EpochBase::Mode;
-        using Owner = EpochBase::Owner;
-
         sdbusplus::bus::bus bus;
         EpochBase epochBase;
 
@@ -24,40 +22,38 @@ class TestEpochBase : public testing::Test
             // Empty
         }
 
-        // Proxies for EpochBase's private members and functions
-        Mode convertToMode(const std::string& mode)
+        Mode getMode()
         {
-            return EpochBase::convertToMode(mode);
+            return epochBase.timeMode;
         }
-        Owner convertToOwner(const std::string& owner)
+        Owner getOwner()
         {
-            return EpochBase::convertToOwner(owner);
+            return epochBase.timeOwner;
         }
 };
 
-TEST_F(TestEpochBase, convertToMode)
+TEST_F(TestEpochBase, onModeChange)
 {
-    EXPECT_EQ(Mode::NTP, convertToMode("NTP"));
-    EXPECT_EQ(Mode::MANUAL, convertToMode("MANUAL"));
+    epochBase.onModeChanged(Mode::NTP);
+    EXPECT_EQ(Mode::NTP, getMode());
 
-    // All unrecognized strings are mapped to Ntp
-    EXPECT_EQ(Mode::NTP, convertToMode(""));
-    EXPECT_EQ(Mode::NTP, convertToMode("Manual"));
-    EXPECT_EQ(Mode::NTP, convertToMode("whatever"));
+    epochBase.onModeChanged(Mode::MANUAL);
+    EXPECT_EQ(Mode::MANUAL, getMode());
 }
 
-
-TEST_F(TestEpochBase, convertToOwner)
+TEST_F(TestEpochBase, onOwnerChange)
 {
-    EXPECT_EQ(Owner::BMC, convertToOwner("BMC"));
-    EXPECT_EQ(Owner::HOST, convertToOwner("HOST"));
-    EXPECT_EQ(Owner::SPLIT, convertToOwner("SPLIT"));
-    EXPECT_EQ(Owner::BOTH, convertToOwner("BOTH"));
+    epochBase.onOwnerChanged(Owner::BMC);
+    EXPECT_EQ(Owner::BMC, getOwner());
 
-    // All unrecognized strings are mapped to Bmc
-    EXPECT_EQ(Owner::BMC, convertToOwner(""));
-    EXPECT_EQ(Owner::BMC, convertToOwner("Split"));
-    EXPECT_EQ(Owner::BMC, convertToOwner("xyz"));
+    epochBase.onOwnerChanged(Owner::HOST);
+    EXPECT_EQ(Owner::HOST, getOwner());
+
+    epochBase.onOwnerChanged(Owner::SPLIT);
+    EXPECT_EQ(Owner::SPLIT, getOwner());
+
+    epochBase.onOwnerChanged(Owner::BOTH);
+    EXPECT_EQ(Owner::BOTH, getOwner());
 }
 
 }
