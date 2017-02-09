@@ -1,5 +1,7 @@
 #pragma once
 
+#include "time_manager.hpp"
+
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Time/EpochTime/server.hpp>
 
@@ -11,7 +13,8 @@ namespace time
 {
 
 class EpochBase : public sdbusplus::server::object::object <
-    sdbusplus::xyz::openbmc_project::Time::server::EpochTime >
+    sdbusplus::xyz::openbmc_project::Time::server::EpochTime >,
+    public PropertyChangeListner
 {
     public:
         friend class TestEpochBase;
@@ -58,8 +61,10 @@ class EpochBase : public sdbusplus::server::object::object <
         };
 
         EpochBase(sdbusplus::bus::bus& bus,
-                  const char* objPath);
-
+                  const char* objPath,
+                  Manager* manager);
+        void onPropertyChange(const std::string& key,
+                              const std::string& value) override;
     protected:
         sdbusplus::bus::bus& bus;
         Mode timeMode;
@@ -73,6 +78,12 @@ class EpochBase : public sdbusplus::server::object::object <
         static std::string convertToStr(
             const std::chrono::microseconds& usec);
 
+        using Updater = std::function<void(const std::string&)>;
+        const std::map<std::string, Updater> propertyUpdaters =
+        {
+            {"time_mode", std::bind(&EpochBase::setCurrentTimeMode, this, std::placeholders::_1)},
+            {"time_owner", std::bind(&EpochBase::setCurrentTimeOwner, this, std::placeholders::_1)}
+        };
     private:
         void initialize();
 

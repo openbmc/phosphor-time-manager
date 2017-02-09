@@ -8,6 +8,7 @@ phosphor_timemanager_SOURCES = \
 	epoch_base.cpp \
 	bmc_epoch.cpp \
 	host_epoch.cpp \
+	time_manager.cpp \
 	xyz.openbmc_project.Time.EpochTime.cpp
 
 
