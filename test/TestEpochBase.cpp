@@ -15,11 +15,13 @@ class TestEpochBase : public testing::Test
         using Owner = EpochBase::Owner;
 
         sdbusplus::bus::bus bus;
+        Manager manager;
         EpochBase epochBase;
 
         TestEpochBase()
             : bus(sdbusplus::bus::new_default()),
-              epochBase(bus, "")
+              manager(bus),
+              epochBase(bus, "", &manager)
         {
             // Empty
         }

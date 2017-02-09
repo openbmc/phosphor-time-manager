@@ -22,7 +22,8 @@ namespace time
 using namespace phosphor::logging;
 
 const std::map<std::string, EpochBase::Owner>
-EpochBase::ownerMap = {
+EpochBase::ownerMap =
+{
     { "BMC", EpochBase::Owner::BMC },
     { "HOST", EpochBase::Owner::HOST },
     { "SPLIT", EpochBase::Owner::SPLIT },
@@ -30,13 +31,29 @@ EpochBase::ownerMap = {
 };
 
 EpochBase::EpochBase(sdbusplus::bus::bus& bus,
-                     const char* objPath)
+                     const char* objPath,
+                     Manager* manager)
     : sdbusplus::server::object::object<EpochTime>(bus, objPath, true),
       bus(bus)
 {
     initialize();
+    manager->addListener(this);
+
     // Deferred this until we could get our property correct
     emit_object_added();
+}
+
+void EpochBase::onPropertyChange(const std::string& key,
+                                 const std::string& value)
+{
+    auto iterator = propertyUpdaters.find(key);
+    if (iterator == propertyUpdaters.end())
+    {
+        log<level::ERR>("Unsupported property",
+                        entry("PROPERTY=%s", key.c_str()));
+        return;
+    }
+    iterator->second(value);
 }
 
 void EpochBase::setCurrentTimeMode(const std::string& mode)
@@ -57,7 +74,6 @@ void EpochBase::initialize()
 {
     setCurrentTimeMode(getSettings("time_mode"));
     setCurrentTimeOwner(getSettings("time_owner"));
-    // TODO: subscribe settingsd's property changes callback
 }
 
 std::string EpochBase::getSettings(const char* value) const

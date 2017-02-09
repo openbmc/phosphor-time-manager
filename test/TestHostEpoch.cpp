@@ -19,6 +19,7 @@ class TestHostEpoch : public testing::Test
         using Owner = EpochBase::Owner;
 
         sdbusplus::bus::bus bus;
+        Manager manager;
         HostEpoch hostEpoch;
 
         static constexpr auto FILE_NOT_EXIST = "path/to/file-not-exist";
@@ -27,7 +28,8 @@ class TestHostEpoch : public testing::Test
 
         TestHostEpoch()
             : bus(sdbusplus::bus::new_default()),
-              hostEpoch(bus, OBJPATH_HOST)
+              manager(bus),
+              hostEpoch(bus, OBJPATH_HOST, &manager)
         {
             // Make sure the file does not exist
             std::remove(FILE_NOT_EXIST);

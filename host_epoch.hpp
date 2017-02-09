@@ -19,7 +19,8 @@ class HostEpoch : public EpochBase
     public:
         friend class TestHostEpoch;
         HostEpoch(sdbusplus::bus::bus& bus,
-                  const char* objPath);
+                  const char* objPath,
+                  Manager* manager);
 
         uint64_t elapsed() const override;
         uint64_t elapsed(uint64_t value) override;
