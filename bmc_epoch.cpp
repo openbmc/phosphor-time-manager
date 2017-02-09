@@ -25,6 +25,18 @@ uint64_t BmcEpoch::elapsed() const
 
 uint64_t BmcEpoch::elapsed(uint64_t value)
 {
+    /*
+        Mode  | Owner | Set BMC Time
+        ----- | ----- | -------------
+        NTP   | BMC   | Not allowed
+        NTP   | HOST  | Not allowed
+        NTP   | SPLIT | Not allowed
+        NTP   | BOTH  | Not allowed
+        MANUAL| BMC   | OK
+        MANUAL| HOST  | Not allowed
+        MANUAL| SPLIT | OK
+        MANUAL| BOTH  | OK
+    */
     if (timeMode == Mode::NTP)
     {
         log<level::ERR>("Setting BmcTime with NTP mode is not allowed");
