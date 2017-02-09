@@ -1,5 +1,6 @@
 #pragma once
 
+#include "bmc_time_change_listener.hpp"
 #include "epoch_base.hpp"
 
 namespace phosphor
@@ -33,6 +34,13 @@ class BmcEpoch : public EpochBase
          * @return The updated elapsed microseconds since UTC
          **/
         uint64_t elapsed(uint64_t value) override;
+
+        /** @brief Set the listner for bmc time change */
+        void setBcmTimeChangeListener(BmcTimeChangeListener* listener);
+
+    private:
+        /** @brief The listener for bmc time change */
+        BmcTimeChangeListener* timeChangeListener = nullptr;
 };
 
 } // namespace time

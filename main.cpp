@@ -19,6 +19,7 @@ int main()
 
     manager.addListener(&bmc);
     manager.addListener(&host);
+    bmc.setBcmTimeChangeListener(&host);
 
     bus.request_name(BUSNAME);
 
