@@ -3,12 +3,17 @@
 #include "config.h"
 #include "bmc_epoch.hpp"
 #include "host_epoch.hpp"
+#include "manager.hpp"
 
 int main()
 {
     auto bus = sdbusplus::bus::new_default();
+    phosphor::time::Manager manager(bus);
     phosphor::time::BmcEpoch bmc(bus, OBJPATH_BMC);
     phosphor::time::HostEpoch host(bus,OBJPATH_HOST);
+
+    manager.addListener(&bmc);
+    manager.addListener(&host);
 
     bus.request_name(BUSNAME);
 
