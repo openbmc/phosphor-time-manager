@@ -17,11 +17,13 @@ class TestBmcEpoch : public testing::Test
         using Owner = EpochBase::Owner;
 
         sdbusplus::bus::bus bus;
+        Manager manager;
         BmcEpoch bmcEpoch;
 
         TestBmcEpoch()
             : bus(sdbusplus::bus::new_default()),
-              bmcEpoch(bus, OBJPATH_BMC)
+              manager(bus),
+              bmcEpoch(bus, OBJPATH_BMC, &manager)
         {
             // Empty
         }

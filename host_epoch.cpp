@@ -12,8 +12,9 @@ using namespace sdbusplus::xyz::openbmc_project::Time;
 using namespace phosphor::logging;
 
 HostEpoch::HostEpoch(sdbusplus::bus::bus& bus,
-                     const char* objPath)
-    : EpochBase(bus, objPath),
+                     const char* objPath,
+                     Manager* manager)
+    : EpochBase(bus, objPath, manager),
       offset(readData<decltype(offset)::rep>(offsetFile))
 {
     // Empty
