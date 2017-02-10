@@ -24,7 +24,11 @@ class Manager
     private:
         sdbusplus::bus::bus& bus;
         sdbusplus::server::match::match propertyChangeMatch;
+        sdbusplus::server::match::match pgoodChangeMatch;
         std::set<PropertyChangeListner*> listeners;
+        bool isHostOn;
+
+        void initPgood();
 
         Mode timeMode;
         Owner timeOwner;
@@ -37,10 +41,15 @@ class Manager
         /** @brief Notified on host settings property changed */
         void onPropertyChanged(const std::string& key,
                                const std::string& value);
+        /** @brief Notified on pgood has changed */
+        void onPgoodChanged(bool pgood);
 
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
                                      sd_bus_error* retError);
+        static int onPgoodChanged(sd_bus_message* msg,
+                                  void* userData,
+                                  sd_bus_error* retError);
 
         static Mode convertToMode(const std::string& mode);
         static Owner convertToOwner(const std::string& owner);
