@@ -32,6 +32,7 @@ class Manager
         std::string requestedOwner;
 
         void initPgood();
+        void initNetworkSetting();
 
         Mode timeMode;
         Owner timeOwner;
@@ -50,6 +51,8 @@ class Manager
                           const std::string& value);
         void setRequestedMode(const std::string& mode);
         void setRequestedOwner(const std::string& owner);
+        void updateNtpSetting(const std::string& value);
+        void updateNetworkSetting(const std::string& useDhcpNtp);
 
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
