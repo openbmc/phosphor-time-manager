@@ -46,23 +46,6 @@ class HostEpoch : public EpochBase
          *  Read back when starts
          **/
         static constexpr auto offsetFile = HOST_OFFSET_FILE;
-
-        /** @brief Read data with type T from file
-         *
-         * @param[in] fileName - The name of file to read from
-         *
-         * @return The data with type T
-         */
-        template <typename T>
-        static T readData(const char* fileName);
-
-        /** @brief Write data with type T to file
-         *
-         * @param[in] fileName - The name of file to write to
-         * @param[in] data - The data with type T to write to file
-         */
-        template <typename T>
-        static void writeData(const char* fileName, T&& data);
 };
 
 } // namespace time
