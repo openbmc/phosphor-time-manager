@@ -9,6 +9,7 @@ namespace time
 namespace utils
 {
 
+
 template <typename T>
 T readData(const char* fileName)
 {
@@ -29,6 +30,37 @@ void writeData(const char* fileName, T&& data)
     {
         fs << std::forward<T>(data);
     }
+}
+
+/** @brief The template function to get property from DBus
+ *
+ * @param[in] bus          - The Dbus bus object
+ * @param[in] service      - The Dbus service name
+ * @param[in] path         - The Dbus object path
+ * @param[in] interface    - The Dbus interface
+ * @param[in] propertyName - The property name to get
+ *
+ * @return The value of the property
+ */
+template <typename T>
+T getProperty(sdbusplus::bus::bus& bus,
+              const char* service,
+              const char* path,
+              const char* interface,
+              const char* propertyName)
+{
+    sdbusplus::message::variant<T> value{};
+    auto method = bus.new_method_call(service,
+                                      path,
+                                      "org.freedesktop.DBus.Properties",
+                                      "Get");
+    method.append(interface, propertyName);
+    auto reply = bus.call(method);
+    if (reply)
+    {
+        reply.read(value);
+    }
+    return value.template get<T>();
 }
 
 }
