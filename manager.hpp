@@ -24,6 +24,7 @@ class Manager
 {
     public:
         friend class TestManager;
+
         Manager(sdbusplus::bus::bus& bus);
         void addListener(PropertyChangeListner* listener);
 
@@ -39,6 +40,12 @@ class Manager
 
         /** @brief The value to indicate if host is on */
         bool isHostOn;
+
+        /** @brief The requested time mode when host is on*/
+        std::string requestedMode;
+
+        /** @brief The requested time owner when host is on*/
+        std::string requestedOwner;
 
         /** @brief The current time mode */
         Mode timeMode;
@@ -63,6 +70,10 @@ class Manager
                                const std::string& value);
         /** @brief Notified on pgood has changed */
         void onPgoodChanged(bool pgood);
+        void saveProperty(const std::string& key,
+                          const std::string& value);
+        void setRequestedMode(const std::string& mode);
+        void setRequestedOwner(const std::string& owner);
 
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
@@ -74,6 +85,9 @@ class Manager
         static Mode convertToMode(const std::string& mode);
         static Owner convertToOwner(const std::string& owner);
 
+        static constexpr auto PROPERTY_TIME_MODE = "time_mode";
+        static constexpr auto PROPERTY_TIME_OWNER = "time_owner";
+
         using Updater = std::function<void(const std::string&)>;
 
         /** @brief Map the property string to functions that shall
@@ -81,10 +95,10 @@ class Manager
          */
         const std::map<std::string, Updater> propertyUpdaters =
         {
-            {"time_mode", std::bind(&Manager::setCurrentTimeMode,
-                                    this, std::placeholders::_1)},
-            {"time_owner", std::bind(&Manager::setCurrentTimeOwner,
-                                     this, std::placeholders::_1)}
+            {PROPERTY_TIME_MODE, std::bind(&Manager::setCurrentTimeMode,
+                                           this, std::placeholders::_1)},
+            {PROPERTY_TIME_OWNER, std::bind(&Manager::setCurrentTimeOwner,
+                                            this, std::placeholders::_1)}
         };
 
         /** @brief The properties that manager shall notify the
@@ -94,6 +108,9 @@ class Manager
 
         /** @brief The map that maps the string to Owners */
         static const std::map<std::string, Owner> ownerMap;
+
+        static constexpr auto modeFile = "/var/lib/obmc/saved_time_mode";
+        static constexpr auto ownerFile = "/var/lib/obmc/saved_time_owner";
 };
 
 }
