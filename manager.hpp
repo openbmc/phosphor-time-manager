@@ -38,14 +38,23 @@ class Manager
         /** @brief The match of settings property change */
         sdbusplus::bus::match::match propertyChangeMatch;
 
+        /** @brief The match of pgood change */
+        sdbusplus::bus::match::match pgoodChangeMatch;
+
         /** @brief The container to hold all the listeners */
         std::set<PropertyChangeListner*> listeners;
+
+        /** @brief The value to indicate if host is on */
+        bool hostOn = false;
 
         /** @brief The current time mode */
         Mode timeMode;
 
         /** @brief The current time owner */
         Owner timeOwner;
+
+        /** @brief Check if host is on and update hostOn variable */
+        void checkHostOn();
 
         /** @brief Get setting from settingsd service
          *
@@ -75,6 +84,12 @@ class Manager
         void onPropertyChanged(const std::string& key,
                                const std::string& value);
 
+        /** @brief Notified on pgood has changed
+         *
+         * @param[in] pgood - The changed pgood value
+         */
+        void onPgoodChanged(bool pgood);
+
         /** @brief The static function called on settings property changed
          *
          * @param[in] msg - Data associated with subscribed signal
@@ -84,6 +99,16 @@ class Manager
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
                                      sd_bus_error* retError);
+
+        /** @brief Notified on pgood has changed
+         *
+         * @param[in] msg - Data associated with subscribed signal
+         * @param[in] userData - Pointer to this object instance
+         * @param[out] retError  - Not used but required with signal API
+         */
+        static int onPgoodChanged(sd_bus_message* msg,
+                                  void* userData,
+                                  sd_bus_error* retError);
 
         /** @brief Convert a string to enum Mode
          *
