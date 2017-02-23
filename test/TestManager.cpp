@@ -135,5 +135,8 @@ TEST_F(TestManager, propertyChange)
     ASSERT_DEATH(notifyPropertyChanged("invalid property", "whatever"), "");
 }
 
+// TODO: if gmock is ready, add case to test
+// updateNtpSetting() and updateNetworkSetting()
+
 }
 }
