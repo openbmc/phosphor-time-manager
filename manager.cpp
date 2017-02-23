@@ -21,6 +21,17 @@ const auto MATCH_PROPERTY_CHANGE =
     rules::path("/org/openbmc/settings/host0") +
     rules::interface("org.freedesktop.DBus.Properties");
 
+const auto MATCH_PGOOD_CHANGE =
+    rules::type::signal() +
+    rules::member("PropertiesChanged") +
+    rules::path("/org/openbmc/control/power0") +
+    rules::interface("org.freedesktop.DBus.Properties");
+
+// TODO: consider put the get properties related functions into a common place
+constexpr auto POWER_SERVICE = "org.openbmc.control.Power";
+constexpr auto POWER_PATH = "/org/openbmc/control/power0";
+constexpr auto POWER_INTERFACE = POWER_SERVICE;
+constexpr auto PGOOD_STR = "pgood";
 }
 
 namespace phosphor
@@ -43,10 +54,12 @@ const std::map<std::string, Owner> Manager::ownerMap =
 
 Manager::Manager(sdbusplus::bus::bus& bus)
     : bus(bus),
-      propertyChangeMatch(bus, MATCH_PROPERTY_CHANGE, onPropertyChanged, this)
+      propertyChangeMatch(bus, MATCH_PROPERTY_CHANGE, onPropertyChanged, this),
+      pgoodChangeMatch(bus, MATCH_PGOOD_CHANGE, onPgoodChanged, this)
 {
     setCurrentTimeMode(getSettings(PROPERTY_TIME_MODE));
     setCurrentTimeOwner(getSettings(PROPERTY_TIME_OWNER));
+    checkHostOn();
 }
 
 void Manager::addListener(PropertyChangeListner* listener)
@@ -58,12 +71,30 @@ void Manager::addListener(PropertyChangeListner* listener)
     listeners.insert(listener);
 }
 
+void Manager::checkHostOn()
+{
+    sdbusplus::message::variant<int> pgood = 0;
+    auto method = bus.new_method_call(POWER_SERVICE,
+                                      POWER_PATH,
+                                      PROPERTY_INTERFACE,
+                                      METHOD_GET);
+    method.append(PROPERTY_INTERFACE, PGOOD_STR);
+    auto reply = bus.call(method);
+    if (reply)
+    {
+        reply.read(pgood);
+    }
+
+    hostOn = static_cast<bool>(pgood.get<int>());
+}
+
 void Manager::onPropertyChanged(const std::string& key,
                                 const std::string& value)
 {
     // TODO: Check pgood
     // If it's off, notify listners;
-    // If it's on, hold the values and store in persistent storage.
+    // If it's on, hold the values and store in persistent storage
+    // as requested time mode/owner.
     // And when pgood turns back to off, notify the listners.
 
     // TODO: Check dhcp_ntp
@@ -91,7 +122,7 @@ int Manager::onPropertyChanged(sd_bus_message* msg,
                                sd_bus_error* retError)
 {
     using properties = std::map < std::string,
-          sdbusplus::message::variant<int, std::string >>;
+          sdbusplus::message::variant<std::string> >;
     auto m = sdbusplus::message::message(msg);
     // message type: sa{sv}as
     std::string ignore;
@@ -108,6 +139,34 @@ int Manager::onPropertyChanged(sd_bus_message* msg,
     return 0;
 }
 
+void Manager::onPgoodChanged(bool pgood)
+{
+    hostOn = pgood;
+    // TODO: if host is off, check requested time_mode/owner:
+    // and notify the listeners if any.
+}
+
+int Manager::onPgoodChanged(sd_bus_message* msg,
+                            void* userData,
+                            sd_bus_error* retError)
+{
+    using properties = std::map < std::string,
+          sdbusplus::message::variant<int> >;
+    auto m = sdbusplus::message::message(msg);
+    // message type: sa{sv}as
+    std::string ignore;
+    properties props;
+    m.read(ignore, props);
+    for (const auto& item : props)
+    {
+        if (item.first == PGOOD_STR)
+        {
+            static_cast<Manager*>(userData)
+                ->onPgoodChanged(static_cast<bool>(item.second.get<int>()));
+        }
+    }
+    return 0;
+}
 
 void Manager::setCurrentTimeMode(const std::string& mode)
 {
