@@ -1,4 +1,5 @@
 #include "manager.hpp"
+#include "utils.hpp"
 
 #include <phosphor-logging/log.hpp>
 
@@ -11,9 +12,6 @@ constexpr auto SETTINGS_PATH = "/org/openbmc/settings/host0";
 constexpr auto SETTINGS_INTERFACE = "org.openbmc.settings.Host";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 constexpr auto METHOD_GET = "Get";
-
-constexpr auto PROPERTY_TIME_MODE = "time_mode";
-constexpr auto PROPERTY_TIME_OWNER = "time_owner";
 
 // TODO: Use new settings in xyz.openbmc_project
 const auto MATCH_PROPERTY_CHANGE =
@@ -92,28 +90,32 @@ void Manager::checkHostOn()
 void Manager::onPropertyChanged(const std::string& key,
                                 const std::string& value)
 {
-    // TODO: Check pgood
-    // If it's off, notify listners;
-    // If it's on, hold the values and store in persistent storage
-    // as requested time mode/owner.
-    // And when pgood turns back to off, notify the listners.
-
     // TODO: Check dhcp_ntp
 
-    if (key == PROPERTY_TIME_MODE)
+    if (hostOn)
     {
-        setCurrentTimeMode(value);
-        for (const auto& listener : listeners)
-        {
-            listener->onModeChanged(timeMode);
-        }
+        // If host is on, set the values as requested time mode/owner.
+        // And when host becomes off, notify the listners.
+        setPropertyAsRequested(key, value);
     }
-    else if (key == PROPERTY_TIME_OWNER)
+    else
     {
-        setCurrentTimeOwner(value);
-        for (const auto& listener : listeners)
+        // If host is off, notify listners
+        if (key == PROPERTY_TIME_MODE)
         {
-            listener->onOwnerChanged(timeOwner);
+            setCurrentTimeMode(value);
+            for (const auto listener : listeners)
+            {
+                listener->onModeChanged(timeMode);
+            }
+        }
+        else if (key == PROPERTY_TIME_OWNER)
+        {
+            setCurrentTimeOwner(value);
+            for (const auto listener : listeners)
+            {
+                listener->onOwnerChanged(timeOwner);
+            }
         }
     }
 }
@@ -133,18 +135,69 @@ int Manager::onPropertyChanged(sd_bus_message* msg,
     {
         if (managedProperties.find(item.first) != managedProperties.end())
         {
-            static_cast<Manager*>(userData)
-                ->onPropertyChanged(item.first, item.second.get<std::string>());
+            static_cast<Manager*>(userData)->onPropertyChanged(
+                item.first, item.second.get<std::string>());
         }
     }
     return 0;
 }
 
+void Manager::setPropertyAsRequested(const std::string& key,
+                                     const std::string& value)
+{
+    if (key == PROPERTY_TIME_MODE)
+    {
+        setRequestedMode(value);
+    }
+    else if (key == PROPERTY_TIME_OWNER)
+    {
+        setRequestedOwner(value);
+    }
+    else
+    {
+        // The key shall be already the supported one
+        // TODO: use elog API
+        assert(false);
+    }
+}
+
+void Manager::setRequestedMode(const std::string& mode)
+{
+    requestedMode = mode;
+}
+
+void Manager::setRequestedOwner(const std::string& owner)
+{
+    requestedOwner = owner;
+}
+
 void Manager::onPgoodChanged(bool pgood)
 {
     hostOn = pgood;
-    // TODO: if host is off, check requested time_mode/owner:
-    // and notify the listeners if any.
+    if (hostOn)
+    {
+        return;
+    }
+    if (!requestedMode.empty())
+    {
+        auto modeToSet = requestedMode;
+        setRequestedMode({}); // Clear requested mode
+        setCurrentTimeMode(modeToSet);
+        for (const auto& listener : listeners)
+        {
+            listener->onModeChanged(timeMode);
+        }
+    }
+    if (!requestedOwner.empty())
+    {
+        auto ownerToSet = requestedOwner;
+        setRequestedOwner({}); // Clear requested owner
+        setCurrentTimeOwner(ownerToSet);
+        for (const auto& listener : listeners)
+        {
+            listener->onOwnerChanged(timeOwner);
+        }
+    }
 }
 
 int Manager::onPgoodChanged(sd_bus_message* msg,
@@ -174,6 +227,7 @@ void Manager::setCurrentTimeMode(const std::string& mode)
     log<level::INFO>("Time mode is changed",
                      entry("MODE=%s", mode.c_str()));
     timeMode = convertToMode(mode);
+    utils::writeData(modeFile, requestedMode);
 }
 
 void Manager::setCurrentTimeOwner(const std::string& owner)
@@ -181,6 +235,7 @@ void Manager::setCurrentTimeOwner(const std::string& owner)
     log<level::INFO>("Time owner is changed",
                      entry("OWNER=%s", owner.c_str()));
     timeOwner = convertToOwner(owner);
+    utils::writeData(ownerFile, requestedOwner);
 }
 
 std::string Manager::getSettings(const char* value) const
