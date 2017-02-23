@@ -24,11 +24,29 @@ class Manager
     private:
         sdbusplus::bus::bus& bus;
         sdbusplus::server::match::match propertyChangeMatch;
+
+        /** @brief The match of pgood changed */
+        sdbusplus::server::match::match pgoodChangeMatch;
+
+        /** @brief The listeners of to notify on property changed */
         std::set<PropertyChangeListner*> listeners;
 
+        /** @brief The value to indicate if host is on */
+        bool isHostOn;
+
+        /** @brief The current time mode */
         Mode timeMode;
+
+        /** @brief The current time owner */
         Owner timeOwner;
 
+        void initPgood();
+
+        /** @brief Get setting value from org.openbmc.settings.Host.
+         *
+         * @param[in] setting - The string of the setting to get
+         * @return The value of the setting
+         */
         std::string getSettings(const char* setting) const;
 
         void setCurrentTimeMode(const std::string& mode);
@@ -37,10 +55,15 @@ class Manager
         /** @brief Notified on host settings property changed */
         void onPropertyChanged(const std::string& key,
                                const std::string& value);
+        /** @brief Notified on pgood has changed */
+        void onPgoodChanged(bool pgood);
 
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
                                      sd_bus_error* retError);
+        static int onPgoodChanged(sd_bus_message* msg,
+                                  void* userData,
+                                  sd_bus_error* retError);
 
         static Mode convertToMode(const std::string& mode);
         static Owner convertToOwner(const std::string& owner);
