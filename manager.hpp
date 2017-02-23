@@ -63,6 +63,9 @@ class Manager
         /** @brief Check if host is on and update hostOn variable */
         void checkHostOn();
 
+        /** @brief Check if use_dhcp_ntp is used and update NTP setting */
+        void checkDhcpNtp();
+
         /** @brief Get setting from settingsd service
          *
          * @param[in] setting - The string of the setting
@@ -97,6 +100,12 @@ class Manager
          *  persistent storage
          */
         void setRequestedOwner(const std::string& owner);
+
+        /** @brief Update the NTP setting to systemd time service */
+        void updateNtpSetting(const std::string& value);
+
+        /** @brief Update dhcp_ntp setting to OpenBMC network service */
+        void updateDhcpNtpSetting(const std::string& useDhcpNtp);
 
         /** @brief Notified on host settings property changed */
         static int onPropertyChanged(sd_bus_message* msg,
@@ -137,6 +146,9 @@ class Manager
 
         /** @brief The string of time owner property */
         static constexpr auto PROPERTY_TIME_OWNER = "time_owner";
+
+        /** @brief The string of use dhcp ntp property */
+        static constexpr auto PROPERTY_DHCP_NTP = "use_dhcp_ntp";
 
         using Updater = std::function<void(const std::string&)>;
 
