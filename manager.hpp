@@ -54,6 +54,7 @@ class Manager
         Owner timeOwner;
 
         void initPgood();
+        void initNetworkSetting();
 
         /** @brief Get setting value from org.openbmc.settings.Host.
          *
@@ -74,6 +75,8 @@ class Manager
                           const std::string& value);
         void setRequestedMode(const std::string& mode);
         void setRequestedOwner(const std::string& owner);
+        void updateNtpSetting(const std::string& value);
+        void updateNetworkSetting(const std::string& useDhcpNtp);
 
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
@@ -87,6 +90,7 @@ class Manager
 
         static constexpr auto PROPERTY_TIME_MODE = "time_mode";
         static constexpr auto PROPERTY_TIME_OWNER = "time_owner";
+        static constexpr auto PROPERTY_DHCP_NTP = "use_dhcp_ntp";
 
         using Updater = std::function<void(const std::string&)>;
 
