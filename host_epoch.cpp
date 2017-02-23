@@ -1,8 +1,7 @@
 #include "host_epoch.hpp"
+#include "utils.hpp"
 
 #include <log.hpp>
-
-#include <fstream>
 
 namespace phosphor
 {
@@ -14,7 +13,7 @@ using namespace phosphor::logging;
 HostEpoch::HostEpoch(sdbusplus::bus::bus& bus,
                      const char* objPath)
     : EpochBase(bus, objPath),
-      offset(readData<decltype(offset)::rep>(offsetFile))
+      offset(utils::readData<decltype(offset)::rep>(offsetFile))
 {
     // Empty
 }
@@ -38,32 +37,10 @@ uint64_t HostEpoch::elapsed(uint64_t value)
     offset = time - getTime();
 
     // Store the offset to file
-    writeData<decltype(offset)::rep>(offsetFile, offset.count());
+    utils::writeData<decltype(offset)::rep>(offsetFile, offset.count());
 
     server::EpochTime::elapsed(value);
     return value;
-}
-
-template <typename T>
-T HostEpoch::readData(const char* fileName)
-{
-    T data{};
-    std::ifstream fs(fileName);
-    if (fs.is_open())
-    {
-        fs >> data;
-    }
-    return data;
-}
-
-template <typename T>
-void HostEpoch::writeData(const char* fileName, T&& data)
-{
-    std::ofstream fs(fileName, std::ios::out);
-    if (fs.is_open())
-    {
-        fs << std::forward<T>(data);
-    }
 }
 
 }
