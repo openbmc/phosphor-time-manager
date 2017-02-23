@@ -18,6 +18,7 @@ class Manager
 {
     public:
         friend class TestManager;
+
         Manager(sdbusplus::bus::bus& bus);
         void addListener(PropertyChangeListner* listener);
 
@@ -33,6 +34,12 @@ class Manager
 
         /** @brief The value to indicate if host is on */
         bool isHostOn;
+
+        /** @brief The requested time mode when host is on*/
+        std::string requestedMode;
+
+        /** @brief The requested time owner when host is on*/
+        std::string requestedOwner;
 
         /** @brief The current time mode */
         Mode timeMode;
@@ -57,6 +64,10 @@ class Manager
                                const std::string& value);
         /** @brief Notified on pgood has changed */
         void onPgoodChanged(bool pgood);
+        void saveProperty(const std::string& key,
+                          const std::string& value);
+        void setRequestedMode(const std::string& mode);
+        void setRequestedOwner(const std::string& owner);
 
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
@@ -79,6 +90,9 @@ class Manager
 
         static const std::set<std::string> managedProperties;
         static const std::map<std::string, Owner> ownerMap;
+
+        static constexpr auto modeFile = "/var/lib/obmc/saved_time_mode";
+        static constexpr auto ownerFile = "/var/lib/obmc/saved_time_owner";
 };
 
 }
