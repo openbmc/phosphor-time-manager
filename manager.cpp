@@ -1,4 +1,5 @@
 #include "manager.hpp"
+#include "utils.hpp"
 
 #include <log.hpp>
 
@@ -9,9 +10,6 @@ constexpr auto SETTINGS_PATH = "/org/openbmc/settings/host0";
 constexpr auto SETTINGS_INTERFACE = "org.openbmc.settings.Host";
 constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 constexpr auto METHOD_GET = "Get";
-
-constexpr auto PROPERTY_MODE = "time_mode";
-constexpr auto PROPERTY_OWNER = "time_owner";
 
 constexpr auto MATCH_PROPERTY_CHANGE =
     "type='signal',interface='org.freedesktop.DBus.Properties',"
@@ -48,7 +46,9 @@ const std::map<std::string, Owner> Manager::ownerMap =
 Manager::Manager(sdbusplus::bus::bus& bus)
     : bus(bus),
       propertyChangeMatch(bus, MATCH_PROPERTY_CHANGE, onPropertyChanged, this),
-      pgoodChangeMatch(bus, MATCH_PGOOD_CHANGE, onPgoodChanged, this)
+      pgoodChangeMatch(bus, MATCH_PGOOD_CHANGE, onPgoodChanged, this),
+      requestedMode(utils::readData<std::string>(modeFile)),
+      requestedOwner(utils::readData<std::string>(ownerFile))
 {
     setCurrentTimeMode(getSettings(PROPERTY_MODE));
     setCurrentTimeOwner(getSettings(PROPERTY_OWNER));
@@ -84,25 +84,31 @@ void Manager::initPgood()
 void Manager::onPropertyChanged(const std::string& key,
                                 const std::string& value)
 {
-    // TODO: Check pgood
-    // If it's off, notify listners;
-    // If it's on, hold the values and store in persistent storage
-    // as requested time mode/owner.
-    // And when pgood turns back to off, notify the listners.
-    if (key == PROPERTY_MODE)
+    if (isHostOn)
     {
-        setCurrentTimeMode(value);
-        for (const auto listener : listeners)
-        {
-            listener->onModeChanged(timeMode);
-        }
+        // If host is on, store the values in persistent storage
+        // as requested time mode/owner.
+        // And when host becomes off, notify the listners.
+        saveProperty(key, value);
     }
-    else if (key == PROPERTY_OWNER)
+    else
     {
-        setCurrentTimeOwner(value);
-        for (const auto listener : listeners)
+        // If host is off, notify listners
+        if (key == PROPERTY_MODE)
         {
-            listener->onOwnerChanged(timeOwner);
+            setCurrentTimeMode(value);
+            for (const auto listener : listeners)
+            {
+                listener->onModeChanged(timeMode);
+            }
+        }
+        else if (key == PROPERTY_OWNER)
+        {
+            setCurrentTimeOwner(value);
+            for (const auto listener : listeners)
+            {
+                listener->onOwnerChanged(timeOwner);
+            }
         }
     }
 }
@@ -118,22 +124,73 @@ int Manager::onPropertyChanged(sd_bus_message* msg,
     std::string ignore;
     properties props;
     m.read(ignore, props);
-    for (const auto item : props)
+    for (const auto& item : props)
     {
         if (managedProperties.find(item.first) != managedProperties.end())
         {
-            static_cast<Manager*>(userData)
-                ->onPropertyChanged(item.first, item.second.get<std::string>());
+            static_cast<Manager*>(userData)->onPropertyChanged(
+                item.first, item.second.get<std::string>());
         }
     }
     return 0;
 }
 
+void Manager::saveProperty(const std::string& key,
+                           const std::string& value)
+{
+    if (key == PROPERTY_MODE)
+    {
+        setRequestedMode(value);
+    }
+    else if (key == PROPERTY_OWNER)
+    {
+        setRequestedOwner(value);
+    }
+    else
+    {
+        // The key shall be already the supported one
+        // TODO: use elog API
+        assert(false);
+    }
+}
+
+void Manager::setRequestedMode(const std::string& mode)
+{
+    requestedMode = mode;
+    utils::writeData(modeFile, requestedMode);
+}
+
+void Manager::setRequestedOwner(const std::string& owner)
+{
+    requestedOwner = owner;
+    utils::writeData(ownerFile, requestedOwner);
+}
+
 void Manager::onPgoodChanged(bool pgood)
 {
     isHostOn = pgood;
-    // TODO: if host is off, check requested time_mode/owner:
-    // and notify the listeners if any.
+    if (isHostOn)
+    {
+        return;
+    }
+    if (!requestedMode.empty())
+    {
+        setCurrentTimeMode(requestedMode);
+        for (const auto& listener : listeners)
+        {
+            listener->onModeChanged(timeMode);
+        }
+        setRequestedMode({});
+    }
+    if (!requestedOwner.empty())
+    {
+        setCurrentTimeOwner(requestedOwner);
+        for (const auto& listener : listeners)
+        {
+            listener->onOwnerChanged(timeOwner);
+        }
+        setRequestedOwner({});
+    }
 }
 
 int Manager::onPgoodChanged(sd_bus_message* msg,
