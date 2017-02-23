@@ -35,17 +35,26 @@ class Manager
         /** @brief Persistent sdbusplus DBus connection */
         sdbusplus::bus::bus& bus;
 
-        /** @brief Used to subscribe to property change signals */
+        /** @brief The match of host property change */
         sdbusplus::bus::match::match propertyChangeMatch;
+
+        /** @brief The match of pgood change */
+        sdbusplus::bus::match::match pgoodChangeMatch;
 
         /** @brief The container to hold all the listeners */
         std::set<PropertyChangeListner*> listeners;
+
+        /** @brief The value to indicate if host is on */
+        bool hostOn;
 
         /** @brief The current time mode */
         Mode timeMode;
 
         /** @brief The current time owner */
         Owner timeOwner;
+
+        /** @brief Check if host is on and update hostOn variable */
+        void checkHostOn();
 
         /** @brief Get setting from settingsd service
          *
@@ -64,11 +73,18 @@ class Manager
         /** @brief Notified on host settings property changed */
         void onPropertyChanged(const std::string& key,
                                const std::string& value);
+        /** @brief Notified on pgood has changed */
+        void onPgoodChanged(bool pgood);
 
         /** @brief Notified on host settings property changed */
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
                                      sd_bus_error* retError);
+
+        /** @brief Notified on pgood has changed */
+        static int onPgoodChanged(sd_bus_message* msg,
+                                  void* userData,
+                                  sd_bus_error* retError);
 
         /** @brief Convert a string to enum Mode
          *
