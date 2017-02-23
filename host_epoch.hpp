@@ -47,11 +47,6 @@ class HostEpoch : public EpochBase
          * initialization.
          **/
         static constexpr auto offsetFile = "/var/lib/obmc/saved_host_offset";
-
-        template <typename T>
-        static T readData(const char* fileName);
-        template <typename T>
-        static void writeData(const char* fileName, T&& data);
 };
 
 }
