@@ -42,11 +42,6 @@ class HostEpoch : public EpochBase
 
         // Store the offset in File System. Read back when starts.
         static constexpr auto offsetFile = HOST_OFFSET_FILE;
-
-        template <typename T>
-        static T readData(const char* fileName);
-        template <typename T>
-        static void writeData(const char* fileName, T&& data);
 };
 
 } // namespace time
