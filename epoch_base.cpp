@@ -1,4 +1,5 @@
 #include "epoch_base.hpp"
+#include "utils.hpp"
 
 #include <log.hpp>
 
@@ -17,6 +18,7 @@ EpochBase::EpochBase(sdbusplus::bus::bus& bus,
     : sdbusplus::server::object::object<EpochTime>(bus, objPath),
       bus(bus)
 {
+    // Empty
 }
 
 void EpochBase::onModeChanged(Mode mode)
