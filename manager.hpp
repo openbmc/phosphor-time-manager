@@ -48,6 +48,7 @@ class Manager
         Owner timeOwner;
 
         void initPgood();
+        void initNetworkSetting();
 
         /** @brief Get setting value from org.openbmc.settings.Host.
          *
@@ -68,6 +69,8 @@ class Manager
                           const std::string& value);
         void setRequestedMode(const std::string& mode);
         void setRequestedOwner(const std::string& owner);
+        void updateNtpSetting(const std::string& value);
+        void updateNetworkSetting(const std::string& useDhcpNtp);
 
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
