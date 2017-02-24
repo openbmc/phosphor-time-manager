@@ -18,5 +18,5 @@ test_SOURCES = \
 
 test_CPPFLAGS = -Igtest $(GTEST_CPPFLAGS) $(AM_CPPFLAGS)
 test_CXXFLAGS = $(PTHREAD_CFLAGS)
-test_LDFLAGS = -lgtest_main -lgtest $(PTHREAD_LIBS) $(OESDK_TESTCASE_FLAGS)
+test_LDFLAGS = -lgmock_main -lgmock $(PTHREAD_LIBS) $(OESDK_TESTCASE_FLAGS)
 test_LDFLAGS += $(SYSTEMD_LIBS)
