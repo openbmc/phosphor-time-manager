@@ -81,17 +81,37 @@ class Manager
          */
         std::string getSettings(const char* setting) const;
 
-        /** @brief Set current time mode
+        /** @brief Set current time mode from the time mode string
+         *
+         * @param[in] mode - The string of time mode
+         *
+         * @return - true if the mode is updated
+         *           false if it's the same as before
+         */
+        bool setCurrentTimeMode(const std::string& mode);
+
+        /** @brief Set current time owner from the time owner string
+         *
+         * @param[in] owner - The string of time owner
+         *
+         * @return - true if the owner is updated
+         *           false if it's the same as before
+         */
+        bool setCurrentTimeOwner(const std::string& owner);
+
+        /** @brief Called on time mode is changed
+         *
+         * Notify listeners that time mode is changed and update ntp setting
          *
          * @param[in] mode - The string of time mode
          */
-        void setCurrentTimeMode(const std::string& mode);
+        void onTimeModeChanged(const std::string& mode);
 
-        /** @brief Set current time owner
+        /** @brief Called on time owner is changed
          *
-         * @param[in] owner - The string of time owner
+         * Notify listeners that time owner is changed
          */
-        void setCurrentTimeOwner(const std::string& owner);
+        void onTimeOwnerChanged();
 
         /** @brief Notified on settings property changed
          *
