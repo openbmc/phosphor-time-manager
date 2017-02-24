@@ -242,20 +242,25 @@ void Manager::onPgoodChanged(bool pgood)
     }
     if (!requestedMode.empty())
     {
-        setCurrentTimeMode(requestedMode);
-        for (const auto& listener : listeners)
+        if (setCurrentTimeMode(requestedMode))
         {
-            listener->onModeChanged(timeMode);
+            for (const auto& listener : listeners)
+            {
+                listener->onModeChanged(timeMode);
+            }
+            updateNtpSetting(requestedMode);
         }
         updateNtpSetting(requestedMode);
         setRequestedMode({});
     }
     if (!requestedOwner.empty())
     {
-        setCurrentTimeOwner(requestedOwner);
-        for (const auto& listener : listeners)
+        if (setCurrentTimeOwner(requestedOwner))
         {
-            listener->onOwnerChanged(timeOwner);
+            for (const auto& listener : listeners)
+            {
+                listener->onOwnerChanged(timeOwner);
+            }
         }
         setRequestedOwner({});
     }
@@ -283,18 +288,36 @@ int Manager::onPgoodChanged(sd_bus_message* msg,
     return 0;
 }
 
-void Manager::setCurrentTimeMode(const std::string& mode)
+bool Manager::setCurrentTimeMode(const std::string& mode)
 {
-    log<level::INFO>("Time mode is changed",
-                     entry("MODE=%s", mode.c_str()));
-    timeMode = convertToMode(mode);
+    auto newMode = convertToMode(mode);
+    if (newMode != timeMode)
+    {
+        log<level::INFO>("Time mode is changed",
+                         entry("MODE=%s", mode.c_str()));
+        timeMode = newMode;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-void Manager::setCurrentTimeOwner(const std::string& owner)
+bool Manager::setCurrentTimeOwner(const std::string& owner)
 {
-    log<level::INFO>("Time owner is changed",
-                     entry("OWNER=%s", owner.c_str()));
-    timeOwner = convertToOwner(owner);
+    auto newOwner = convertToOwner(owner);
+    if (newOwner != timeOwner)
+    {
+        log<level::INFO>("Time owner is changed",
+                         entry("OWNER=%s", owner.c_str()));
+        timeOwner = newOwner;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 std::string Manager::getSettings(const char* value) const
