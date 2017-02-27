@@ -1,20 +1,31 @@
 AM_DEFAULT_SOURCE_EXT = .cpp
 
-sbin_PROGRAMS = \
-	phosphor-timemanager
+sbin_PROGRAMS = phosphor-timemanager
 
-phosphor_timemanager_SOURCES = \
-	main.cpp \
+noinst_LTLIBRARIES = libtimemanager.la
+
+libtimemanager_la_SOURCES = \
 	epoch_base.cpp \
 	bmc_epoch.cpp \
 	host_epoch.cpp \
 	manager.cpp
 
+phosphor_timemanager_SOURCES = \
+	main.cpp
 
-phosphor_timemanager_CXXFLAGS = $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
-                                $(SDBUSPLUS_CFLAGS)
+phosphor_timemanager_LDADD = libtimemanager.la
 
-phosphor_timemanager_LDFLAGS = $(PHOSPHOR_DBUS_INTERFACES_LIBS) \
-                               $(SDBUSPLUS_LIBS)
+generic_cxx_flags = $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
+                    $(SDBUSPLUS_CFLAGS)
 
-SUBDIRS = test
+generic_ld_flags = $(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+                   $(SDBUSPLUS_LIBS)
+
+libtimemanager_la_CXXFLAGS = $(generic_cxx_flags)
+libtimemanager_la_LIBADD = $(generic_ld_flags)
+
+phosphor_timemanager_CXXFLAGS = $(generic_cxx_flags)
+
+phosphor_timemanager_LDFLAGS = $(generic_ld_flags)
+
+SUBDIRS = . test
