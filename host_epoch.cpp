@@ -1,7 +1,7 @@
 #include "host_epoch.hpp"
 #include "utils.hpp"
 
-#include <log.hpp>
+#include <phosphor-logging/log.hpp>
 
 namespace phosphor
 {

@@ -1,6 +1,6 @@
 #include "epoch_base.hpp"
 
-#include <log.hpp>
+#include <phosphor-logging/log.hpp>
 
 #include <iomanip>
 #include <sstream>
