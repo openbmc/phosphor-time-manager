@@ -1,7 +1,7 @@
 #include "manager.hpp"
 #include "utils.hpp"
 
-#include <log.hpp>
+#include <phosphor-logging/log.hpp>
 
 namespace // anonymous
 {

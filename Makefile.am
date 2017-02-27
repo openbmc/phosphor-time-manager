@@ -8,10 +8,13 @@ phosphor_timemanager_SOURCES = \
 	epoch_base.cpp \
 	bmc_epoch.cpp \
 	host_epoch.cpp \
-	manager.cpp \
-	xyz.openbmc_project.Time.EpochTime.cpp
+	manager.cpp
 
 
-phosphor_timemanager_LDFLAGS = $(SYSTEMD_LIBS)
+phosphor_timemanager_CXXFLAGS = $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
+                                $(SDBUSPLUS_CFLAGS)
+
+phosphor_timemanager_LDFLAGS = $(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+                               $(SDBUSPLUS_LIBS)
 
 SUBDIRS = test
