@@ -17,6 +17,10 @@ LT_INIT
 
 # Check for libraries
 PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
+PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces],,\
+    AC_MSG_ERROR(["Requires phosphor-dbus-interfaces package."]))
+PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus],,\
+    AC_MSG_ERROR(["Requires sdbusplus package."]))
 
 # gtest
 # Check/set gtest specific functions.
@@ -49,7 +53,7 @@ AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 # Check for header files.
 AC_CHECK_HEADER(systemd/sd-bus.h, ,[AC_MSG_ERROR([Could not find systemd/sd-bus.h...systemd developement package required])])
 AC_CHECK_HEADER(sdbusplus/server.hpp, ,[AC_MSG_ERROR([Could not find sdbusplus/server.hpp...openbmc/sdbusplus package required])])
-AC_CHECK_HEADER(log.hpp, ,[AC_MSG_ERROR([Could not find log.hpp...openbmc/phosphor-logging package required])])
+AC_CHECK_HEADER(phosphor-logging/log.hpp, ,[AC_MSG_ERROR([Could not find phosphor-logging/log.hpp...openbmc/phosphor-logging package required])])
 
 # DBUS interface
 AC_ARG_VAR(BUSNAME, [The Time Manager Dbus busname to own])
