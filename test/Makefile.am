@@ -13,10 +13,9 @@ test_SOURCES = \
     ../epoch_base.cpp \
     ../bmc_epoch.cpp \
     ../host_epoch.cpp \
-    ../manager.cpp \
-    ../xyz.openbmc_project.Time.EpochTime.cpp
+    ../manager.cpp
 
-test_CPPFLAGS = -Igtest $(GTEST_CPPFLAGS) $(AM_CPPFLAGS)
-test_CXXFLAGS = $(PTHREAD_CFLAGS)
+test_CPPFLAGS = $(GTEST_CPPFLAGS) $(AM_CPPFLAGS)
+test_CXXFLAGS = $(PTHREAD_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) $(SDBUSPLUS_CFLAGS)
 test_LDFLAGS = -lgmock_main -lgmock $(PTHREAD_LIBS) $(OESDK_TESTCASE_FLAGS)
-test_LDFLAGS += $(SYSTEMD_LIBS)
+test_LDFLAGS += $(SYSTEMD_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS) $(SDBUSPLUS_LIBS)
