@@ -1,6 +1,6 @@
 #include "bmc_epoch.hpp"
 
-#include <log.hpp>
+#include <phosphor-logging/log.hpp>
 
 #include <sys/timerfd.h>
 #include <unistd.h>
