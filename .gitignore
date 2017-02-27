@@ -38,6 +38,8 @@ Makefile.in
 # Repo Specific Items
 .deps
 *.o
+*.la
+*.lo
 *.log
 /config.h
 /config.h.in~
@@ -45,6 +47,7 @@ Makefile.in
 Makefile
 phosphor-timemanager
 *-libtool
+.libs
 
 # UT related items
 .dirstamp
