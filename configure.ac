@@ -8,6 +8,7 @@ AM_SILENT_RULES([yes])
 
 # Checks for programs
 AC_PROG_CXX
+AM_PROG_AR
 # Checks/sets the install variable to be used
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
