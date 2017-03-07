@@ -44,6 +44,6 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
     return value;
 }
 
-}
-}
+} // namespace time
+} // namespace phosphor
 
