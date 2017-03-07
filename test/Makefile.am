@@ -7,7 +7,8 @@ check_PROGRAMS += test
 
 test_SOURCES = \
     TestEpochBase.cpp \
-    TestBmcEpoch.cpp
+    TestBmcEpoch.cpp \
+    TestHostEpoch.cpp
 
 test_LDADD = $(top_builddir)/libtimemanager.la
 
