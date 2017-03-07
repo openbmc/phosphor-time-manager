@@ -64,6 +64,10 @@ AC_ARG_VAR(OBJPATH_HOST, [The host epoch Dbus root])
 AS_IF([test "x$OBJPATH_HOST" == "x"], [OBJPATH_HOST="/xyz/openbmc_project/time/host"])
 AC_DEFINE_UNQUOTED([OBJPATH_HOST], ["$OBJPATH_HOST"], [The host epoch Dbus root])
 
+AC_ARG_VAR(SAVED_HOST_OFFSET_FILE, [The file to save host time offset])
+AS_IF([test "x$SAVED_HOST_OFFSET_FILE" == "x"], [SAVED_HOST_OFFSET_FILE="/var/lib/obmc/saved_host_offset"])
+AC_DEFINE_UNQUOTED([SAVED_HOST_OFFSET_FILE], ["$SAVED_HOST_OFFSET_FILE"], [The file to save host time offset])
+
 
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_OUTPUT
