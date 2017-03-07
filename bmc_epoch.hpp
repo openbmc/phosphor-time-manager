@@ -35,5 +35,5 @@ class BmcEpoch : public EpochBase
         uint64_t elapsed(uint64_t value) override;
 };
 
-}
-}
+} // namespace time
+} // namespace phosphor
