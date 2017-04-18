@@ -1,6 +1,8 @@
 #include "host_epoch.hpp"
 #include "utils.hpp"
 
+#include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
 
 namespace phosphor
@@ -30,6 +32,10 @@ uint64_t HostEpoch::elapsed() const
 
 uint64_t HostEpoch::elapsed(uint64_t value)
 {
+    using NotAllowed = xyz::openbmc_project::Time::EpochTime::NotAllowed;
+    using CURRENT_MODE = NotAllowed::CURRENT_MODE;
+    using CURRENT_OWNER = NotAllowed::CURRENT_OWNER;
+
     /*
         Mode  | Owner | Set Host Time
         ----- | ----- | -------------
@@ -42,17 +48,11 @@ uint64_t HostEpoch::elapsed(uint64_t value)
         MANUAL| SPLIT | OK, and just save offset
         MANUAL| BOTH  | OK, and set time to BMC
     */
-    if (timeOwner == Owner::BMC)
+    if (timeOwner == Owner::BMC ||
+        (timeOwner == Owner::HOST && timeMode == Mode::NTP))
     {
-        log<level::ERR>("Setting HostTime in BMC owner is not allowed");
-        // TODO: throw NotAllowed exception
-        return 0;
-    }
-
-    if (timeOwner == Owner::HOST && timeMode == Mode::NTP)
-    {
-        log<level::WARNING>("Ignore time mode NTP when owner is HOST");
-        return 0;
+        elog<NotAllowed>(CURRENT_MODE(utils::modeToStr(timeMode)),
+                         CURRENT_OWNER(utils::ownerToStr(timeOwner)));
     }
 
     auto time = microseconds(value);
