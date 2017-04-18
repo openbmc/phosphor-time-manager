@@ -1,6 +1,9 @@
 #pragma once
 
+#include "types.hpp"
+
 #include <phosphor-logging/log.hpp>
+#include <sdbusplus/bus.hpp>
 
 #include <fstream>
 
@@ -76,6 +79,36 @@ T getProperty(sdbusplus::bus::bus& bus,
     return value.template get<T>();
 }
 
-}
-}
-}
+/** @brief Convert a string to enum Mode
+ *
+ * Convert the time mode string to enum.
+ * Valid strings are "NTP", "MANUAL"
+ * If it's not a valid time mode string, return NTP.
+ *
+ * @param[in] mode - The string of time mode
+ *
+ * @return The Mode enum
+ */
+Mode strToMode(const std::string& mode);
+
+/** @brief Convert a string to enum Owner
+ *
+ * Convert the time owner string to enum.
+ * Valid strings are "BMC", "HOST", "SPLIT", "BOTH"
+ * If it's not a valid time owner string, return BMC.
+ *
+ * @param[in] owner - The string of time owner
+ *
+ * @return The Owner enum
+ */
+Owner strToOwner(const std::string& owner);
+
+/** @brief Convert a mode enum to mode string */
+const char* modeToStr(Mode mode);
+
+/** @brief Convert a owner enum to owner string */
+const char* ownerToStr(Owner owner);
+
+} // namespace utils
+} // namespace time
+} // namespace phosphor
