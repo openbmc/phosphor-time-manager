@@ -177,30 +177,6 @@ class Manager
                                   void* userData,
                                   sd_bus_error* retError);
 
-        /** @brief Convert a string to enum Mode
-         *
-         * Convert the time mode string to enum.
-         * Valid strings are "NTP", "MANUAL"
-         * If it's not a valid time mode string, return NTP.
-         *
-         * @param[in] mode - The string of time mode
-         *
-         * @return The Mode enum
-         */
-        static Mode convertToMode(const std::string& mode);
-
-        /** @brief Convert a string to enum Owner
-         *
-         * Convert the time owner string to enum.
-         * Valid strings are "BMC", "HOST", "SPLIT", "BOTH"
-         * If it's not a valid time owner string, return BMC.
-         *
-         * @param[in] owner - The string of time owner
-         *
-         * @return The Owner enum
-         */
-        static Owner convertToOwner(const std::string& owner);
-
         /** @brief The string of time mode property */
         static constexpr auto PROPERTY_TIME_MODE = "time_mode";
 
