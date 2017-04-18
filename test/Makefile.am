@@ -9,7 +9,8 @@ test_SOURCES = \
     TestEpochBase.cpp \
     TestBmcEpoch.cpp \
     TestHostEpoch.cpp \
-	TestManager.cpp
+	TestManager.cpp \
+	TestUtils.cpp
 
 test_LDADD = $(top_builddir)/libtimemanager.la
 
