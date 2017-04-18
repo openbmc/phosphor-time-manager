@@ -132,9 +132,6 @@ class Manager
          */
         static const std::set<std::string> managedProperties;
 
-        /** @brief The map that maps the string to Owners */
-        static const std::map<std::string, Owner> ownerMap;
-
         static constexpr auto modeFile = "/var/lib/obmc/saved_time_mode";
         static constexpr auto ownerFile = "/var/lib/obmc/saved_time_owner";
 };

@@ -43,14 +43,6 @@ using namespace phosphor::logging;
 const std::set<std::string>
 Manager::managedProperties = {PROPERTY_TIME_MODE, PROPERTY_TIME_OWNER};
 
-const std::map<std::string, Owner> Manager::ownerMap =
-{
-    { "BMC", Owner::BMC },
-    { "HOST", Owner::HOST },
-    { "SPLIT", Owner::SPLIT },
-    { "BOTH", Owner::BOTH },
-};
-
 Manager::Manager(sdbusplus::bus::bus& bus)
     : bus(bus),
       propertyChangeMatch(bus, MATCH_PROPERTY_CHANGE, onPropertyChanged, this),
@@ -284,7 +276,7 @@ int Manager::onPgoodChanged(sd_bus_message* msg,
 
 bool Manager::setCurrentTimeMode(const std::string& mode)
 {
-    auto newMode = convertToMode(mode);
+    auto newMode = utils::strToMode(mode);
     if (newMode != timeMode)
     {
         log<level::INFO>("Time mode is changed",
@@ -300,7 +292,7 @@ bool Manager::setCurrentTimeMode(const std::string& mode)
 
 bool Manager::setCurrentTimeOwner(const std::string& owner)
 {
-    auto newOwner = convertToOwner(owner);
+    auto newOwner = utils::strToOwner(owner);
     if (newOwner != timeOwner)
     {
         log<level::INFO>("Time owner is changed",
@@ -322,36 +314,6 @@ std::string Manager::getSettings(const char* value) const
         SETTINGS_PATH,
         SETTINGS_INTERFACE,
         value);
-}
-
-Mode Manager::convertToMode(const std::string& mode)
-{
-    if (mode == "NTP")
-    {
-        return Mode::NTP;
-    }
-    else if (mode == "MANUAL")
-    {
-        return Mode::MANUAL;
-    }
-    else
-    {
-        log<level::ERR>("Unrecognized mode",
-                        entry("%s", mode.c_str()));
-        return Mode::NTP;
-    }
-}
-
-Owner Manager::convertToOwner(const std::string& owner)
-{
-    auto it = ownerMap.find(owner);
-    if (it == ownerMap.end())
-    {
-        log<level::ERR>("Unrecognized owner",
-                        entry("%s", owner.c_str()));
-        return Owner::BMC;
-    }
-    return it->second;
 }
 
 }
