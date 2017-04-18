@@ -1,5 +1,7 @@
 #include "epoch_base.hpp"
 
+#include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
 
 #include <iomanip>
@@ -47,7 +49,12 @@ void EpochBase::setTime(const microseconds& usec)
     method.append(static_cast<int64_t>(usec.count()),
                   false, // relative
                   false); // user_interaction
-    bus.call_noreply(method);
+    if (!bus.call(method))
+    {
+        using InternalError = xyz::openbmc_project::Time::EpochTime
+                              ::InternalError;
+        elog<InternalError>();
+    }
 }
 
 microseconds EpochBase::getTime() const

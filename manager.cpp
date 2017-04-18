@@ -184,7 +184,8 @@ void Manager::saveProperty(const std::string& key,
     else
     {
         // The key shall be already the supported one
-        // TODO: use elog API
+        log<level::ERR>("Unexpected property",
+                        entry("KEY:%s", key.c_str()));
         assert(false);
     }
 }
