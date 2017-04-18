@@ -8,7 +8,8 @@ libtimemanager_la_SOURCES = \
 	epoch_base.cpp \
 	bmc_epoch.cpp \
 	host_epoch.cpp \
-	manager.cpp
+	manager.cpp \
+	utils.cpp
 
 phosphor_timemanager_SOURCES = \
 	main.cpp
