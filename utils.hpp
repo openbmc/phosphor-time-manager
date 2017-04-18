@@ -1,6 +1,9 @@
 #pragma once
 
+#include "types.hpp"
+
 #include <phosphor-logging/log.hpp>
+#include <sdbusplus/bus.hpp>
 
 #include <fstream>
 
@@ -74,6 +77,11 @@ T getProperty(sdbusplus::bus::bus& bus,
     return value.template get<T>();
 }
 
-}
-}
-}
+Mode strToMode(const std::string& mode);
+Owner strToOwner(const std::string& owner);
+const char* modeToStr(Mode mode);
+const char* ownerToStr(Owner owner);
+
+} // namespace utils
+} // namespace time
+} // namespace phosphor
