@@ -1,5 +1,6 @@
 #include <sdbusplus/bus.hpp>
 #include <gtest/gtest.h>
+#include <phosphor-logging/elog-errors.hpp>
 
 #include "bmc_epoch.hpp"
 #include "config.h"
@@ -59,17 +60,17 @@ TEST_F(TestBmcEpoch, getElapsed)
 
 TEST_F(TestBmcEpoch, setElapsedNotAllowed)
 {
+    using NotAllowed = phosphor::logging::xyz::openbmc_project
+                       ::Time::EpochTime::NotAllowed;
     auto epochNow = duration_cast<microseconds>(
         system_clock::now().time_since_epoch()).count();
     // In NTP mode, setting time is not allowed
-    auto ret = bmcEpoch.elapsed(epochNow);
-    EXPECT_EQ(0, ret);
+    EXPECT_THROW(bmcEpoch.elapsed(epochNow), NotAllowed);
 
     // In Host owner, setting time is not allowed
     setTimeMode(Mode::MANUAL);
     setTimeOwner(Owner::HOST);
-    ret = bmcEpoch.elapsed(epochNow);
-    EXPECT_EQ(0, ret);
+    EXPECT_THROW(bmcEpoch.elapsed(epochNow), NotAllowed);
 }
 
 TEST_F(TestBmcEpoch, setElapsedOK)

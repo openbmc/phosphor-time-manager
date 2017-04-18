@@ -1,5 +1,6 @@
 #include <sdbusplus/bus.hpp>
 #include <gtest/gtest.h>
+#include <phosphor-logging/elog-errors.hpp>
 
 #include "host_epoch.hpp"
 #include "utils.hpp"
@@ -65,15 +66,15 @@ class TestHostEpoch : public testing::Test
 
         void checkSettingTimeNotAllowed()
         {
+            using NotAllowed = phosphor::logging::xyz::openbmc_project
+                               ::Time::EpochTime::NotAllowed;
             // By default offset shall be 0
             EXPECT_EQ(0, getOffset().count());
 
-            // Set time is not allowed,
-            // so verify offset is still 0 after set time
+            // Set time is not allowed
             microseconds diff = 1min;
-            hostEpoch.elapsed(hostEpoch.elapsed() + diff.count());
-            EXPECT_EQ(0, getOffset().count());
-            // TODO: when gmock is ready, check there is no call to timedatectl
+            EXPECT_THROW(hostEpoch.elapsed(hostEpoch.elapsed() + diff.count()),
+                         NotAllowed);
         }
 
         void checkSetSplitTimeInFuture()
