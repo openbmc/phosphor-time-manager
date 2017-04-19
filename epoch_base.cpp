@@ -5,6 +5,14 @@
 #include <iomanip>
 #include <sstream>
 
+namespace // anonymous
+{
+constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
+constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
+constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
+constexpr auto METHOD_SET_TIME = "SetTime";
+}
+
 namespace phosphor
 {
 namespace time
@@ -32,10 +40,10 @@ void EpochBase::onOwnerChanged(Owner owner)
 using namespace std::chrono;
 void EpochBase::setTime(const microseconds& usec)
 {
-    auto method = bus.new_method_call("org.freedesktop.timedate1",
-                                      "/org/freedesktop/timedate1",
-                                      "org.freedesktop.timedate1",
-                                      "SetTime");
+    auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE,
+                                      SYSTEMD_TIME_PATH,
+                                      SYSTEMD_TIME_INTERFACE,
+                                      METHOD_SET_TIME);
     method.append(static_cast<int64_t>(usec.count()),
                   false, // relative
                   false); // user_interaction
