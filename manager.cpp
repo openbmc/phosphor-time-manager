@@ -7,7 +7,6 @@ namespace rules = sdbusplus::bus::match::rules;
 
 namespace // anonymous
 {
-constexpr auto SETTINGS_SERVICE = "org.openbmc.settings.Host";
 constexpr auto SETTINGS_PATH = "/org/openbmc/settings/host0";
 constexpr auto SETTINGS_INTERFACE = "org.openbmc.settings.Host";
 
@@ -23,19 +22,17 @@ const auto MATCH_PGOOD_CHANGE =
     rules::path("/org/openbmc/control/power0") +
     rules::interface("org.freedesktop.DBus.Properties");
 
-constexpr auto POWER_SERVICE = "org.openbmc.control.Power";
 constexpr auto POWER_PATH = "/org/openbmc/control/power0";
-constexpr auto POWER_INTERFACE = POWER_SERVICE;
+constexpr auto POWER_INTERFACE = "org.openbmc.control.Power";
 constexpr auto PGOOD_STR = "pgood";
 
 constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
 constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
-constexpr auto SYSTEMD_TIME_INTERFACE = SYSTEMD_TIME_SERVICE;
+constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
 constexpr auto METHOD_SET_NTP = "SetNTP";
 
-constexpr auto OBMC_NETWORK_SERVICE = "org.openbmc.NetworkManager";
 constexpr auto OBMC_NETWORK_PATH = "/org/openbmc/NetworkManager/Interface";
-constexpr auto OBMC_NETWORK_INTERFACE = OBMC_NETWORK_SERVICE;
+constexpr auto OBMC_NETWORK_INTERFACE = "org.openbmc.NetworkManager";
 constexpr auto METHOD_UPDATE_USE_NTP = "UpdateUseNtpField";
 }
 
@@ -73,8 +70,17 @@ void Manager::addListener(PropertyChangeListner* listener)
 
 void Manager::checkHostOn()
 {
+    std::string powerService = utils::getService(bus,
+                                                 POWER_PATH,
+                                                 POWER_INTERFACE);
+    if (powerService.empty())
+    {
+        log<level::ERR>("Failed to get power service, assume host is off");
+        return;
+    }
+
     int pgood = utils::getProperty<int>(bus,
-                                        POWER_SERVICE,
+                                        powerService.c_str(),
                                         POWER_PATH,
                                         POWER_INTERFACE,
                                         PGOOD_STR);
@@ -83,12 +89,7 @@ void Manager::checkHostOn()
 
 void Manager::checkDhcpNtp()
 {
-    std::string useDhcpNtp = utils::getProperty<std::string>(
-                                 bus,
-                                 SETTINGS_SERVICE,
-                                 SETTINGS_PATH,
-                                 SETTINGS_INTERFACE,
-                                 PROPERTY_DHCP_NTP);
+    std::string useDhcpNtp = getSettings(PROPERTY_DHCP_NTP);
     updateDhcpNtpSetting(useDhcpNtp);
 }
 
@@ -201,7 +202,16 @@ void Manager::updateNtpSetting(const std::string& value)
 
 void Manager::updateDhcpNtpSetting(const std::string& useDhcpNtp)
 {
-    auto method = bus.new_method_call(OBMC_NETWORK_SERVICE,
+    std::string networkService = utils::getService(bus,
+                                                   OBMC_NETWORK_PATH,
+                                                   OBMC_NETWORK_INTERFACE);
+    if (networkService.empty())
+    {
+        log<level::ERR>("Failed to get network service, ignore dhcp ntp");
+        return;
+    }
+
+    auto method = bus.new_method_call(networkService.c_str(),
                                       OBMC_NETWORK_PATH,
                                       OBMC_NETWORK_INTERFACE,
                                       METHOD_UPDATE_USE_NTP);
@@ -315,14 +325,23 @@ void Manager::onTimeOwnerChanged()
     }
 }
 
-std::string Manager::getSettings(const char* value) const
+std::string Manager::getSettings(const char* setting) const
 {
-    return utils::getProperty<std::string>(
-        bus,
-        SETTINGS_SERVICE,
-        SETTINGS_PATH,
-        SETTINGS_INTERFACE,
-        value);
+    std::string settingsService = utils::getService(bus,
+                                                    SETTINGS_PATH,
+                                                    SETTINGS_INTERFACE);
+    if (settingsService.empty())
+    {
+        log<level::ERR>("Failed to get settings service, unable to get setting",
+                        entry("SETTING=%s", setting));
+        return {};
+    }
+
+    return utils::getProperty<std::string>(bus,
+                                           settingsService.c_str(),
+                                           SETTINGS_PATH,
+                                           SETTINGS_INTERFACE,
+                                           setting);
 }
 
 }
