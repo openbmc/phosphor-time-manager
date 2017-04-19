@@ -67,6 +67,18 @@ T getProperty(sdbusplus::bus::bus& bus,
     return value.template get<T>();
 }
 
+/** @brief Get service name from object path and interface
+ *
+ * @param[in] bus          - The Dbus bus object
+ * @param[in] path         - The Dbus object path
+ * @param[in] interface    - The Dbus interface
+ *
+ * @return The name of the service
+ */
+std::string getService(sdbusplus::bus::bus& bus,
+                       const char* path,
+                       const char* interface);
+
 Mode strToMode(const std::string& mode);
 Owner strToOwner(const std::string& owner);
 const char* modeToStr(Mode mode);
