@@ -39,7 +39,7 @@ class Manager
         std::set<PropertyChangeListner*> listeners;
 
         /** @brief The value to indicate if host is on */
-        bool hostOn;
+        bool hostOn = false;
 
         /** @brief The requested time mode when host is on*/
         std::string requestedMode;
