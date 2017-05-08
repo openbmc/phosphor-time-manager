@@ -4,7 +4,7 @@
 #include "property_change_listener.hpp"
 
 #include <sdbusplus/bus.hpp>
-#include <sdbusplus/server/match.hpp>
+#include <sdbusplus/bus/match.hpp>
 
 #include <set>
 #include <string>
@@ -30,10 +30,10 @@ class Manager
 
     private:
         sdbusplus::bus::bus& bus;
-        sdbusplus::server::match::match propertyChangeMatch;
+        sdbusplus::bus::match::match propertyChangeMatch;
 
         /** @brief The match of pgood changed */
-        sdbusplus::server::match::match pgoodChangeMatch;
+        sdbusplus::bus::match::match pgoodChangeMatch;
 
         /** @brief The listeners of to notify on property changed */
         std::set<PropertyChangeListner*> listeners;
