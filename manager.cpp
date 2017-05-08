@@ -3,17 +3,22 @@
 
 #include <phosphor-logging/log.hpp>
 
+namespace rules = sdbusplus::bus::match::rules;
 namespace // anonymous
 {
 constexpr auto SETTINGS_PATH = "/org/openbmc/settings/host0";
 constexpr auto SETTINGS_INTERFACE = "org.openbmc.settings.Host";
 
-constexpr auto MATCH_PROPERTY_CHANGE =
-    "type='signal',interface='org.freedesktop.DBus.Properties',"
-    "path='/org/openbmc/settings/host0',member='PropertiesChanged'";
-constexpr auto MATCH_PGOOD_CHANGE =
-    "type='signal',interface='org.freedesktop.DBus.Properties',"
-    "path='/org/openbmc/control/power0',member='PropertiesChanged'";
+const auto MATCH_PROPERTY_CHANGE =
+    rules::type::signal() +
+    rules::member("PropertiesChanged") +
+    rules::path("/org/openbmc/settings/host0") +
+    rules::interface("org.freedesktop.DBus.Properties");
+const auto MATCH_PGOOD_CHANGE =
+    rules::type::signal() +
+    rules::member("PropertiesChanged") +
+    rules::path("/org/openbmc/control/power0") +
+    rules::interface("org.freedesktop.DBus.Properties");
 
 constexpr auto POWER_PATH = "/org/openbmc/control/power0";
 constexpr auto POWER_INTERFACE = "org.openbmc.control.Power";
