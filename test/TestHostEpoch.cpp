@@ -137,8 +137,9 @@ class TestHostEpoch : public testing::Test
 
 TEST_F(TestHostEpoch, empty)
 {
-    EXPECT_EQ(Mode::NTP, getTimeMode());
-    EXPECT_EQ(Owner::BMC, getTimeOwner());
+    // Default mode/owner is MANUAL/BOTH
+    EXPECT_EQ(Mode::MANUAL, getTimeMode());
+    EXPECT_EQ(Owner::BOTH, getTimeOwner());
 }
 
 TEST_F(TestHostEpoch, readDataFileNotExist)
