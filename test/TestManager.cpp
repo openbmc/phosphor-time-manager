@@ -67,8 +67,10 @@ TEST_F(TestManager, DISABLED_empty)
     EXPECT_FALSE(hostOn());
     EXPECT_EQ("", getRequestedMode());
     EXPECT_EQ("", getRequestedOwner());
-    EXPECT_EQ(Mode::NTP, getTimeMode());
-    EXPECT_EQ(Owner::BMC, getTimeOwner());
+
+    // Default mode/owner is MANUAL/BOTH
+    EXPECT_EQ(Mode::MANUAL, getTimeMode());
+    EXPECT_EQ(Owner::BOTH, getTimeOwner());
 }
 
 
