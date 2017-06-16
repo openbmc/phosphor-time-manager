@@ -78,7 +78,7 @@ Mode strToMode(const std::string& mode)
     {
         log<level::ERR>("Unrecognized mode",
                         entry("%s", mode.c_str()));
-        return Mode::NTP;
+        return Mode::MANUAL;
     }
     return it->second;
 }
@@ -90,7 +90,7 @@ Owner strToOwner(const std::string& owner)
     {
         log<level::ERR>("Unrecognized owner",
                         entry("%s", owner.c_str()));
-        return Owner::BMC;
+        return Owner::BOTH;
     }
     return it->second;
 }

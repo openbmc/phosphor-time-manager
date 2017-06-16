@@ -15,9 +15,9 @@ TEST(TestUtil, strToMode)
     EXPECT_EQ(Mode::MANUAL, strToMode("MANUAL"));
 
     // All unrecognized strings are mapped to Ntp
-    EXPECT_EQ(Mode::NTP, strToMode(""));
-    EXPECT_EQ(Mode::NTP, strToMode("Manual"));
-    EXPECT_EQ(Mode::NTP, strToMode("whatever"));
+    EXPECT_EQ(Mode::MANUAL, strToMode(""));
+    EXPECT_EQ(Mode::MANUAL, strToMode("Manual"));
+    EXPECT_EQ(Mode::MANUAL, strToMode("whatever"));
 }
 
 
@@ -29,9 +29,9 @@ TEST(TestUtil, strToOwner)
     EXPECT_EQ(Owner::BOTH, strToOwner("BOTH"));
 
     // All unrecognized strings are mapped to Bmc
-    EXPECT_EQ(Owner::BMC, strToOwner(""));
-    EXPECT_EQ(Owner::BMC, strToOwner("Split"));
-    EXPECT_EQ(Owner::BMC, strToOwner("xyz"));
+    EXPECT_EQ(Owner::BOTH, strToOwner(""));
+    EXPECT_EQ(Owner::BOTH, strToOwner("Split"));
+    EXPECT_EQ(Owner::BOTH, strToOwner("xyz"));
 }
 
 TEST(TestUtil, modeToStr)
