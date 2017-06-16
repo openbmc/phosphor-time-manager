@@ -38,10 +38,10 @@ class EpochBase : public sdbusplus::server::object::object <
         sdbusplus::bus::bus& bus;
 
         /** @brief The current time mode */
-        Mode timeMode = Mode::NTP;
+        Mode timeMode = Mode::MANUAL;
 
         /** @brief The current time owner */
-        Owner timeOwner = Owner::BMC;
+        Owner timeOwner = Owner::BOTH;
 
         /** @brief Set current time to system
          *
