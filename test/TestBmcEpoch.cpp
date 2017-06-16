@@ -67,8 +67,9 @@ class TestBmcEpoch : public testing::Test
 
 TEST_F(TestBmcEpoch, empty)
 {
-    EXPECT_EQ(Mode::NTP, getTimeMode());
-    EXPECT_EQ(Owner::BMC, getTimeOwner());
+    // Default mode/owner is MANUAL/BOTH
+    EXPECT_EQ(Mode::MANUAL, getTimeMode());
+    EXPECT_EQ(Owner::BOTH, getTimeOwner());
 }
 
 TEST_F(TestBmcEpoch, getElapsed)
@@ -81,6 +82,7 @@ TEST_F(TestBmcEpoch, getElapsed)
 
 TEST_F(TestBmcEpoch, setElapsedNotAllowed)
 {
+    setTimeMode(Mode::NTP);
     auto epochNow = duration_cast<microseconds>(
         system_clock::now().time_since_epoch()).count();
     // In NTP mode, setting time is not allowed
