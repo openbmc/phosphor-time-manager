@@ -95,7 +95,7 @@ std::string getService(sdbusplus::bus::bus& bus,
  *
  * Convert the time mode string to enum.
  * Valid strings are "NTP", "MANUAL"
- * If it's not a valid time mode string, return NTP.
+ * If it's not a valid time mode string, return MANUAL.
  *
  * @param[in] mode - The string of time mode
  *
@@ -107,7 +107,7 @@ Mode strToMode(const std::string& mode);
  *
  * Convert the time owner string to enum.
  * Valid strings are "BMC", "HOST", "SPLIT", "BOTH"
- * If it's not a valid time owner string, return BMC.
+ * If it's not a valid time owner string, return BOTH.
  *
  * @param[in] owner - The string of time owner
  *
