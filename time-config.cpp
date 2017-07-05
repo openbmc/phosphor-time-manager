@@ -22,10 +22,10 @@ std::map<std::string, TimeConfig::FUNCTOR> TimeConfig::iv_TimeParams = {
 
 TimeConfig::TimeConfig() :
     iv_dbus(nullptr),
-    iv_CurrTimeMode(timeModes::NTP),
-    iv_RequestedTimeMode(timeModes::NTP),
-    iv_CurrTimeOwner(timeOwners::BMC),
-    iv_RequestedTimeOwner(timeOwners::BMC),
+    iv_CurrTimeMode(timeModes::MANUAL),
+    iv_RequestedTimeMode(timeModes::MANUAL),
+    iv_CurrTimeOwner(timeOwners::BOTH),
+    iv_RequestedTimeOwner(timeOwners::BOTH),
     iv_CurrDhcpNtp("yes"),
     iv_SettingChangeAllowed(false),
     iv_SplitModeChanged(false)
