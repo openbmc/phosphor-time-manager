@@ -14,9 +14,12 @@ public:
      *         to set the system time
      *
      *  @param[in] timeOfDayUsec - Time value in microseconds
+     *  @param[out] retError     - Error message on failure
      *  @return                  - Status of time set operation
+     *  @error                   - Error message populated
      */
-    int setTimeOfDay(const std::chrono::microseconds& timeOfDayUsec);
+    int setTimeOfDay(const std::chrono::microseconds& timeOfDayUsec,
+                     sd_bus_error *retError);
 
     /** @brief Reads BMC time
      *

@@ -199,7 +199,8 @@ int TimeManager::setTime(sd_bus_message* m, void* userdata,
     return sd_bus_reply_method_return(m, "i", 0);
 }
 
-int Time::setTimeOfDay(const std::chrono::microseconds& timeOfDayUsec)
+int Time::setTimeOfDay(const std::chrono::microseconds& timeOfDayUsec,
+                       sd_bus_error *retError)
 {
     // These 2 are for bypassing some policy
     // checking in the timedate1 service
@@ -211,7 +212,7 @@ int Time::setTimeOfDay(const std::chrono::microseconds& timeOfDayUsec)
                               "/org/freedesktop/timedate1",
                               "org.freedesktop.timedate1",
                               "SetTime",
-                              nullptr,
+                              retError,
                               nullptr,            // timedate1 does not return response
                               "xbb",
                               (int64_t)timeOfDayUsec.count(), //newTimeUsec,
@@ -297,15 +298,6 @@ int BmcTime::setTime(sd_bus_message *m, sd_bus_error *retError)
               << " Curr_Owner: " << TimeConfig::ownerStr(config.getCurrTimeOwner())
               << std::endl;
 
-    if (config.getCurrTimeMode() == TimeConfig::timeModes::NTP)
-    {
-        std::cerr << "Can not set time. Mode is NTP" << std::endl;
-        *retError = SD_BUS_ERROR_MAKE_CONST(
-                        SD_BUS_ERROR_FAILED, "Current Mode is NTP");
-
-        return -1;
-    }
-
     if(config.getCurrTimeOwner() == TimeConfig::timeOwners::HOST)
     {
         std::cerr << "Can not set time. Owner is HOST" << std::endl;
@@ -354,15 +346,7 @@ int BmcTime::setTime(sd_bus_message *m, sd_bus_error *retError)
     // Set REALTIME and also update hwclock
     auto timeInUsec = std::chrono::microseconds(
                           std::chrono::seconds(timeOfDay));
-    r = setTimeOfDay(timeInUsec);
-    if (r < 0)
-    {
-        std::cerr <<"Error: " << strerror(-r)
-                  << "setting time on BMC" << std::endl;
-        *retError = SD_BUS_ERROR_MAKE_CONST(
-                        SD_BUS_ERROR_FAILED, "Error setting time on BMC");
-    }
-    return r < 0 ? r : 0;
+    return setTimeOfDay(timeInUsec, retError);
 }
 
 // Gets the time string from IPMI ( which is currently in seconds since epoch )
@@ -422,16 +406,7 @@ int HostTime::setTime(sd_bus_message *m, sd_bus_error *retError)
     }
 
     // We are okay to update time in as long as BMC is not the owner
-    r = setTimeOfDay(hostTimeUsec);
-    if (r < 0)
-    {
-        std::cerr <<"Error: " << strerror(-r)
-                  << "setting HOST time" << std::endl;
-        *retError = SD_BUS_ERROR_MAKE_CONST(
-                        SD_BUS_ERROR_FAILED, "Error setting time");
-    }
-
-    return r < 0 ? r : 0;
+    return setTimeOfDay(hostTimeUsec, retError);
 }
 
 // Gets called into by sd_event on an activity seen on sd_bus
