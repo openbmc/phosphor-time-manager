@@ -4,12 +4,20 @@ sbin_PROGRAMS = phosphor-timemanager
 
 noinst_LTLIBRARIES = libtimemanager.la
 
+generated_source = xyz/openbmc_project/Time/Internal/error.cpp
+
+BUILT_SOURCES = ${generated_source} \
+				xyz/openbmc_project/Time/Internal/error.hpp
+
+CLEANFILES = ${BUILT_SOURCES}
+
 libtimemanager_la_SOURCES = \
 	epoch_base.cpp \
 	bmc_epoch.cpp \
 	host_epoch.cpp \
 	manager.cpp \
-	utils.cpp
+	utils.cpp \
+	${generated_source}
 
 phosphor_timemanager_SOURCES = \
 	main.cpp
@@ -28,5 +36,13 @@ libtimemanager_la_LIBADD = $(generic_ld_flags)
 phosphor_timemanager_CXXFLAGS = $(generic_cxx_flags)
 
 phosphor_timemanager_LDFLAGS = $(generic_ld_flags)
+
+xyz/openbmc_project/Time/Internal/error.hpp: ${top_srcdir}/xyz/openbmc_project/Time/Internal.errors.yaml
+	@mkdir -p `dirname $@`
+	$(SDBUSPLUSPLUS) -r $(top_srcdir) error exception-header xyz.openbmc_project.Time.Internal > $@
+
+xyz/openbmc_project/Time/Internal/error.cpp: ${top_srcdir}/xyz/openbmc_project/Time/Internal.errors.yaml
+	@mkdir -p `dirname $@`
+	$(SDBUSPLUSPLUS) -r $(top_srcdir) error exception-cpp xyz.openbmc_project.Time.Internal> $@
 
 SUBDIRS = . test

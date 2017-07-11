@@ -48,6 +48,7 @@ Makefile
 phosphor-timemanager
 *-libtool
 .libs
+/xyz/openbmc_project/Time/Internal/*
 
 # UT related items
 .dirstamp
