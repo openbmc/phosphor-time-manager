@@ -1,0 +1,10 @@
+- name: MethodError
+  meta:
+    - str: "METHOD_NAME=%s"
+      type: string
+    - str: "PATH=%s"
+      type: string
+    - str: "INTERFACE=%s"
+      type: string
+    - str: "MISC=%s"
+      type: string
