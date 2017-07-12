@@ -1,7 +1,10 @@
 #include "manager.hpp"
 #include "utils.hpp"
 
+#include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 namespace rules = sdbusplus::bus::match::rules;
 
@@ -92,11 +95,6 @@ void Manager::checkHostOn()
     std::string powerService = utils::getService(bus,
                                                  POWER_PATH,
                                                  POWER_INTERFACE);
-    if (powerService.empty())
-    {
-        log<level::ERR>("Failed to get power service, assume host is off");
-        return;
-    }
 
     int pgood = utils::getProperty<int>(bus,
                                         powerService.c_str(),
@@ -180,8 +178,12 @@ void Manager::setPropertyAsRequested(const std::string& key,
     else
     {
         // The key shall be already the supported one
-        // TODO: use elog API
-        assert(false);
+        using InvalidArgumentError =
+            sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument;
+        using namespace xyz::openbmc_project::Common;
+        elog<InvalidArgumentError>(
+            InvalidArgument::ARGUMENT_NAME(key.c_str()),
+            InvalidArgument::ARGUMENT_VALUE(value.c_str()));
     }
 }
 
@@ -221,11 +223,6 @@ void Manager::updateDhcpNtpSetting(const std::string& useDhcpNtp)
     std::string networkService = utils::getService(bus,
                                                    OBMC_NETWORK_PATH,
                                                    OBMC_NETWORK_INTERFACE);
-    if (networkService.empty())
-    {
-        log<level::ERR>("Failed to get network service, ignore dhcp ntp");
-        return;
-    }
 
     auto method = bus.new_method_call(networkService.c_str(),
                                       OBMC_NETWORK_PATH,
@@ -348,12 +345,6 @@ std::string Manager::getSettings(const char* setting) const
     std::string settingsService = utils::getService(bus,
                                                     SETTINGS_PATH,
                                                     SETTINGS_INTERFACE);
-    if (settingsService.empty())
-    {
-        log<level::ERR>("Failed to get settings service, unable to get setting",
-                        entry("SETTING=%s", setting));
-        return {};
-    }
 
     return utils::getProperty<std::string>(bus,
                                            settingsService.c_str(),
