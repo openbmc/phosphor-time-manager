@@ -1,6 +1,9 @@
 #include "utils.hpp"
 
+#include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 
 namespace phosphor
@@ -34,6 +37,9 @@ const std::map<std::string, Owner> ownerMap =
 namespace utils
 {
 
+using InvalidArgumentError =
+    sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument;
+
 using namespace phosphor::logging;
 
 std::string getService(sdbusplus::bus::bus& bus,
@@ -50,22 +56,22 @@ std::string getService(sdbusplus::bus::bus& bus,
 
     if (mapperResponseMsg.is_method_error())
     {
-        // TODO: define repo specific errors and use elog report()
-        log<level::ERR>("Error in mapper call",
-                        entry("PATH=%s", path),
-                        entry("INTERFACE=%s", interface));
-        return {};
+        using namespace xyz::openbmc_project::Time::Internal;
+        elog<MethodErr>(MethodError::METHOD_NAME("GetObject"),
+                          MethodError::PATH(path),
+                          MethodError::INTERFACE(interface),
+                          MethodError::MISC({}));
     }
 
     std::map<std::string, std::vector<std::string>> mapperResponse;
     mapperResponseMsg.read(mapperResponse);
     if (mapperResponse.empty())
     {
-        // TODO: define repo specific errors and use elog report()
-        log<level::ERR>("Error reading mapper response",
-                        entry("PATH=%s", path),
-                        entry("INTERFACE=%s", interface));
-        return {};
+        using namespace xyz::openbmc_project::Time::Internal;
+        elog<MethodErr>(MethodError::METHOD_NAME("GetObject"),
+                          MethodError::PATH(path),
+                          MethodError::INTERFACE(interface),
+                          MethodError::MISC("Error reading mapper response"));
     }
 
     return mapperResponse.begin()->first;
@@ -76,10 +82,10 @@ Mode strToMode(const std::string& mode)
     auto it = modeMap.find(mode);
     if (it == modeMap.end())
     {
-        log<level::ERR>("Unrecognized mode",
-                        entry("%s", mode.c_str()));
-        // TODO: use elog to throw exceptions
-        assert(0);
+        using namespace xyz::openbmc_project::Common;
+        elog<InvalidArgumentError>(
+            InvalidArgument::ARGUMENT_NAME("TimeMode"),
+            InvalidArgument::ARGUMENT_VALUE(mode.c_str()));
     }
     return it->second;
 }
@@ -89,10 +95,10 @@ Owner strToOwner(const std::string& owner)
     auto it = ownerMap.find(owner);
     if (it == ownerMap.end())
     {
-        log<level::ERR>("Unrecognized owner",
-                        entry("%s", owner.c_str()));
-        // TODO: use elog to throw exceptions
-        assert(0);
+        using namespace xyz::openbmc_project::Common;
+        elog<InvalidArgumentError>(
+            InvalidArgument::ARGUMENT_NAME("TimeOwner"),
+            InvalidArgument::ARGUMENT_VALUE(owner.c_str()));
     }
     return it->second;
 }
