@@ -138,8 +138,8 @@ class TestHostEpoch : public testing::Test
 TEST_F(TestHostEpoch, empty)
 {
     // Default mode/owner is MANUAL/BOTH
-    EXPECT_EQ(Mode::MANUAL, getTimeMode());
-    EXPECT_EQ(Owner::BOTH, getTimeOwner());
+    EXPECT_EQ(Mode::Manual, getTimeMode());
+    EXPECT_EQ(Owner::Both, getTimeOwner());
 }
 
 TEST_F(TestHostEpoch, readDataFileNotExist)
@@ -176,7 +176,7 @@ TEST_F(TestHostEpoch, setElapsedInNtpHost)
 {
     // Set time in NTP/HOST is not allowed
     setTimeMode(Mode::NTP);
-    setTimeOwner(Owner::HOST);
+    setTimeOwner(Owner::Host);
     checkSettingTimeNotAllowed();
 }
 
@@ -184,7 +184,7 @@ TEST_F(TestHostEpoch, setElapsedInNtpSplit)
 {
     // Set time in NTP/SPLIT, offset will be set
     setTimeMode(Mode::NTP);
-    setTimeOwner(Owner::SPLIT);
+    setTimeOwner(Owner::Split);
 
     checkSetSplitTimeInFuture();
 
@@ -197,14 +197,14 @@ TEST_F(TestHostEpoch, setElapsedInNtpBoth)
 {
     // Set time in NTP/BOTH is not allowed
     setTimeMode(Mode::NTP);
-    setTimeOwner(Owner::BOTH);
+    setTimeOwner(Owner::Both);
     checkSettingTimeNotAllowed();
 }
 
 TEST_F(TestHostEpoch, setElapsedInManualBmc)
 {
     // Set time in MANUAL/BMC is not allowed
-    setTimeMode(Mode::MANUAL);
+    setTimeMode(Mode::Manual);
     setTimeOwner(Owner::BMC);
     checkSettingTimeNotAllowed();
 }
@@ -214,15 +214,15 @@ TEST_F(TestHostEpoch, setElapsedInManualHost)
     // Set time in MANUAL/HOST, time will be set to BMC
     // However it requies gmock to test this case
     // TODO: when gmock is ready, test this case.
-    setTimeMode(Mode::MANUAL);
-    setTimeOwner(Owner::HOST);
+    setTimeMode(Mode::Manual);
+    setTimeOwner(Owner::Host);
 }
 
 TEST_F(TestHostEpoch, setElapsedInManualSplit)
 {
     // Set to SPLIT owner so that offset will be set
-    setTimeMode(Mode::MANUAL);
-    setTimeOwner(Owner::SPLIT);
+    setTimeMode(Mode::Manual);
+    setTimeOwner(Owner::Split);
 
     checkSetSplitTimeInFuture();
 
@@ -236,14 +236,14 @@ TEST_F(TestHostEpoch, setElapsedInManualBoth)
     // Set time in MANUAL/BOTH, time will be set to BMC
     // However it requies gmock to test this case
     // TODO: when gmock is ready, test this case.
-    setTimeMode(Mode::MANUAL);
-    setTimeOwner(Owner::BOTH);
+    setTimeMode(Mode::Manual);
+    setTimeOwner(Owner::Both);
 }
 
 TEST_F(TestHostEpoch, setElapsedInSplitAndBmcTimeIsChanged)
 {
     // Set to SPLIT owner so that offset will be set
-    setTimeOwner(Owner::SPLIT);
+    setTimeOwner(Owner::Split);
 
     // Get current time, and set future +1min time
     auto t1 = hostEpoch.elapsed();
@@ -277,13 +277,13 @@ TEST_F(TestHostEpoch, clearOffsetOnOwnerChange)
 {
     EXPECT_EQ(USEC_ZERO, getOffset());
 
-    setTimeOwner(Owner::SPLIT);
+    setTimeOwner(Owner::Split);
     hostEpoch.onBmcTimeChanged(microseconds(hostEpoch.elapsed()) + 1min);
 
     // Now offset shall be non zero
     EXPECT_NE(USEC_ZERO, getOffset());
 
-    setTimeOwner(Owner::BOTH);
+    setTimeOwner(Owner::Both);
 
     // Now owner is BOTH, the offset shall be cleared
     EXPECT_EQ(USEC_ZERO, getOffset());
