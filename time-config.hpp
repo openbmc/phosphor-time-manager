@@ -1,5 +1,6 @@
 #include <map>
 #include <systemd/sd-bus.h>
+#include <sdbusplus/bus/match.hpp>
 #include "settings.hpp"
 
 /** @class TimeConfig
@@ -194,6 +195,14 @@ public:
     // Most of this is statically constructed and PGOOD is added later.
     static std::map<std::string, FUNCTOR> iv_TimeParams;
 
+    /** @brief Callback to handle change in a setting
+     *
+     *  @param[in] msg - sdbusplus dbusmessage
+     *
+     *  @return 0 on success, < 0 on failure.
+     */
+    int settingsChanged(sdbusplus::message::message& msg);
+
 private:
     // Bus initialised by manager on a call to process initial settings
     sd_bus *iv_dbus;
@@ -227,6 +236,9 @@ private:
 
     /** @brief Settings objects of intereset */
     settings::Objects settings;
+
+    /** @brief sbdbusplus match objects */
+    std::vector<sdbusplus::bus::match_t> settingsMatches;
 
     static constexpr auto cv_TimeModeFile = "/var/lib/obmc/saved_timeMode";
     static constexpr auto cv_TimeOwnerFile = "/var/lib/obmc/saved_timeOwner";
@@ -272,6 +284,22 @@ private:
      *  @return        - Value as string
      */
     std::string getSystemSettings(const char* key);
+
+    /** @brief Returns the time owner setting
+     *
+     *  @param[in] path - Time owner setting object path
+     *
+     *  @return        - Value as string
+     */
+    std::string getTimeOwnerSetting(const char* path);
+
+    /** @brief Returns the time sync method setting
+     *
+     *  @param[in] path - Time sync method setting object path
+     *
+     *  @return        - Value as string
+     */
+    std::string getTimeSyncMethodSetting(const char* path);
 
     /** @brief Reads the data hosted by /org/openbmc/control/power0
      *

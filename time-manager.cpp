@@ -594,46 +594,7 @@ int TimeManager::processPropertyChange(sd_bus_message* m, void* userdata,
             goto finish;
         }
 
-        if (!strcmp(key, "time_mode"))
-        {
-            r = sd_bus_message_read(m, "v", "s", &value);
-            if (r < 0)
-            {
-                std::cerr << "Error: " << strerror(-r)
-                          << "reading timeMode" << std::endl;
-                goto finish;
-            }
-            r = tmgr->config.updatePropertyVal(key, value);
-            if (r < 0)
-            {
-                std::cerr << "Error: " << strerror(-r)
-                          << "processing timeMode" << std::endl;
-                goto finish;
-            }
-        }
-        else if (!strcmp(key, "time_owner"))
-        {
-            r = sd_bus_message_read(m, "v", "s", &value);
-            if (r < 0)
-            {
-                std::cerr << "Error: " << strerror(-r)
-                          << "reading timeOwner" << std::endl;
-                goto finish;
-            }
-            r = tmgr->config.updatePropertyVal(key, value);
-            if (r < 0)
-            {
-                std::cerr << "Error: " << strerror(-r)
-                          << "processing time_owner" << std::endl;
-                goto finish;
-            }
-            else if (tmgr->config.isSplitModeChanged())
-            {
-                // Must have been a change away from mode SPLIT
-                tmgr->resetHostOffset();
-            }
-        }
-        else if (!strcmp(key, "use_dhcp_ntp"))
+        if (!strcmp(key, "use_dhcp_ntp"))
         {
             r = sd_bus_message_read(m, "v", "s", &value);
             if (r < 0)
