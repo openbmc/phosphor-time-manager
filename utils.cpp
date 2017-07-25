@@ -16,22 +16,6 @@ namespace // anonymous
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
-
-/** @brief The map that maps the string to Mode */
-const std::map<std::string, Mode> modeMap =
-{
-    { "NTP", Mode::NTP },
-    { "MANUAL", Mode::MANUAL },
-};
-
-/** @brief The map that maps the string to Owner */
-const std::map<std::string, Owner> ownerMap =
-{
-    { "BMC", Owner::BMC },
-    { "HOST", Owner::HOST },
-    { "SPLIT", Owner::SPLIT },
-    { "BOTH", Owner::BOTH },
-};
 }
 
 namespace utils
@@ -79,78 +63,22 @@ std::string getService(sdbusplus::bus::bus& bus,
 
 Mode strToMode(const std::string& mode)
 {
-    auto it = modeMap.find(mode);
-    if (it == modeMap.end())
-    {
-        using namespace xyz::openbmc_project::Common;
-        elog<InvalidArgumentError>(
-            InvalidArgument::ARGUMENT_NAME("TimeMode"),
-            InvalidArgument::ARGUMENT_VALUE(mode.c_str()));
-    }
-    return it->second;
+    return ModeSetting::convertMethodFromString(mode);
 }
 
 Owner strToOwner(const std::string& owner)
 {
-    auto it = ownerMap.find(owner);
-    if (it == ownerMap.end())
-    {
-        using namespace xyz::openbmc_project::Common;
-        elog<InvalidArgumentError>(
-            InvalidArgument::ARGUMENT_NAME("TimeOwner"),
-            InvalidArgument::ARGUMENT_VALUE(owner.c_str()));
-    }
-    return it->second;
+    return OwnerSetting::convertOwnersFromString(owner);
 }
 
-const char* modeToStr(Mode mode)
+std::string modeToStr(Mode mode)
 {
-    const char* ret{};
-    switch (mode)
-    {
-    case Mode::NTP:
-        ret = "NTP";
-        break;
-    case Mode::MANUAL:
-        ret = "MANUAL";
-        break;
-    default:
-        using namespace xyz::openbmc_project::Common;
-        elog<InvalidArgumentError>(
-            InvalidArgument::ARGUMENT_NAME("Mode"),
-            InvalidArgument::ARGUMENT_VALUE(
-                std::to_string(static_cast<int>(mode)).c_str()));
-        break;
-    }
-    return ret;
+    return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(mode);
 }
 
-const char* ownerToStr(Owner owner)
+std::string ownerToStr(Owner owner)
 {
-    const char* ret{};
-    switch (owner)
-    {
-    case Owner::BMC:
-        ret = "BMC";
-        break;
-    case Owner::HOST:
-        ret = "HOST";
-        break;
-    case Owner::SPLIT:
-        ret = "SPLIT";
-        break;
-    case Owner::BOTH:
-        ret = "BOTH";
-        break;
-    default:
-        using namespace xyz::openbmc_project::Common;
-        elog<InvalidArgumentError>(
-            InvalidArgument::ARGUMENT_NAME("Owner"),
-            InvalidArgument::ARGUMENT_VALUE(
-                std::to_string(static_cast<int>(owner)).c_str()));
-        break;
-    }
-    return ret;
+    return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(owner);
 }
 
 } // namespace utils

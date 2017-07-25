@@ -10,52 +10,67 @@ namespace time
 namespace utils
 {
 
-using InvalidArgument =
-    sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument;
+using InvalidEnumString = sdbusplus::exception::InvalidEnumString;
 
 TEST(TestUtil, strToMode)
 {
-    EXPECT_EQ(Mode::NTP, strToMode("NTP"));
-    EXPECT_EQ(Mode::MANUAL, strToMode("MANUAL"));
+    EXPECT_EQ(
+        Mode::NTP,
+        strToMode("xyz.openbmc_project.Time.Synchronization.Method.NTP"));
+    EXPECT_EQ(
+        Mode::Manual,
+        strToMode("xyz.openbmc_project.Time.Synchronization.Method.Manual"));
 
-    // All unrecognized strings result in InvalidArgument exception
-    EXPECT_THROW(strToMode(""), InvalidArgument);
-    EXPECT_THROW(strToMode("Manual"), InvalidArgument);
-    EXPECT_THROW(strToMode("whatever"), InvalidArgument);
+    // All unrecognized strings result in InvalidEnumString exception
+    EXPECT_THROW(strToMode(""), InvalidEnumString);
+    EXPECT_THROW(
+        strToMode("xyz.openbmc_project.Time.Synchronization.Method.MANUAL"),
+        InvalidEnumString);
+    EXPECT_THROW(strToMode("whatever"), InvalidEnumString);
 }
 
 
 TEST(TestUtil, strToOwner)
 {
-    EXPECT_EQ(Owner::BMC, strToOwner("BMC"));
-    EXPECT_EQ(Owner::HOST, strToOwner("HOST"));
-    EXPECT_EQ(Owner::SPLIT, strToOwner("SPLIT"));
-    EXPECT_EQ(Owner::BOTH, strToOwner("BOTH"));
+    EXPECT_EQ(Owner::BMC,
+              strToOwner("xyz.openbmc_project.Time.Owner.Owners.BMC"));
+    EXPECT_EQ(Owner::Host,
+              strToOwner("xyz.openbmc_project.Time.Owner.Owners.Host"));
+    EXPECT_EQ(Owner::Split,
+              strToOwner("xyz.openbmc_project.Time.Owner.Owners.Split"));
+    EXPECT_EQ(Owner::Both,
+              strToOwner("xyz.openbmc_project.Time.Owner.Owners.Both"));
 
-    // All unrecognized strings result in InvalidArgument exception
-    EXPECT_THROW(strToOwner(""), InvalidArgument);
-    EXPECT_THROW(strToOwner("Split"), InvalidArgument);
-    EXPECT_THROW(strToOwner("xyz"), InvalidArgument);
+    // All unrecognized strings result in InvalidEnumString exception
+    EXPECT_THROW(strToOwner(""), InvalidEnumString);
+    EXPECT_THROW(strToOwner("Split"), InvalidEnumString);
+    EXPECT_THROW(strToOwner("xyz"), InvalidEnumString);
 }
 
 TEST(TestUtil, modeToStr)
 {
-    EXPECT_EQ("NTP", modeToStr(Mode::NTP));
-    EXPECT_EQ("MANUAL", modeToStr(Mode::MANUAL));
+    EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.NTP",
+              modeToStr(Mode::NTP));
+    EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.Manual",
+              modeToStr(Mode::Manual));
 
-    // All unrecognized strings result in InvalidArgument exception
-    EXPECT_THROW(modeToStr(static_cast<Mode>(100)), InvalidArgument);
+    // All unrecognized strings result in exception
+    EXPECT_ANY_THROW(modeToStr(static_cast<Mode>(100)));
 }
 
 TEST(TestUtil, ownerToStr)
 {
-    EXPECT_EQ("BMC", ownerToStr(Owner::BMC));
-    EXPECT_EQ("HOST", ownerToStr(Owner::HOST));
-    EXPECT_EQ("SPLIT", ownerToStr(Owner::SPLIT));
-    EXPECT_EQ("BOTH", ownerToStr(Owner::BOTH));
+    EXPECT_EQ("xyz.openbmc_project.Time.Owner.Owners.BMC",
+              ownerToStr(Owner::BMC));
+    EXPECT_EQ("xyz.openbmc_project.Time.Owner.Owners.Host",
+              ownerToStr(Owner::Host));
+    EXPECT_EQ("xyz.openbmc_project.Time.Owner.Owners.Split",
+              ownerToStr(Owner::Split));
+    EXPECT_EQ("xyz.openbmc_project.Time.Owner.Owners.Both",
+              ownerToStr(Owner::Both));
 
-    // All unrecognized strings result in InvalidArgument exception
-    EXPECT_THROW(ownerToStr(static_cast<Owner>(100)), InvalidArgument);
+    // All unrecognized strings result in exception
+    EXPECT_ANY_THROW(ownerToStr(static_cast<Owner>(100)));
 }
 
 } // namespace utils
