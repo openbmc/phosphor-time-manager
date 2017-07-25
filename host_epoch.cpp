@@ -25,7 +25,7 @@ HostEpoch::HostEpoch(sdbusplus::bus::bus& bus,
 uint64_t HostEpoch::elapsed() const
 {
     auto ret = getTime();
-    if (timeOwner == Owner::SPLIT)
+    if (timeOwner == Owner::Split)
     {
         ret += offset;
     }
@@ -48,7 +48,7 @@ uint64_t HostEpoch::elapsed(uint64_t value)
     */
     if (timeOwner == Owner::BMC ||
         (timeMode == Mode::NTP
-         && (timeOwner == Owner::HOST || timeOwner == Owner::BOTH)))
+         && (timeOwner == Owner::Host || timeOwner == Owner::Both)))
     {
         log<level::ERR>("Setting HostTime is not allowed");
         // TODO: throw NotAllowed exception
@@ -56,7 +56,7 @@ uint64_t HostEpoch::elapsed(uint64_t value)
     }
 
     auto time = microseconds(value);
-    if (timeOwner == Owner::SPLIT)
+    if (timeOwner == Owner::Split)
     {
         // Calculate the offset between host and bmc time
         offset = time - getTime();
@@ -82,7 +82,7 @@ void HostEpoch::onOwnerChanged(Owner owner)
     // If timeOwner is changed to SPLIT, the offset shall be preserved
     // Otherwise it shall be cleared;
     timeOwner = owner;
-    if (timeOwner != Owner::SPLIT)
+    if (timeOwner != Owner::Split)
     {
         offset = microseconds(0);
         saveOffset();
@@ -99,7 +99,7 @@ void HostEpoch::onBmcTimeChanged(const microseconds& bmcTime)
 {
     // If owner is split and BMC time is changed,
     // the offset shall be adjusted
-    if (timeOwner == Owner::SPLIT)
+    if (timeOwner == Owner::Split)
     {
         auto steadyTime = duration_cast<microseconds>(
             steady_clock::now().time_since_epoch());

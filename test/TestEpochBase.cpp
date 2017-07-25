@@ -37,8 +37,8 @@ TEST_F(TestEpochBase, onModeChange)
     epochBase.onModeChanged(Mode::NTP);
     EXPECT_EQ(Mode::NTP, getMode());
 
-    epochBase.onModeChanged(Mode::MANUAL);
-    EXPECT_EQ(Mode::MANUAL, getMode());
+    epochBase.onModeChanged(Mode::Manual);
+    EXPECT_EQ(Mode::Manual, getMode());
 }
 
 TEST_F(TestEpochBase, onOwnerChange)
@@ -46,14 +46,14 @@ TEST_F(TestEpochBase, onOwnerChange)
     epochBase.onOwnerChanged(Owner::BMC);
     EXPECT_EQ(Owner::BMC, getOwner());
 
-    epochBase.onOwnerChanged(Owner::HOST);
-    EXPECT_EQ(Owner::HOST, getOwner());
+    epochBase.onOwnerChanged(Owner::Host);
+    EXPECT_EQ(Owner::Host, getOwner());
 
-    epochBase.onOwnerChanged(Owner::SPLIT);
-    EXPECT_EQ(Owner::SPLIT, getOwner());
+    epochBase.onOwnerChanged(Owner::Split);
+    EXPECT_EQ(Owner::Split, getOwner());
 
-    epochBase.onOwnerChanged(Owner::BOTH);
-    EXPECT_EQ(Owner::BOTH, getOwner());
+    epochBase.onOwnerChanged(Owner::Both);
+    EXPECT_EQ(Owner::Both, getOwner());
 }
 
 }

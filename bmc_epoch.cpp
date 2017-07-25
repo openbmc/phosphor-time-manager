@@ -110,7 +110,7 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
         // TODO: throw NotAllowed exception
         return 0;
     }
-    if (timeOwner == Owner::HOST)
+    if (timeOwner == Owner::Host)
     {
         log<level::ERR>("Setting BmcTime with HOST owner is not allowed");
         // TODO: throw NotAllowed exception
