@@ -1,5 +1,6 @@
 #include <map>
 #include <systemd/sd-bus.h>
+#include "settings.hpp"
 
 /** @class TimeConfig
  *  @brief Maintains various time modes and time owners.
@@ -223,6 +224,9 @@ private:
 
     // Needed to nudge Time Manager to reset offset
     bool        iv_SplitModeChanged;
+
+    /** @brief Settings objects of intereset */
+    settings::Objects settings;
 
     static constexpr auto cv_TimeModeFile = "/var/lib/obmc/saved_timeMode";
     static constexpr auto cv_TimeOwnerFile = "/var/lib/obmc/saved_timeOwner";
