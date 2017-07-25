@@ -68,8 +68,8 @@ class TestBmcEpoch : public testing::Test
 TEST_F(TestBmcEpoch, empty)
 {
     // Default mode/owner is MANUAL/BOTH
-    EXPECT_EQ(Mode::MANUAL, getTimeMode());
-    EXPECT_EQ(Owner::BOTH, getTimeOwner());
+    EXPECT_EQ(Mode::Manual, getTimeMode());
+    EXPECT_EQ(Owner::Both, getTimeOwner());
 }
 
 TEST_F(TestBmcEpoch, getElapsed)
@@ -90,8 +90,8 @@ TEST_F(TestBmcEpoch, setElapsedNotAllowed)
     EXPECT_EQ(0, ret);
 
     // In Host owner, setting time is not allowed
-    setTimeMode(Mode::MANUAL);
-    setTimeOwner(Owner::HOST);
+    setTimeMode(Mode::Manual);
+    setTimeOwner(Owner::Host);
     ret = bmcEpoch->elapsed(epochNow);
     EXPECT_EQ(0, ret);
 }

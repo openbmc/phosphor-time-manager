@@ -108,7 +108,9 @@ std::string getService(sdbusplus::bus::bus& bus,
 /** @brief Convert a string to enum Mode
  *
  * Convert the time mode string to enum.
- * Valid strings are "NTP", "MANUAL"
+ * Valid strings are
+ *   "xyz.openbmc_project.Time.Synchronization.Method.NTP"
+ *   "xyz.openbmc_project.Time.Synchronization.Method.Manual"
  * If it's not a valid time mode string, it means something
  * goes wrong so raise exception.
  *
@@ -121,7 +123,11 @@ Mode strToMode(const std::string& mode);
 /** @brief Convert a string to enum Owner
  *
  * Convert the time owner string to enum.
- * Valid strings are "BMC", "HOST", "SPLIT", "BOTH"
+ * Valid strings are
+ *   "xyz.openbmc_project.Time.Owner.Owners.BMC"
+ *   "xyz.openbmc_project.Time.Owner.Owners.Host"
+ *   "xyz.openbmc_project.Time.Owner.Owners.Both"
+ *   "xyz.openbmc_project.Time.Owner.Owners.Split"
  * If it's not a valid time owner string, it means something
  * goes wrong so raise exception.
  *
@@ -137,7 +143,7 @@ Owner strToOwner(const std::string& owner);
  *
  * @return The string of the mode
  */
-const char* modeToStr(Mode mode);
+std::string modeToStr(Mode mode);
 
 /** @brief Convert a owner enum to owner string
  *
@@ -145,7 +151,7 @@ const char* modeToStr(Mode mode);
  *
  * @return The string of the owner
  */
-const char* ownerToStr(Owner owner);
+std::string ownerToStr(Owner owner);
 
 } // namespace utils
 } // namespace time
