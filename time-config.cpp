@@ -4,21 +4,51 @@
 #include <memory>
 #include <mapper.h>
 #include <cassert>
+#include <cctype>
+#include <algorithm>
+#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/elog-errors.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 #include "time-manager.hpp"
 
+using namespace phosphor::logging;
+using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+
 std::map<std::string, TimeConfig::FUNCTOR> TimeConfig::iv_TimeParams = {
-    {   "time_mode", std::make_tuple(&TimeConfig::getSystemSettings,
-        &TimeConfig::updateTimeMode)
-    },
-
-    {   "time_owner", std::make_tuple(&TimeConfig::getSystemSettings,
-        &TimeConfig::updateTimeOwner)
-    },
-
+    // TODO via openbmc/openbmc#668 - openbmc/openbmc#1770 is still work in
+    // progress at the time of writing this, so the use_dhcp_ntp is still using
+    // the old org.openbmc settings interfaces. The whole of time manager is
+    // anyway being rewritten to use new xyz.openbmc_project interfaces; as part
+    // of that switching to new setting interfaces is also covered.
     {   "use_dhcp_ntp", std::make_tuple(&TimeConfig::getSystemSettings,
         &TimeConfig::updateNetworkSettings)
     }
 };
+
+namespace internal
+{
+namespace setting
+{
+
+/** @brief Convert d-bus enum string to native string. For eg, convert
+ *         "xyz.openbmc_project.Time.Owner.Split" to "SPLIT".
+ *
+ *  @param[in] value - setting enum string
+ *
+ *  @return converted string
+ */
+inline std::string dbusToNative(std::string&& value)
+{
+    std::string setting = std::move(value);
+    auto index = setting.find_last_of('.') + 1;
+    setting = setting.substr(index, setting.length() - index);
+    std::transform(setting.begin(), setting.end(), setting.begin(),
+                   [](unsigned char c){ return std::toupper(c); });
+    return setting;
+}
+
+} // namespace setting
+} // namespace internal
 
 TimeConfig::TimeConfig() :
     iv_dbus(nullptr),
@@ -287,6 +317,29 @@ int TimeConfig::processInitialSettings(sd_bus* dbus)
 {
     // First call from TimeManager to config manager
     iv_dbus = dbus;
+
+    auto timeOwnerFunctor = std::make_tuple(&TimeConfig::getTimeOwnerSetting,
+                                            &TimeConfig::updateTimeOwner);
+    iv_TimeParams.emplace(settings.timeOwner, std::move(timeOwnerFunctor));
+    auto timeSyncFunctor = std::make_tuple(
+                               &TimeConfig::getTimeSyncMethodSetting,
+                               &TimeConfig::updateTimeMode);
+    iv_TimeParams.emplace(settings.timeSyncMethod, std::move(timeSyncFunctor));
+
+    using namespace sdbusplus::bus::match::rules;
+    sdbusplus::bus::bus bus(iv_dbus);
+
+    settingsMatches.emplace_back(
+        bus,
+        propertiesChanged(settings.timeOwner, settings::timeOwnerIntf),
+        std::bind(std::mem_fn(&TimeConfig::settingsChanged),
+          this, std::placeholders::_1));
+
+    settingsMatches.emplace_back(
+        bus,
+        propertiesChanged(settings.timeSyncMethod, settings::timeSyncIntf),
+        std::bind(std::mem_fn(&TimeConfig::settingsChanged),
+          this, std::placeholders::_1));
 
     // Read saved info like Who was the owner , what was the mode,
     // what was the use_dhcp_ntp setting before etc..
@@ -593,5 +646,81 @@ int TimeConfig::readPersistentData()
         std::cout << "Changing settings *allowed* now" << std::endl;
         iv_SettingChangeAllowed = true;
     }
+    return 0;
+}
+
+std::string TimeConfig::getTimeOwnerSetting(const char* path)
+{
+    sdbusplus::bus::bus bus{iv_dbus};
+    auto method = bus.new_method_call(
+                      settings.service(settings.timeOwner,
+                          settings::timeOwnerIntf).c_str(),
+                      path,
+                      "org.freedesktop.DBus.Properties",
+                      "Get");
+    method.append(settings::timeOwnerIntf, "TimeOwner");
+    auto reply = bus.call(method);
+    if (reply.is_method_error())
+    {
+        log<level::ERR>("Error in TimeOwner Get");
+        elog<InternalFailure>();
+    }
+
+    sdbusplus::message::variant<std::string> result;
+    reply.read(result);
+    // TODO via openbmc/openbmc#668 - because the old org.openbmc settings
+    // interfaces defined the time settings as strings, the code in this file
+    // is based around that fact. We use enums in the new settings interfaces,
+    // so code in this file can be changed to work with enums instead. That's
+    // being covered by the time manager rework (#668). For now, converting the
+    // settings to the string format that this object expects it to be.
+    // For eg, convert "xyz.openbmc_project.Time.Owner.Split" to "SPLIT".
+    auto setting = result.get<std::string>();
+    return internal::setting::dbusToNative(std::move(setting));
+}
+
+std::string TimeConfig::getTimeSyncMethodSetting(const char* path)
+{
+    sdbusplus::bus::bus bus{iv_dbus};
+    auto method = bus.new_method_call(
+                      settings.service(settings.timeSyncMethod,
+                          settings::timeSyncIntf).c_str(),
+                      path,
+                      "org.freedesktop.DBus.Properties",
+                      "Get");
+    method.append(settings::timeSyncIntf, "TimeSyncMethod");
+    auto reply = bus.call(method);
+    if (reply.is_method_error())
+    {
+        log<level::ERR>("Error in TimeSyncMethod Get");
+        elog<InternalFailure>();
+    }
+
+    sdbusplus::message::variant<std::string> result;
+    reply.read(result);
+    auto setting = result.get<std::string>();
+    return internal::setting::dbusToNative(std::move(setting));
+}
+
+int TimeConfig::settingsChanged(sdbusplus::message::message& msg)
+{
+    using Interface = std::string;
+    using Property = std::string;
+    using Value = std::string;
+    using Properties = std::map<Property, sdbusplus::message::variant<Value>>;
+
+    Interface interface;
+    Properties properties;
+
+    msg.read(interface, properties);
+
+    auto path = msg.get_path();
+    for(const auto& p : properties)
+    {
+        auto setting = p.second.get<std::string>();
+        updatePropertyVal(path,
+                          internal::setting::dbusToNative(std::move(setting)));
+    }
+
     return 0;
 }
