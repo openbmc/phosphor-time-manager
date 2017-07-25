@@ -6,6 +6,12 @@ sbin_PROGRAMS = \
 timemanager_SOURCES = \
 	time-register.c \
 	time-config.cpp \
-	time-manager.cpp
+	time-manager.cpp \
+	settings.cpp
 
-timemanager_LDFLAGS = $(SYSTEMD_LIBS) $(libmapper_LIBS)
+timemanager_LDFLAGS = \
+	$(SYSTEMD_LIBS) \
+	$(libmapper_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+	$(SDBUSPLUS_LIBS) \
+	$(PHOSPHOR_LOGGING_LIBS)
