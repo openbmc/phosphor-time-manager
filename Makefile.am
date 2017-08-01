@@ -17,6 +17,7 @@ libtimemanager_la_SOURCES = \
 	host_epoch.cpp \
 	manager.cpp \
 	utils.cpp \
+	settings.cpp \
 	${generated_source}
 
 phosphor_timemanager_SOURCES = \
