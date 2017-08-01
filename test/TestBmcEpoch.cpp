@@ -82,17 +82,13 @@ TEST_F(TestBmcEpoch, getElapsed)
 
 TEST_F(TestBmcEpoch, setElapsedNotAllowed)
 {
-    setTimeMode(Mode::NTP);
     auto epochNow = duration_cast<microseconds>(
         system_clock::now().time_since_epoch()).count();
-    // In NTP mode, setting time is not allowed
-    auto ret = bmcEpoch->elapsed(epochNow);
-    EXPECT_EQ(0, ret);
 
     // In Host owner, setting time is not allowed
     setTimeMode(Mode::Manual);
     setTimeOwner(Owner::Host);
-    ret = bmcEpoch->elapsed(epochNow);
+    auto ret = bmcEpoch->elapsed(epochNow);
     EXPECT_EQ(0, ret);
 }
 

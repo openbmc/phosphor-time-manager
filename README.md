@@ -51,10 +51,10 @@ allowed depending on below two settings in settings manager.
 A summary of which cases the time can be set on BMC or HOST:
 Mode      | Owner | Set BMC Time  | Set Host Time
 --------- | ----- | ------------- | -------------------
-NTP       | BMC   | Not allowed   | Not allowed
+NTP       | BMC   | Fail to set   | Not allowed
 NTP       | HOST  | Not allowed   | Not allowed
-NTP       | SPLIT | Not allowed   | OK
-NTP       | BOTH  | Not allowed   | Not allowed
+NTP       | SPLIT | Fail to set   | OK
+NTP       | BOTH  | Fail to set   | Not allowed
 MANUAL    | BMC   | OK            | Not allowed
 MANUAL    | HOST  | Not allowed   | OK
 MANUAL    | SPLIT | OK            | OK
