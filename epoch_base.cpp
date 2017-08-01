@@ -47,7 +47,11 @@ void EpochBase::setTime(const microseconds& usec)
     method.append(static_cast<int64_t>(usec.count()),
                   false, // relative
                   false); // user_interaction
-    bus.call_noreply(method);
+    auto reply = bus.call(method);
+    if (reply.is_method_error())
+    {
+        log<level::ERR>("Error in setting system time");
+    }
 }
 
 microseconds EpochBase::getTime() const
