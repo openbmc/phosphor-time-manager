@@ -55,14 +55,33 @@ Manager::Manager(sdbusplus::bus::bus& bus)
       propertyChangeMatch(bus, MATCH_PROPERTY_CHANGE, onPropertyChanged, this),
       pgoodChangeMatch(bus, MATCH_PGOOD_CHANGE, onPgoodChanged, this)
 {
+    using namespace sdbusplus::bus::match::rules;
+    settingsMatches.emplace_back(
+        bus,
+        propertiesChanged(settings.timeOwner, settings::timeOwnerIntf),
+        std::bind(std::mem_fn(&Manager::onSettingsChanged),
+                  this, std::placeholders::_1));
+    settingsMatches.emplace_back(
+        bus,
+        propertiesChanged(settings.timeSyncMethod, settings::timeSyncIntf),
+        std::bind(std::mem_fn(&Manager::onSettingsChanged),
+          this, std::placeholders::_1));
+
     checkHostOn();
 
     // Restore settings from persistent storage
     restoreSettings();
 
     // Check the settings daemon to process the new settings
-    onPropertyChanged(PROPERTY_TIME_MODE, getSettings(PROPERTY_TIME_MODE));
-    onPropertyChanged(PROPERTY_TIME_OWNER, getSettings(PROPERTY_TIME_OWNER));
+    auto mode = getSetting(settings.timeSyncMethod.c_str(),
+                           settings::timeSyncIntf,
+                           PROPERTY_TIME_MODE);
+    auto owner = getSetting(settings.timeOwner.c_str(),
+                            settings::timeOwnerIntf,
+                            PROPERTY_TIME_OWNER);
+
+    onPropertyChanged(PROPERTY_TIME_MODE, mode);
+    onPropertyChanged(PROPERTY_TIME_OWNER, owner);
 
     checkDhcpNtp();
 }
@@ -164,6 +183,26 @@ int Manager::onPropertyChanged(sd_bus_message* msg,
     return 0;
 }
 
+int Manager::onSettingsChanged(sdbusplus::message::message& msg)
+{
+    using Interface = std::string;
+    using Property = std::string;
+    using Value = std::string;
+    using Properties = std::map<Property, sdbusplus::message::variant<Value>>;
+
+    Interface interface;
+    Properties properties;
+
+    msg.read(interface, properties);
+
+    for(const auto& p : properties)
+    {
+        onPropertyChanged(p.first, p.second.get<std::string>());
+    }
+
+    return 0;
+}
+
 void Manager::setPropertyAsRequested(const std::string& key,
                                      const std::string& value)
 {
@@ -199,7 +238,8 @@ void Manager::setRequestedOwner(const std::string& owner)
 
 void Manager::updateNtpSetting(const std::string& value)
 {
-    bool isNtp = (value == "NTP");
+    bool isNtp =
+        (value == "xyz.openbmc_project.Time.Synchronization.Method.NTP");
     auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE,
                                       SYSTEMD_TIME_PATH,
                                       SYSTEMD_TIME_INTERFACE,
@@ -340,6 +380,9 @@ void Manager::onTimeOwnerChanged()
     }
 }
 
+// TODO: This function is here only for use_dhcp_ntp.
+// When use_dhcp_ntp is transferred to new settings daemon,
+// this function can be removed.
 std::string Manager::getSettings(const char* setting) const
 {
     std::string settingsService = utils::getService(bus,
@@ -350,6 +393,18 @@ std::string Manager::getSettings(const char* setting) const
                                            settingsService.c_str(),
                                            SETTINGS_PATH,
                                            SETTINGS_INTERFACE,
+                                           setting);
+}
+
+std::string Manager::getSetting(const char* path,
+                                const char* interface,
+                                const char* setting) const
+{
+    std::string settingManager = utils::getService(bus, path, NULL);
+    return utils::getProperty<std::string>(bus,
+                                           settingManager.c_str(),
+                                           path,
+                                           interface,
                                            setting);
 }
 
