@@ -95,21 +95,15 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
     /*
         Mode  | Owner | Set BMC Time
         ----- | ----- | -------------
-        NTP   | BMC   | Not allowed
+        NTP   | BMC   | Fail to set
         NTP   | HOST  | Not allowed
-        NTP   | SPLIT | Not allowed
-        NTP   | BOTH  | Not allowed
+        NTP   | SPLIT | Fail to set
+        NTP   | BOTH  | Fail to set
         MANUAL| BMC   | OK
         MANUAL| HOST  | Not allowed
         MANUAL| SPLIT | OK
         MANUAL| BOTH  | OK
     */
-    if (timeMode == Mode::NTP)
-    {
-        log<level::ERR>("Setting BmcTime with NTP mode is not allowed");
-        // TODO: throw NotAllowed exception
-        return 0;
-    }
     if (timeOwner == Owner::Host)
     {
         log<level::ERR>("Setting BmcTime with HOST owner is not allowed");
