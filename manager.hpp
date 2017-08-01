@@ -2,6 +2,7 @@
 
 #include "types.hpp"
 #include "property_change_listener.hpp"
+#include "settings.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -26,6 +27,11 @@ class Manager
         friend class TestManager;
 
         explicit Manager(sdbusplus::bus::bus& bus);
+        Manager(const Manager&) = delete;
+        Manager& operator=(const Manager&) = delete;
+        Manager(Manager&&) = delete;
+        Manager& operator=(Manager&&) = delete;
+        ~Manager() = default;
 
         /** @brief Add a listener that will be called
           * when property is changed
@@ -37,13 +43,21 @@ class Manager
         sdbusplus::bus::bus& bus;
 
         /** @brief The match of settings property change */
+        // TODO: This is to be removed when all properties are handled in
+        // new settings daemon
         sdbusplus::bus::match::match propertyChangeMatch;
+
+        /** @brief The match of settings property change */
+        std::vector<sdbusplus::bus::match::match> settingsMatches;
 
         /** @brief The match of pgood change */
         sdbusplus::bus::match::match pgoodChangeMatch;
 
         /** @brief The container to hold all the listeners */
         std::set<PropertyChangeListner*> listeners;
+
+        /** @brief Settings objects of intereset */
+        settings::Objects settings;
 
         /** @brief The value to indicate if host is on */
         bool hostOn = false;
@@ -77,6 +91,18 @@ class Manager
          */
         std::string getSettings(const char* setting) const;
 
+        /** @brief Get setting from settingsd service
+         *
+         * @param[in] path - The dbus object path
+         * @param[in] interface - The dbus interface
+         * @param[in] setting - The string of the setting
+         *
+         * @return The setting value in string
+         */
+        std::string getSetting(const char* path,
+                               const char* interface,
+                               const char* setting) const;
+
         /** @brief Set current time mode from the time mode string
          *
          * @param[in] mode - The string of time mode
@@ -108,6 +134,14 @@ class Manager
          * Notify listeners that time owner is changed
          */
         void onTimeOwnerChanged();
+
+        /** @brief Callback to handle change in a setting
+         *
+         *  @param[in] msg - sdbusplus dbusmessage
+         *
+         *  @return 0 on success, < 0 on failure.
+         */
+        int onSettingsChanged(sdbusplus::message::message& msg);
 
         /** @brief Notified on settings property changed
          *
@@ -178,10 +212,10 @@ class Manager
                                   sd_bus_error* retError);
 
         /** @brief The string of time mode property */
-        static constexpr auto PROPERTY_TIME_MODE = "time_mode";
+        static constexpr auto PROPERTY_TIME_MODE = "TimeSyncMethod";
 
         /** @brief The string of time owner property */
-        static constexpr auto PROPERTY_TIME_OWNER = "time_owner";
+        static constexpr auto PROPERTY_TIME_OWNER = "TimeOwner";
 
         /** @brief The string of use dhcp ntp property */
         static constexpr auto PROPERTY_DHCP_NTP = "use_dhcp_ntp";
