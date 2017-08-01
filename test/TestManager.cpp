@@ -31,7 +31,7 @@ class TestManager : public testing::Test
         }
 
         // Proxies for Manager's private members and functions
-         Mode getTimeMode()
+        Mode getTimeMode()
         {
             return manager.timeMode;
         }
@@ -94,10 +94,10 @@ TEST_F(TestManager, DISABLED_propertyChanged)
     EXPECT_CALL(listener2, onOwnerChanged(Owner::Host)).Times(1);
 
     notifyPropertyChanged(
-        "time_mode",
+        "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
     notifyPropertyChanged(
-        "time_owner",
+        "TimeOwner",
         "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     EXPECT_EQ("", getRequestedMode());
@@ -113,10 +113,10 @@ TEST_F(TestManager, DISABLED_propertyChanged)
     EXPECT_CALL(listener2, onOwnerChanged(Owner::Host)).Times(0);
 
     notifyPropertyChanged(
-        "time_mode",
+        "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.NTP");
     notifyPropertyChanged(
-        "time_owner",
+        "TimeOwner",
         "xyz.openbmc_project.Time.Owner.Owners.Split");
 
     EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.NTP",
@@ -147,10 +147,10 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
 {
     // Property is now MANUAL/HOST
     notifyPropertyChanged(
-        "time_mode",
+        "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
     notifyPropertyChanged(
-        "time_owner",
+        "TimeOwner",
         "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     // Set host on
@@ -163,10 +163,10 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
     EXPECT_CALL(listener2, onOwnerChanged(_)).Times(0);
 
     notifyPropertyChanged(
-        "time_mode",
+        "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.NTP");
     notifyPropertyChanged(
-        "time_owner",
+        "TimeOwner",
         "xyz.openbmc_project.Time.Owner.Owners.Split");
 
     // Saved as requested mode/owner
@@ -177,10 +177,10 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
 
     // Property changed back to MANUAL/HOST
     notifyPropertyChanged(
-        "time_mode",
+        "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
     notifyPropertyChanged(
-        "time_owner",
+        "TimeOwner",
         "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     // Requested mode/owner shall be updated
