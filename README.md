@@ -39,10 +39,10 @@ the time. For example on an authenticated session:
 Getting BMC or HOST time is always allowed, but setting the time may not be
 allowed depending on below two settings in settings manager.
 
-* time_mode
+* TimeSyncMethod 
    * NTP: Time is set via NTP server.
    * MANUAL: Time is set manually.
-* time_owner
+* TimeOwner
    * BMC: BMC owns the time and can set the time.
    * HOST: Host owns the time and can set the time.
    * SPLIT: BMC and Host owns separate time.

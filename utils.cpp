@@ -35,7 +35,12 @@ std::string getService(sdbusplus::bus::bus& bus,
                                       MAPPER_INTERFACE,
                                       "GetObject");
 
-    mapper.append(path, std::vector<std::string>({interface}));
+    std::vector<std::string> interfaces;
+    if (interface)
+    {
+        interfaces.emplace_back(interface);
+    }
+    mapper.append(path, std::move(interfaces));
     auto mapperResponseMsg = bus.call(mapper);
 
     if (mapperResponseMsg.is_method_error())
