@@ -38,11 +38,6 @@ class Manager
         sdbusplus::bus::bus& bus;
 
         /** @brief The match of settings property change */
-        // TODO: This is to be removed when all properties are handled in
-        // new settings daemon
-        sdbusplus::bus::match::match propertyChangeMatch;
-
-        /** @brief The match of settings property change */
         std::vector<sdbusplus::bus::match::match> settingsMatches;
 
         /** @brief The match of pgood change */
@@ -74,17 +69,6 @@ class Manager
 
         /** @brief Check if host is on and update hostOn variable */
         void checkHostOn();
-
-        /** @brief Check if use_dhcp_ntp is used and update NTP setting */
-        void checkDhcpNtp();
-
-        /** @brief Get setting from settingsd service
-         *
-         * @param[in] setting - The string of the setting
-         *
-         * @return The setting value in string
-         */
-        std::string getSettings(const char* setting) const;
 
         /** @brief Get setting from settingsd service
          *
@@ -180,12 +164,6 @@ class Manager
          */
         void updateNtpSetting(const std::string& value);
 
-        /** @brief Update dhcp_ntp setting to OpenBMC network service
-         *
-         * @param[in] value - The use_dhcp_ntp value, e.g. "yes" or "no"
-         */
-        void updateDhcpNtpSetting(const std::string& useDhcpNtp);
-
         /** @brief The static function called on settings property changed
          *
          * @param[in] msg - Data associated with subscribed signal
@@ -211,9 +189,6 @@ class Manager
 
         /** @brief The string of time owner property */
         static constexpr auto PROPERTY_TIME_OWNER = "TimeOwner";
-
-        /** @brief The string of use dhcp ntp property */
-        static constexpr auto PROPERTY_DHCP_NTP = "use_dhcp_ntp";
 
         using Updater = std::function<void(const std::string&)>;
 
