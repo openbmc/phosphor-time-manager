@@ -10,16 +10,6 @@ namespace rules = sdbusplus::bus::match::rules;
 
 namespace // anonymous
 {
-constexpr auto SETTINGS_PATH = "/org/openbmc/settings/host0";
-constexpr auto SETTINGS_INTERFACE = "org.openbmc.settings.Host";
-
-// TODO: Use new settings in xyz.openbmc_project
-const auto MATCH_PROPERTY_CHANGE =
-    rules::type::signal() +
-    rules::member("PropertiesChanged") +
-    rules::path("/org/openbmc/settings/host0") +
-    rules::interface("org.freedesktop.DBus.Properties");
-
 const auto MATCH_PGOOD_CHANGE =
     rules::type::signal() +
     rules::member("PropertiesChanged") +
@@ -34,10 +24,6 @@ constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
 constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
 constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
 constexpr auto METHOD_SET_NTP = "SetNTP";
-
-constexpr auto OBMC_NETWORK_PATH = "/org/openbmc/NetworkManager/Interface";
-constexpr auto OBMC_NETWORK_INTERFACE = "org.openbmc.NetworkManager";
-constexpr auto METHOD_UPDATE_USE_NTP = "UpdateUseNtpField";
 }
 
 namespace phosphor
@@ -52,7 +38,6 @@ Manager::managedProperties = {PROPERTY_TIME_MODE, PROPERTY_TIME_OWNER};
 
 Manager::Manager(sdbusplus::bus::bus& bus)
     : bus(bus),
-      propertyChangeMatch(bus, MATCH_PROPERTY_CHANGE, onPropertyChanged, this),
       pgoodChangeMatch(bus, MATCH_PGOOD_CHANGE, onPgoodChanged, this)
 {
     using namespace sdbusplus::bus::match::rules;
@@ -82,8 +67,6 @@ Manager::Manager(sdbusplus::bus::bus& bus)
 
     onPropertyChanged(PROPERTY_TIME_MODE, mode);
     onPropertyChanged(PROPERTY_TIME_OWNER, owner);
-
-    checkDhcpNtp();
 }
 
 void Manager::addListener(PropertyChangeListner* listener)
@@ -123,12 +106,6 @@ void Manager::checkHostOn()
     hostOn = static_cast<bool>(pgood);
 }
 
-void Manager::checkDhcpNtp()
-{
-    std::string useDhcpNtp = getSettings(PROPERTY_DHCP_NTP);
-    updateDhcpNtpSetting(useDhcpNtp);
-}
-
 void Manager::onPropertyChanged(const std::string& key,
                                 const std::string& value)
 {
@@ -152,35 +129,6 @@ void Manager::onPropertyChanged(const std::string& key,
             onTimeOwnerChanged();
         }
     }
-}
-
-int Manager::onPropertyChanged(sd_bus_message* msg,
-                               void* userData,
-                               sd_bus_error* retError)
-{
-    using properties = std::map < std::string,
-          sdbusplus::message::variant<std::string> >;
-    auto m = sdbusplus::message::message(msg);
-    // message type: sa{sv}as
-    std::string ignore;
-    properties props;
-    m.read(ignore, props);
-    auto manager = static_cast<Manager*>(userData);
-    for (const auto& item : props)
-    {
-        if (managedProperties.find(item.first) != managedProperties.end())
-        {
-            // For managed properties, notify listeners
-            manager->onPropertyChanged(
-                item.first, item.second.get<std::string>());
-        }
-        else if (item.first == PROPERTY_DHCP_NTP)
-        {
-            // For other manager interested properties, handle specifically
-            manager->updateDhcpNtpSetting(item.second.get<std::string>());
-        }
-    }
-    return 0;
 }
 
 int Manager::onSettingsChanged(sdbusplus::message::message& msg)
@@ -255,29 +203,6 @@ void Manager::updateNtpSetting(const std::string& value)
     else
     {
         log<level::ERR>("Failed to update NTP setting");
-    }
-}
-
-void Manager::updateDhcpNtpSetting(const std::string& useDhcpNtp)
-{
-    std::string networkService = utils::getService(bus,
-                                                   OBMC_NETWORK_PATH,
-                                                   OBMC_NETWORK_INTERFACE);
-
-    auto method = bus.new_method_call(networkService.c_str(),
-                                      OBMC_NETWORK_PATH,
-                                      OBMC_NETWORK_INTERFACE,
-                                      METHOD_UPDATE_USE_NTP);
-    method.append(useDhcpNtp);
-
-    if (bus.call(method))
-    {
-        log<level::INFO>("Updated use ntp field",
-                         entry("USENTPFIELD:%s", useDhcpNtp.c_str()));
-    }
-    else
-    {
-        log<level::ERR>("Failed to update UseNtpField");
     }
 }
 
@@ -378,22 +303,6 @@ void Manager::onTimeOwnerChanged()
     {
         listener->onOwnerChanged(timeOwner);
     }
-}
-
-// TODO: This function is here only for use_dhcp_ntp.
-// When use_dhcp_ntp is transferred to new settings daemon,
-// this function can be removed.
-std::string Manager::getSettings(const char* setting) const
-{
-    std::string settingsService = utils::getService(bus,
-                                                    SETTINGS_PATH,
-                                                    SETTINGS_INTERFACE);
-
-    return utils::getProperty<std::string>(bus,
-                                           settingsService.c_str(),
-                                           SETTINGS_PATH,
-                                           SETTINGS_INTERFACE,
-                                           setting);
 }
 
 std::string Manager::getSetting(const char* path,
