@@ -17,7 +17,7 @@ Objects::Objects()
 {
     auto bus = sdbusplus::bus::new_default();
     std::vector<std::string> settingsIntfs =
-        {timeOwnerIntf, timeSyncIntf};
+        {timeOwnerIntf, timeSyncIntf, hostStateIntf};
     auto depth = 0;
 
     auto mapperCall = bus.new_method_call(mapperService,
@@ -56,6 +56,10 @@ Objects::Objects()
         else if (timeSyncIntf == interface)
         {
             timeSyncMethod = path;
+        }
+        else if (hostStateIntf == interface)
+        {
+            hostState = path;
         }
     }
 }

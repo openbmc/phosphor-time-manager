@@ -13,6 +13,7 @@ using Interface = std::string;
 constexpr auto root = "/";
 constexpr auto timeOwnerIntf = "xyz.openbmc_project.Time.Owner";
 constexpr auto timeSyncIntf = "xyz.openbmc_project.Time.Synchronization";
+constexpr auto hostStateIntf = "xyz.openbmc_project.State.Host";
 
 /** @class Objects
  *  @brief Fetch paths of settings D-bus objects of interest upon construction
@@ -47,6 +48,9 @@ struct Objects
 
         /** @brief time sync method settings object */
         Path timeSyncMethod;
+
+        /** @brief host state object */
+        Path hostState;
 };
 
 } // namespace settings
