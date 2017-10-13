@@ -60,13 +60,12 @@ MANUAL    | HOST  | Not allowed   | OK
 MANUAL    | SPLIT | OK            | OK
 MANUAL    | BOTH  | OK            | OK
 
-### Pgood
-When host is on (pgood == 1), the changes of the above time mode/owner are not
-applied but deferred. The changes of the mode/owner are saved to persistent
-storage.
+### Special note on host on
+When host is on, the changes of the above time mode/owner are not applied but
+deferred. The changes of the mode/owner are saved to persistent storage.
 
-When host is off (pgood == 0), the saved mode/owner are read from
-persistent storage and are applied.
+When host is off, the saved mode/owner are read from persistent storage and are
+applied.
 
 Note: user can set the time mode and owner in settings daemon at any time,
 but time manager applying them is governed by the above condition.

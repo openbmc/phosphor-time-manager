@@ -56,9 +56,9 @@ class TestManager : public testing::Test
         {
             manager.onPropertyChanged(key, value);
         }
-        void notifyPgoodChanged(bool pgood)
+        void notifyOnHostState(bool hostOn)
         {
-            manager.onPgoodChanged(pgood);
+            manager.onHostState(hostOn);
         }
 };
 
@@ -74,11 +74,11 @@ TEST_F(TestManager, DISABLED_empty)
 }
 
 
-TEST_F(TestManager, DISABLED_pgoodChange)
+TEST_F(TestManager, DISABLED_hostStateChange)
 {
-    notifyPgoodChanged(true);
+    notifyOnHostState(true);
     EXPECT_TRUE(hostOn());
-    notifyPgoodChanged(false);
+    notifyOnHostState(false);
     EXPECT_FALSE(hostOn());
 }
 
@@ -104,7 +104,7 @@ TEST_F(TestManager, DISABLED_propertyChanged)
     EXPECT_EQ("", getRequestedOwner());
 
     // When host is on, property changes are saved as requested ones
-    notifyPgoodChanged(true);
+    notifyOnHostState(true);
 
     // Check mocked listeners shall not receive notifications
     EXPECT_CALL(listener1, onModeChanged(Mode::Manual)).Times(0);
@@ -132,14 +132,14 @@ TEST_F(TestManager, DISABLED_propertyChanged)
     EXPECT_CALL(listener2, onModeChanged(Mode::NTP)).Times(1);
     EXPECT_CALL(listener2, onOwnerChanged(Owner::Split)).Times(1);
 
-    notifyPgoodChanged(false);
+    notifyOnHostState(false);
 
     EXPECT_EQ("", getRequestedMode());
     EXPECT_EQ("", getRequestedOwner());
 
     // When host is on, and invalid property is changed,
     // verify the code asserts because it shall never occur
-    notifyPgoodChanged(true);
+    notifyOnHostState(true);
     ASSERT_DEATH(notifyPropertyChanged("invalid property", "whatever"), "");
 }
 
@@ -154,7 +154,7 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
         "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     // Set host on
-    notifyPgoodChanged(true);
+    notifyOnHostState(true);
 
     // Check mocked listeners shall not receive notifications
     EXPECT_CALL(listener1, onModeChanged(_)).Times(0);
@@ -197,7 +197,7 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
     EXPECT_CALL(listener2, onModeChanged(_)).Times(0);
     EXPECT_CALL(listener2, onOwnerChanged(_)).Times(0);
 
-    notifyPgoodChanged(false);
+    notifyOnHostState(false);
 
     EXPECT_EQ("", getRequestedMode());
     EXPECT_EQ("", getRequestedOwner());

@@ -45,8 +45,8 @@ class Manager
         /** @brief The match of settings property change */
         std::vector<sdbusplus::bus::match::match> settingsMatches;
 
-        /** @brief The match of pgood change */
-        sdbusplus::bus::match::match pgoodChangeMatch;
+        /** @brief The match of host state change */
+        std::unique_ptr<sdbusplus::bus::match::match> hostStateChangeMatch;
 
         /** @brief The container to hold all the listeners */
         std::set<PropertyChangeListner*> listeners;
@@ -135,11 +135,17 @@ class Manager
         void onPropertyChanged(const std::string& key,
                                const std::string& value);
 
-        /** @brief Notified on pgood has changed
+        /** @brief Notified on host state has changed
          *
-         * @param[in] pgood - The changed pgood value
+         * @param[in] msg - sdbusplus dbusmessage
          */
-        void onPgoodChanged(bool pgood);
+        void onHostStateChanged(sdbusplus::message::message& msg);
+
+        /** @brief Notified on host state has changed
+         *
+         * @param[in] on - Indicate if the host is on or off
+         */
+        void onHostState(bool on);
 
         /** @brief Set the property as requested time mode/owner
          *
@@ -178,16 +184,6 @@ class Manager
         static int onPropertyChanged(sd_bus_message* msg,
                                      void* userData,
                                      sd_bus_error* retError);
-
-        /** @brief Notified on pgood has changed
-         *
-         * @param[in] msg - Data associated with subscribed signal
-         * @param[in] userData - Pointer to this object instance
-         * @param[out] retError  - Not used but required with signal API
-         */
-        static int onPgoodChanged(sd_bus_message* msg,
-                                  void* userData,
-                                  sd_bus_error* retError);
 
         /** @brief The string of time mode property */
         static constexpr auto PROPERTY_TIME_MODE = "TimeSyncMethod";

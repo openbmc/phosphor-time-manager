@@ -5,20 +5,13 @@
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/State/Host/server.hpp>
 
 namespace rules = sdbusplus::bus::match::rules;
 
 namespace // anonymous
 {
-const auto MATCH_PGOOD_CHANGE =
-    rules::type::signal() +
-    rules::member("PropertiesChanged") +
-    rules::path("/org/openbmc/control/power0") +
-    rules::interface("org.freedesktop.DBus.Properties");
-
-constexpr auto POWER_PATH = "/org/openbmc/control/power0";
-constexpr auto POWER_INTERFACE = "org.openbmc.control.Power";
-constexpr auto PGOOD_STR = "pgood";
+constexpr auto HOST_CURRENT_STATE = "CurrentHostState";
 
 constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
 constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
@@ -37,10 +30,15 @@ const std::set<std::string>
 Manager::managedProperties = {PROPERTY_TIME_MODE, PROPERTY_TIME_OWNER};
 
 Manager::Manager(sdbusplus::bus::bus& bus)
-    : bus(bus),
-      pgoodChangeMatch(bus, MATCH_PGOOD_CHANGE, onPgoodChanged, this)
+    : bus(bus)
 {
     using namespace sdbusplus::bus::match::rules;
+    hostStateChangeMatch =
+        std::make_unique<decltype(hostStateChangeMatch)::element_type>(
+            bus,
+            propertiesChanged(settings.hostState, settings::hostStateIntf),
+            std::bind(std::mem_fn(&Manager::onHostStateChanged),
+                      this, std::placeholders::_1));
     settingsMatches.emplace_back(
         bus,
         propertiesChanged(settings.timeOwner, settings::timeOwnerIntf),
@@ -94,16 +92,17 @@ void Manager::restoreSettings()
 
 void Manager::checkHostOn()
 {
-    std::string powerService = utils::getService(bus,
-                                                 POWER_PATH,
-                                                 POWER_INTERFACE);
-
-    int pgood = utils::getProperty<int>(bus,
-                                        powerService.c_str(),
-                                        POWER_PATH,
-                                        POWER_INTERFACE,
-                                        PGOOD_STR);
-    hostOn = static_cast<bool>(pgood);
+    using Host = sdbusplus::xyz::openbmc_project::State::server::Host;
+    auto hostService = utils::getService(bus,
+                                         settings.hostState.c_str(),
+                                         settings::hostStateIntf);
+    auto stateStr = utils::getProperty<std::string>(bus,
+                                                    hostService.c_str(),
+                                                    settings.hostState.c_str(),
+                                                    settings::hostStateIntf,
+                                                    HOST_CURRENT_STATE);
+    auto state = Host::convertHostStateFromString(stateStr);
+    hostOn = (state == Host::HostState::Running);
 }
 
 void Manager::onPropertyChanged(const std::string& key,
@@ -206,13 +205,38 @@ void Manager::updateNtpSetting(const std::string& value)
     }
 }
 
-void Manager::onPgoodChanged(bool pgood)
+void Manager::onHostStateChanged(sdbusplus::message::message& msg)
 {
-    hostOn = pgood;
+    using Interface = std::string;
+    using Property = std::string;
+    using Value = std::string;
+    using Properties = std::map<Property, sdbusplus::message::variant<Value>>;
+    using Host = sdbusplus::xyz::openbmc_project::State::server::Host;
+
+    Interface interface;
+    Properties properties;
+
+    msg.read(interface, properties);
+
+    for(const auto& p : properties)
+    {
+        if (p.first == HOST_CURRENT_STATE)
+        {
+            auto state = Host::convertHostStateFromString(p.second.get<std::string>());
+            onHostState(state == Host::HostState::Running);
+        }
+    }
+}
+
+void Manager::onHostState(bool on)
+{
+    hostOn = on;
     if (hostOn)
     {
+        log<level::INFO>("Changing time settings is *deferred* now");
         return;
     }
+    log<level::INFO>("Changing time settings allowed now");
     if (!requestedMode.empty())
     {
         if (setCurrentTimeMode(requestedMode))
@@ -229,28 +253,6 @@ void Manager::onPgoodChanged(bool pgood)
         }
         setRequestedOwner({}); // Clear requested owner
     }
-}
-
-int Manager::onPgoodChanged(sd_bus_message* msg,
-                            void* userData,
-                            sd_bus_error* retError)
-{
-    using properties = std::map < std::string,
-          sdbusplus::message::variant<int> >;
-    auto m = sdbusplus::message::message(msg);
-    // message type: sa{sv}as
-    std::string ignore;
-    properties props;
-    m.read(ignore, props);
-    for (const auto& item : props)
-    {
-        if (item.first == PGOOD_STR)
-        {
-            static_cast<Manager*>(userData)
-                ->onPgoodChanged(static_cast<bool>(item.second.get<int>()));
-        }
-    }
-    return 0;
 }
 
 bool Manager::setCurrentTimeMode(const std::string& mode)
