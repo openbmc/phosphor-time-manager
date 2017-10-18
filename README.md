@@ -49,6 +49,7 @@ allowed depending on below two settings in settings manager.
    * BOTH: Both BMC and Host can set the time.
 
 A summary of which cases the time can be set on BMC or HOST:
+
 Mode      | Owner | Set BMC Time  | Set Host Time
 --------- | ----- | ------------- | -------------------
 NTP       | BMC   | Fail to set   | Not allowed
