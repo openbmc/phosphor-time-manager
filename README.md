@@ -1,16 +1,16 @@
 # Introduction
-`phosphor-time-manager` is the time manager service that implements dbus
+`phosphor-time-manager` is the time manager service that implements D-Bus
 interface `xyz/openbmc_project/Time/EpochTime.interface.yaml`.
-User can get or set the BMC's or HOST's time via this interface.
+The user can get or set the BMC's or HOST's time via this interface.
 
 ### General usage
-The service `xyz.openbmc_project.Time.Manager` provides two objects on dbus:
+The service `xyz.openbmc_project.Time.Manager` provides two objects on D-Bus:
 * /xyz/openbmc_project/time/bmc
 * /xyz/openbmc_project/time/host
 
 where each object implements interface `xyz.openbmc_project.Time.EpochTime`.
 
-User can directly get or set the property `Elasped` of the objects to get or set
+The user can directly get or set the property `Elapsed` of the objects to get or set
 the time. For example on an authenticated session:
 
 * To get BMC's time:
@@ -45,7 +45,7 @@ allowed depending on below two settings in settings manager.
 * TimeOwner
    * BMC: BMC owns the time and can set the time.
    * HOST: Host owns the time and can set the time.
-   * SPLIT: BMC and Host owns separate time.
+   * SPLIT: BMC and Host own separate time.
    * BOTH: Both BMC and Host can set the time.
 
 A summary of which cases the time can be set on BMC or HOST:
@@ -62,10 +62,10 @@ MANUAL    | SPLIT | OK            | OK
 MANUAL    | BOTH  | OK            | OK
 
 ### Special note on host on
-When host is on, the changes of the above time mode/owner are not applied but
+When the host is on, the changes of the above time mode/owner are not applied but
 deferred. The changes of the mode/owner are saved to persistent storage.
 
-When host is off, the saved mode/owner are read from persistent storage and are
+When the host is off, the saved mode/owner are read from persistent storage and are
 applied.
 
 Note: user can set the time mode and owner in settings daemon at any time,
