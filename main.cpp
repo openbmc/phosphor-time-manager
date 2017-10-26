@@ -15,7 +15,7 @@ int main()
     };
     using SdEvent = std::unique_ptr<sd_event, decltype(eventDeleter)>;
 
-    // acquire a referece to the default event loop
+    // acquire a reference to the default event loop
     sd_event_default(&event);
     SdEvent sdEvent {event, eventDeleter};
     event = nullptr;

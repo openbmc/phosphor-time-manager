@@ -84,7 +84,7 @@ TEST_F(TestManager, DISABLED_hostStateChange)
 
 TEST_F(TestManager, DISABLED_propertyChanged)
 {
-    // When host is off, property change will be notified to listners
+    // When host is off, property change will be notified to listeners
     EXPECT_FALSE(hostOn());
 
     // Check mocked listeners shall receive notifications on property changed
@@ -126,7 +126,7 @@ TEST_F(TestManager, DISABLED_propertyChanged)
 
 
     // When host becomes off, the requested mode/owner shall be notified
-    // to listners, and be cleared
+    // to listeners, and be cleared
     EXPECT_CALL(listener1, onModeChanged(Mode::NTP)).Times(1);
     EXPECT_CALL(listener1, onOwnerChanged(Owner::Split)).Times(1);
     EXPECT_CALL(listener2, onModeChanged(Mode::NTP)).Times(1);

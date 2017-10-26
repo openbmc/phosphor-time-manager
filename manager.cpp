@@ -111,12 +111,12 @@ void Manager::onPropertyChanged(const std::string& key,
     if (hostOn)
     {
         // If host is on, set the values as requested time mode/owner.
-        // And when host becomes off, notify the listners.
+        // And when host becomes off, notify the listeners.
         setPropertyAsRequested(key, value);
     }
     else
     {
-        // If host is off, notify listners
+        // If host is off, notify listeners
         if (key == PROPERTY_TIME_MODE)
         {
             setCurrentTimeMode(value);

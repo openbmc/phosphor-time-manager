@@ -10,7 +10,7 @@ AM_SILENT_RULES([yes])
 AC_PROG_CXX
 AM_PROG_AR
 
-# Surpress the --with-libtool-sysroot error
+# Suppress the --with-libtool-sysroot error
 LT_INIT
 
 # Check for libraries
