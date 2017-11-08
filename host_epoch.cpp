@@ -87,6 +87,14 @@ void HostEpoch::onOwnerChanged(Owner owner)
         offset = microseconds(0);
         saveOffset();
     }
+    else
+    {
+        // In SPLIT, need to re-calculate the diff between
+        // host and steady time
+        auto steadyTime = duration_cast<microseconds>(
+            steady_clock::now().time_since_epoch());
+        diffToSteadyClock = getTime() - steadyTime;
+    }
 }
 
 void HostEpoch::saveOffset()
