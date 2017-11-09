@@ -112,9 +112,10 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
     }
 
     auto time = microseconds(value);
-    setTime(time);
-
-    notifyBmcTimeChange(time);
+    if (setTime(time))
+    {
+        notifyBmcTimeChange(time);
+    }
 
     server::EpochTime::elapsed(value);
     return value;

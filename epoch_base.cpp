@@ -38,7 +38,7 @@ void EpochBase::onOwnerChanged(Owner owner)
 }
 
 using namespace std::chrono;
-void EpochBase::setTime(const microseconds& usec)
+bool EpochBase::setTime(const microseconds& usec)
 {
     auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE,
                                       SYSTEMD_TIME_PATH,
@@ -50,8 +50,12 @@ void EpochBase::setTime(const microseconds& usec)
     auto reply = bus.call(method);
     if (reply.is_method_error())
     {
+        // TODO: When sdbus supports exception on property
+        // it can just throw exception instead of returning bool
         log<level::ERR>("Error in setting system time");
+        return false;
     }
+    return true;
 }
 
 microseconds EpochBase::getTime() const

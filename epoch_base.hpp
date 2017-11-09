@@ -49,8 +49,10 @@ class EpochBase : public sdbusplus::server::object::object <
          * org.freedesktop.timedate1's SetTime method.
          *
          * @param[in] timeOfDayUsec - Microseconds since UTC
+         *
+         * @return true or false to indicate if it sets time successfully
          */
-        void setTime(const std::chrono::microseconds& timeOfDayUsec);
+        bool setTime(const std::chrono::microseconds& timeOfDayUsec);
 
         /** @brief Get current time
          *
