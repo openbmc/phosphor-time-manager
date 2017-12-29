@@ -1,5 +1,5 @@
 AM_DEFAULT_SOURCE_EXT = .cpp
-
+if !INSTALL_ERROR_YAML
 sbin_PROGRAMS = phosphor-timemanager
 
 noinst_LTLIBRARIES = libtimemanager.la
@@ -47,3 +47,9 @@ xyz/openbmc_project/Time/Internal/error.cpp: ${top_srcdir}/xyz/openbmc_project/T
 	$(SDBUSPLUSPLUS) -r $(top_srcdir) error exception-cpp xyz.openbmc_project.Time.Internal> $@
 
 SUBDIRS = . test
+endif
+# Export error YAML to shared location
+yamldir = ${datadir}/phosphor-dbus-yaml/yaml
+nobase_yaml_DATA = \
+	xyz/openbmc_project/Time/Internal.errors.yaml \
+	xyz/openbmc_project/Time/Internal.metadata.yaml
