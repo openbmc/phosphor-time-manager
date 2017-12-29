@@ -1,6 +1,6 @@
 #pragma once
 
-#include "elog-errors.hpp"
+#include "phosphor-logging/elog-errors.hpp"
 #include "types.hpp"
 #include "xyz/openbmc_project/Time/Internal/error.hpp"
 

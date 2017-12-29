@@ -10,6 +10,12 @@ AM_SILENT_RULES([yes])
 AC_PROG_CXX
 AM_PROG_AR
 
+# Generate elog-errors.hpp if gen_errors optional feature is enabled
+AC_ARG_ENABLE([gen_errors],
+    AS_HELP_STRING([--enable-gen_errors], [Enable elog-errors.hpp generation ]),
+    [],[gen_errors=yes])
+AM_CONDITIONAL([GEN_ERRORS], [test "x$enable_gen_errors" != "xno"])
+
 # Check for compiler, packages only when install_error_yaml optional feature
 # is disabled
 AC_ARG_ENABLE([install_error_yaml],
