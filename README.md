@@ -2,6 +2,22 @@
 `phosphor-time-manager` is the time manager service that implements D-Bus
 interface `xyz/openbmc_project/Time/EpochTime.interface.yaml`.
 The user can get or set the BMC's or HOST's time via this interface.
+## To Build
+```
+To build this package, do the following steps:
+    1. ./bootstrap.sh
+    2. ./configure ${CONFIGURE_FLAGS} --prefix=/usr
+    3. make
+
+To full clean the repository again run `./bootstrap.sh clean`.
+```
+
+```
+For local build, pass --prefix=/usr option to the configure script
+to let the Makefile use /usr/share value over /usr/local/share for ${datadir}
+variable. The error yaml files and elog parser are stored in /usr/share
+location in the SDK.
+```
 
 ### General usage
 The service `xyz.openbmc_project.Time.Manager` provides two objects on D-Bus:
