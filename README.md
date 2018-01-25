@@ -20,7 +20,7 @@ the time. For example on an authenticated session:
        /xyz/openbmc_project/time/bmc xyz.openbmc_project.Time.EpochTime Elapsed
 
    ### With REST API on remote host
-   curl -b cjar -k https://bmc-ip/xyz/openbmc_project/time/bmc
+   curl -b cjar -k https://${BMC_IP}/xyz/openbmc_project/time/bmc
    ```
 * To set HOST's time:
    ```
@@ -32,7 +32,7 @@ the time. For example on an authenticated session:
    ### With REST API on remote host
    curl -b cjar -k -H "Content-Type: application/json" -X PUT \
        -d '{"data": 1487304700000000}' \
-       https://bmc-ip/xyz/openbmc_project/time/host/attr/Elapsed
+       https://${BMC_IP}/xyz/openbmc_project/time/host/attr/Elapsed
    ```
 
 ### Time settings
@@ -60,6 +60,46 @@ MANUAL    | BMC   | OK            | Not allowed
 MANUAL    | HOST  | Not allowed   | OK
 MANUAL    | SPLIT | OK            | OK
 MANUAL    | BOTH  | OK            | OK
+
+* To set an NTP [server](https://tf.nist.gov/tf-cgi/servers.cgi):
+   ```
+   ### With busctl on BMC
+   busctl set-property  xyz.openbmc_project.Network \
+      /xyz/openbmc_project/network/eth0 \
+      xyz.openbmc_project.Network.EthernetInterface NTPServers \
+      as 1 "<ntp_server>"
+
+   ### With REST API on remote host
+   curl -c cjar -b cjar -k -H "Content-Type: application/json" -X  PUT  -d \
+       '{"data": ["<ntp_server>"] }' \
+       https://${BMC_IP}/xyz/openbmc_project/network/eth0/attr/NTPServers
+   ```
+
+* To go into NTP mode
+   ```
+   ### With busctl on BMC
+   busctl set-property xyz.openbmc_project.Settings \
+       /xyz/openbmc_project/time/sync_method xyz.openbmc_project.Time.Synchronization \
+       TimeSyncMethod s "xyz.openbmc_project.Time.Synchronization.Method.NTP"
+
+   ### With REST API on remote host
+   curl -c cjar -b cjar -k -H "Content-Type: application/json" -X  PUT  -d \
+       '{"data": "xyz.openbmc_project.Time.Synchronization.Method.NTP" }' \
+       https://${BMC_IP}/xyz/openbmc_project/time/sync_method/attr/TimeSyncMethod
+   ```
+
+* To change owner
+   ```
+   ### With busctl on BMC
+   busctl set-property xyz.openbmc_project.Settings \
+       /xyz/openbmc_project/time/owner xyz.openbmc_project.Time.Owner \
+       TimeOwner s xyz.openbmc_project.Time.Owner.Owners.BMC
+
+   ### With REST API on remote host
+   curl -c cjar -b cjar -k -H "Content-Type: application/json" -X  PUT  -d \
+       '{"data": "xyz.openbmc_project.Time.Owner.Owners.BMC" }' \
+       https://${BMC_IP}/xyz/openbmc_project/time/owner/attr/TimeOwner
+   ```
 
 ### Special note on host on
 When the host is on, the changes of the above time mode/owner are not applied but
