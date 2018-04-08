@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 
-// Neeed to do this since its not exported outside of the kernel.
+// Need to do this since its not exported outside of the kernel.
 // Refer : https://gist.github.com/lethean/446cea944b7441228298
 #ifndef TFD_TIMER_CANCEL_ON_SET
 #define TFD_TIMER_CANCEL_ON_SET (1 << 1)
