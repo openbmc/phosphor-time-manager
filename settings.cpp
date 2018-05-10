@@ -35,7 +35,8 @@ Objects::Objects()
     }
 
     using Interfaces = std::vector<Interface>;
-    using MapperResponse = std::map<Path, std::map<Service, Interfaces>>;
+    using MapperResponse = std::vector<
+        std::pair<Path, std::vector<std::pair<Service, Interfaces>>>>;
     MapperResponse result;
     response.read(result);
     if (result.empty())
@@ -47,19 +48,23 @@ Objects::Objects()
     for (const auto& iter : result)
     {
         const Path& path = iter.first;
-        const Interface& interface = iter.second.begin()->second.front();
-
-        if (timeOwnerIntf == interface)
+        for (const auto& service_iter: iter.second)
         {
-            timeOwner = path;
-        }
-        else if (timeSyncIntf == interface)
-        {
-            timeSyncMethod = path;
-        }
-        else if (hostStateIntf == interface)
-        {
-            hostState = path;
+            for (const Interface& interface: service_iter.second)
+            {
+                if (timeOwnerIntf == interface)
+                {
+                    timeOwner = path;
+                }
+                else if (timeSyncIntf == interface)
+                {
+                    timeSyncMethod = path;
+                }
+                else if (hostStateIntf == interface)
+                {
+                    hostState = path;
+                }
+            }
         }
     }
 }

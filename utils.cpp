@@ -47,7 +47,8 @@ std::string getService(sdbusplus::bus::bus& bus,
                           MethodError::MISC({}));
     }
 
-    std::map<std::string, std::vector<std::string>> mapperResponse;
+    std::vector<std::pair<std::string, std::vector<std::string>>>
+        mapperResponse;
     mapperResponseMsg.read(mapperResponse);
     if (mapperResponse.empty())
     {
@@ -57,8 +58,10 @@ std::string getService(sdbusplus::bus::bus& bus,
                           MethodError::INTERFACE(interface),
                           MethodError::MISC("Error reading mapper response"));
     }
-
-    return mapperResponse.begin()->first;
+    if (mapperResponse.size() < 1){
+        return "";
+    }
+    return mapperResponse[0].first;
 }
 
 Mode strToMode(const std::string& mode)
