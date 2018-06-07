@@ -24,6 +24,7 @@ namespace time
 {
 namespace server = sdbusplus::xyz::openbmc_project::Time::server;
 using namespace phosphor::logging;
+using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 BmcEpoch::BmcEpoch(sdbusplus::bus::bus& bus,
                    const char* objPath)
@@ -107,8 +108,7 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
     if (timeOwner == Owner::Host)
     {
         log<level::ERR>("Setting BmcTime with HOST owner is not allowed");
-        // TODO: throw NotAllowed exception
-        return 0;
+        elog<InsufficientPermission>();
     }
 
     auto time = microseconds(value);

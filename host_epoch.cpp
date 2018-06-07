@@ -1,12 +1,15 @@
 #include "host_epoch.hpp"
 #include "utils.hpp"
 
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 namespace phosphor
 {
 namespace time
 {
+using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 using namespace sdbusplus::xyz::openbmc_project::Time;
 using namespace phosphor::logging;
 using namespace std::chrono;
@@ -51,8 +54,7 @@ uint64_t HostEpoch::elapsed(uint64_t value)
          && (timeOwner == Owner::Host || timeOwner == Owner::Both)))
     {
         log<level::ERR>("Setting HostTime is not allowed");
-        // TODO: throw NotAllowed exception
-        return 0;
+        elog<InsufficientPermission>();
     }
 
     auto time = microseconds(value);
