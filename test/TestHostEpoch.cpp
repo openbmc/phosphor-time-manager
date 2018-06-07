@@ -1,10 +1,13 @@
-#include <sdbusplus/bus.hpp>
-#include <gtest/gtest.h>
-
 #include "host_epoch.hpp"
 #include "utils.hpp"
 #include "config.h"
 #include "types.hpp"
+
+#include <xyz/openbmc_project/Common/error.hpp>
+
+#include <sdbusplus/bus.hpp>
+#include <gtest/gtest.h>
+
 
 namespace phosphor
 {
@@ -13,6 +16,8 @@ namespace time
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
+using InsufficientPermission =
+    sdbusplus::xyz::openbmc_project::Common::Error::InsufficientPermission;
 
 const constexpr microseconds USEC_ZERO{0};
 
@@ -73,9 +78,10 @@ class TestHostEpoch : public testing::Test
             // Set time is not allowed,
             // so verify offset is still 0 after set time
             microseconds diff = 1min;
-            hostEpoch.elapsed(hostEpoch.elapsed() + diff.count());
+            EXPECT_THROW(
+                hostEpoch.elapsed(hostEpoch.elapsed() + diff.count()),
+                InsufficientPermission);
             EXPECT_EQ(0, getOffset().count());
-            // TODO: when gmock is ready, check there is no call to timedatectl
         }
 
         void checkSetSplitTimeInFuture()

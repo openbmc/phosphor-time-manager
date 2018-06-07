@@ -1,11 +1,12 @@
-#include <sdbusplus/bus.hpp>
-#include <gtest/gtest.h>
-#include <memory>
-
 #include "bmc_epoch.hpp"
 #include "config.h"
 #include "types.hpp"
 #include "mocked_bmc_time_change_listener.hpp"
+
+#include <gtest/gtest.h>
+#include <memory>
+#include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 namespace phosphor
 {
@@ -14,6 +15,8 @@ namespace time
 
 using ::testing::_;
 using namespace std::chrono;
+using InsufficientPermission =
+    sdbusplus::xyz::openbmc_project::Common::Error::InsufficientPermission;
 
 class TestBmcEpoch : public testing::Test
 {
@@ -88,8 +91,9 @@ TEST_F(TestBmcEpoch, setElapsedNotAllowed)
     // In Host owner, setting time is not allowed
     setTimeMode(Mode::Manual);
     setTimeOwner(Owner::Host);
-    auto ret = bmcEpoch->elapsed(epochNow);
-    EXPECT_EQ(0, ret);
+    EXPECT_THROW(
+        bmcEpoch->elapsed(epochNow),
+        InsufficientPermission);
 }
 
 TEST_F(TestBmcEpoch, setElapsedOK)
