@@ -1,3 +1,0 @@
-#xyz.openbmc_project.Time.Internal.MethodError
-- name: MethodError
-  description: Failed to invoke Dbus method

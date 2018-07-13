@@ -1,9 +1,6 @@
 #include "utils.hpp"
 
-#include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
-#include <xyz/openbmc_project/Common/error.hpp>
 
 
 namespace phosphor
@@ -21,9 +18,6 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 namespace utils
 {
 
-using InvalidArgumentError =
-    sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument;
-
 using namespace phosphor::logging;
 
 std::string getService(sdbusplus::bus::bus& bus,
@@ -40,11 +34,11 @@ std::string getService(sdbusplus::bus::bus& bus,
 
     if (mapperResponseMsg.is_method_error())
     {
-        using namespace xyz::openbmc_project::Time::Internal;
-        elog<MethodErr>(MethodError::METHOD_NAME("GetObject"),
-                          MethodError::PATH(path),
-                          MethodError::INTERFACE(interface),
-                          MethodError::MISC({}));
+        log<level::ERR>("Mapper call failed",
+                        entry("METHOD=%d", "GetObject"),
+                        entry("PATH=%s", path),
+                        entry("INTERFACE=%s", interface));
+        throw std::runtime_error("Mapper call failed");
     }
 
     std::vector<std::pair<std::string, std::vector<std::string>>>
@@ -52,11 +46,8 @@ std::string getService(sdbusplus::bus::bus& bus,
     mapperResponseMsg.read(mapperResponse);
     if (mapperResponse.empty())
     {
-        using namespace xyz::openbmc_project::Time::Internal;
-        elog<MethodErr>(MethodError::METHOD_NAME("GetObject"),
-                          MethodError::PATH(path),
-                          MethodError::INTERFACE(interface),
-                          MethodError::MISC("Error reading mapper response"));
+        log<level::ERR>("Error reading mapper response");
+        throw std::runtime_error("Error reading mapper response");
     }
     if (mapperResponse.size() < 1){
         return "";
