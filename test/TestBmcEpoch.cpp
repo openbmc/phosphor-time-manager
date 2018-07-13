@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <sdbusplus/bus.hpp>
-#include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Time/error.hpp>
 
 namespace phosphor
 {
@@ -15,8 +15,8 @@ namespace time
 
 using ::testing::_;
 using namespace std::chrono;
-using InsufficientPermission =
-    sdbusplus::xyz::openbmc_project::Common::Error::InsufficientPermission;
+using NotAllowed =
+    sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
 
 class TestBmcEpoch : public testing::Test
 {
@@ -93,7 +93,7 @@ TEST_F(TestBmcEpoch, setElapsedNotAllowed)
     setTimeOwner(Owner::Host);
     EXPECT_THROW(
         bmcEpoch->elapsed(epochNow),
-        InsufficientPermission);
+        NotAllowed);
 }
 
 TEST_F(TestBmcEpoch, setElapsedOK)
