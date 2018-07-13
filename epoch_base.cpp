@@ -1,6 +1,9 @@
 #include "epoch_base.hpp"
 
+#include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Time/error.hpp>
 
 #include <iomanip>
 #include <sstream>
@@ -19,6 +22,8 @@ namespace time
 {
 
 using namespace phosphor::logging;
+using FailedError =
+    sdbusplus::xyz::openbmc_project::Time::Error::Failed;
 
 EpochBase::EpochBase(sdbusplus::bus::bus& bus,
                      const char* objPath)
@@ -50,10 +55,10 @@ bool EpochBase::setTime(const microseconds& usec)
     auto reply = bus.call(method);
     if (reply.is_method_error())
     {
-        // TODO: When sdbus supports exception on property
-        // it can just throw exception instead of returning bool
         log<level::ERR>("Error in setting system time");
-        return false;
+        using namespace xyz::openbmc_project::Time;
+        elog<FailedError>(
+            Failed::REASON("Systemd failed to set time"));
     }
     return true;
 }
