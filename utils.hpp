@@ -1,12 +1,12 @@
 #pragma once
 
-#include "elog-errors.hpp"
 #include "types.hpp"
-#include "xyz/openbmc_project/Time/Internal/error.hpp"
 
 #include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <fstream>
 
@@ -19,7 +19,7 @@ namespace utils
 
 using namespace phosphor::logging;
 using MethodErr =
-    sdbusplus::xyz::openbmc_project::Time::Internal::Error::MethodError;
+    sdbusplus::xyz::openbmc_project::Common::Error::MethodError;
 
 /** @brief Read data with type T from file
  *
@@ -84,7 +84,7 @@ T getProperty(sdbusplus::bus::bus& bus,
     }
     else
     {
-        using namespace xyz::openbmc_project::Time::Internal;
+        using namespace xyz::openbmc_project::Common;
         elog<MethodErr>(MethodError::METHOD_NAME("Get"),
                           MethodError::PATH(path),
                           MethodError::INTERFACE(interface),

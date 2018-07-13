@@ -40,7 +40,7 @@ std::string getService(sdbusplus::bus::bus& bus,
 
     if (mapperResponseMsg.is_method_error())
     {
-        using namespace xyz::openbmc_project::Time::Internal;
+        using namespace xyz::openbmc_project::Common;
         elog<MethodErr>(MethodError::METHOD_NAME("GetObject"),
                           MethodError::PATH(path),
                           MethodError::INTERFACE(interface),
@@ -52,7 +52,7 @@ std::string getService(sdbusplus::bus::bus& bus,
     mapperResponseMsg.read(mapperResponse);
     if (mapperResponse.empty())
     {
-        using namespace xyz::openbmc_project::Time::Internal;
+        using namespace xyz::openbmc_project::Common;
         elog<MethodErr>(MethodError::METHOD_NAME("GetObject"),
                           MethodError::PATH(path),
                           MethodError::INTERFACE(interface),
