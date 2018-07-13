@@ -3,7 +3,7 @@
 #include "config.h"
 #include "types.hpp"
 
-#include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Time/error.hpp>
 
 #include <sdbusplus/bus.hpp>
 #include <gtest/gtest.h>
@@ -16,8 +16,8 @@ namespace time
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
-using InsufficientPermission =
-    sdbusplus::xyz::openbmc_project::Common::Error::InsufficientPermission;
+using NotAllowed =
+    sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
 
 const constexpr microseconds USEC_ZERO{0};
 
@@ -80,7 +80,7 @@ class TestHostEpoch : public testing::Test
             microseconds diff = 1min;
             EXPECT_THROW(
                 hostEpoch.elapsed(hostEpoch.elapsed() + diff.count()),
-                InsufficientPermission);
+                NotAllowed);
             EXPECT_EQ(0, getOffset().count());
         }
 

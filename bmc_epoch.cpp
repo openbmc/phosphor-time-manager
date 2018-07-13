@@ -1,9 +1,11 @@
 #include "bmc_epoch.hpp"
+#include "utils.hpp"
 
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Time/error.hpp>
 
 #include <sys/timerfd.h>
 #include <unistd.h>
@@ -24,7 +26,9 @@ namespace time
 {
 namespace server = sdbusplus::xyz::openbmc_project::Time::server;
 using namespace phosphor::logging;
-using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+
+using NotAllowedError =
+    sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
 
 BmcEpoch::BmcEpoch(sdbusplus::bus::bus& bus,
                    const char* objPath)
@@ -107,8 +111,12 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
     */
     if (timeOwner == Owner::Host)
     {
-        log<level::ERR>("Setting BmcTime with HOST owner is not allowed");
-        elog<InsufficientPermission>();
+        using namespace xyz::openbmc_project::Time;
+        elog<NotAllowedError>(
+            NotAllowed::OWNER(utils::ownerToStr(timeOwner).c_str()),
+            NotAllowed::SYNC_METHOD(utils::modeToStr(timeMode).c_str()),
+            NotAllowed::REASON(
+                "Setting BmcTime with HOST owner is not allowed"));
     }
 
     auto time = microseconds(value);
