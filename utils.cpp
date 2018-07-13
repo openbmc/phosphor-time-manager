@@ -1,9 +1,6 @@
 #include "utils.hpp"
 
-#include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
-#include <xyz/openbmc_project/Common/error.hpp>
 
 
 namespace phosphor
@@ -21,9 +18,6 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 namespace utils
 {
 
-using InvalidArgumentError =
-    sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument;
-
 using namespace phosphor::logging;
 
 std::string getService(sdbusplus::bus::bus& bus,
@@ -36,32 +30,31 @@ std::string getService(sdbusplus::bus::bus& bus,
                                       "GetObject");
 
     mapper.append(path, std::vector<std::string>({interface}));
-    auto mapperResponseMsg = bus.call(mapper);
-
-    if (mapperResponseMsg.is_method_error())
+    try
     {
-        using namespace xyz::openbmc_project::Time::Internal;
-        elog<MethodErr>(MethodError::METHOD_NAME("GetObject"),
-                          MethodError::PATH(path),
-                          MethodError::INTERFACE(interface),
-                          MethodError::MISC({}));
-    }
+        auto mapperResponseMsg = bus.call(mapper);
 
-    std::vector<std::pair<std::string, std::vector<std::string>>>
-        mapperResponse;
-    mapperResponseMsg.read(mapperResponse);
-    if (mapperResponse.empty())
+        std::vector<std::pair<std::string, std::vector<std::string>>>
+            mapperResponse;
+        mapperResponseMsg.read(mapperResponse);
+        if (mapperResponse.empty())
+        {
+            log<level::ERR>("Error reading mapper response");
+            throw std::runtime_error("Error reading mapper response");
+        }
+        if (mapperResponse.size() < 1){
+            return "";
+        }
+        return mapperResponse[0].first;
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
     {
-        using namespace xyz::openbmc_project::Time::Internal;
-        elog<MethodErr>(MethodError::METHOD_NAME("GetObject"),
-                          MethodError::PATH(path),
-                          MethodError::INTERFACE(interface),
-                          MethodError::MISC("Error reading mapper response"));
+        log<level::ERR>("Mapper call failed",
+                        entry("METHOD=%d", "GetObject"),
+                        entry("PATH=%s", path),
+                        entry("INTERFACE=%s", interface));
+        throw std::runtime_error("Mapper call failed");
     }
-    if (mapperResponse.size() < 1){
-        return "";
-    }
-    return mapperResponse[0].first;
 }
 
 Mode strToMode(const std::string& mode)

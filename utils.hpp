@@ -1,10 +1,7 @@
 #pragma once
 
-#include "elog-errors.hpp"
 #include "types.hpp"
-#include "xyz/openbmc_project/Time/Internal/error.hpp"
 
-#include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 
@@ -18,8 +15,6 @@ namespace utils
 {
 
 using namespace phosphor::logging;
-using MethodErr =
-    sdbusplus::xyz::openbmc_project::Time::Internal::Error::MethodError;
 
 /** @brief Read data with type T from file
  *
@@ -71,26 +66,26 @@ T getProperty(sdbusplus::bus::bus& bus,
               const char* interface,
               const char* propertyName)
 {
-    sdbusplus::message::variant<T> value{};
     auto method = bus.new_method_call(service,
                                       path,
                                       "org.freedesktop.DBus.Properties",
                                       "Get");
     method.append(interface, propertyName);
-    auto reply = bus.call(method);
-    if (reply)
+    try
     {
+        sdbusplus::message::variant<T> value{};
+        auto reply = bus.call(method);
         reply.read(value);
+        return value.template get<T>();
     }
-    else
+    catch (const sdbusplus::exception::SdBusError& ex)
     {
-        using namespace xyz::openbmc_project::Time::Internal;
-        elog<MethodErr>(MethodError::METHOD_NAME("Get"),
-                          MethodError::PATH(path),
-                          MethodError::INTERFACE(interface),
-                          MethodError::MISC(propertyName));
+        log<level::ERR>("GetProperty call failed",
+                        entry("PATH=%s", path),
+                        entry("INTERFACE=%s", interface),
+                        entry("PROPERTY=%s", propertyName));
+        throw std::runtime_error("GetProperty call failed");
     }
-    return value.template get<T>();
 }
 
 /** @brief Get service name from object path and interface
