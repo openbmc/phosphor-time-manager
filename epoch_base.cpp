@@ -52,13 +52,17 @@ bool EpochBase::setTime(const microseconds& usec)
     method.append(static_cast<int64_t>(usec.count()),
                   false, // relative
                   false); // user_interaction
-    auto reply = bus.call(method);
-    if (reply.is_method_error())
+
+    try
+    {
+        bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
     {
         log<level::ERR>("Error in setting system time");
         using namespace xyz::openbmc_project::Time;
         elog<FailedError>(
-            Failed::REASON("Systemd failed to set time"));
+            Failed::REASON(ex.what()));
     }
     return true;
 }
