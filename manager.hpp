@@ -1,5 +1,6 @@
 #pragma once
 
+#include "config.h"
 #include "types.hpp"
 #include "property_change_listener.hpp"
 #include "settings.hpp"
@@ -64,10 +65,10 @@ class Manager
         std::string requestedOwner;
 
         /** @brief The current time mode */
-        Mode timeMode;
+        Mode timeMode = DEFAULT_TIME_MODE;
 
         /** @brief The current time owner */
-        Owner timeOwner;
+        Owner timeOwner = DEFAULT_TIME_OWNER;
 
         /** @brief Restore saved settings */
         void restoreSettings();
