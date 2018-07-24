@@ -194,14 +194,16 @@ void Manager::updateNtpSetting(const std::string& value)
     method.append(isNtp, false); // isNtp: 'true/false' means Enable/Disable
                                  // 'false' meaning no policy-kit
 
-    if (bus.call(method))
+    try
     {
+        bus.call_noreply(method);
         log<level::INFO>("Updated NTP setting",
-                         entry("ENABLED:%d", isNtp));
+                         entry("ENABLED=%d", isNtp));
     }
-    else
+    catch (const sdbusplus::exception::SdBusError& ex)
     {
-        log<level::ERR>("Failed to update NTP setting");
+        log<level::ERR>("Failed to update NTP setting",
+                        entry("ERR=%s", ex.what()));
     }
 }
 
