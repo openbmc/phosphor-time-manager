@@ -1,5 +1,6 @@
 #pragma once
 
+#include "config.h"
 #include "property_change_listener.hpp"
 
 #include <sdbusplus/bus.hpp>
@@ -38,10 +39,10 @@ class EpochBase : public sdbusplus::server::object::object <
         sdbusplus::bus::bus& bus;
 
         /** @brief The current time mode */
-        Mode timeMode = Mode::Manual;
+        Mode timeMode = DEFAULT_TIME_MODE;
 
         /** @brief The current time owner */
-        Owner timeOwner = Owner::Both;
+        Owner timeOwner = DEFAULT_TIME_OWNER;
 
         /** @brief Set current time to system
          *
