@@ -54,6 +54,13 @@ TEST(TestUtil, modeToStr)
     EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.Manual",
               modeToStr(Mode::Manual));
 
+    // -flto in phosphor-dbus-interfaces causes below case failure,
+    // that it does not throw anymore, and instead it returns unexpected
+    // string "xyz.openbmc_project.Time.Owner.Owners.BMC" which seems to
+    // ponit to other variables!
+    auto r = modeToStr(static_cast<Mode>(100));
+    fprintf(stderr, "MINEDBG: r = %s\n", r.c_str());
+
     // All unrecognized strings result in exception
     EXPECT_ANY_THROW(modeToStr(static_cast<Mode>(100)));
 }
