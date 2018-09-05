@@ -24,6 +24,9 @@ namespace phosphor
 namespace time
 {
 
+const char* Manager::PROPERTY_TIME_MODE = "TimeMode";
+const char* Manager::PROPERTY_TIME_OWNER = "TimeOwner";
+
 using namespace phosphor::logging;
 
 const std::set<std::string>
