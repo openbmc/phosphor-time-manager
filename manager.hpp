@@ -186,10 +186,10 @@ class Manager
                                      sd_bus_error* retError);
 
         /** @brief The string of time mode property */
-        static constexpr auto PROPERTY_TIME_MODE = "TimeSyncMethod";
+        static const char* PROPERTY_TIME_MODE;
 
         /** @brief The string of time owner property */
-        static constexpr auto PROPERTY_TIME_OWNER = "TimeOwner";
+        static const char* PROPERTY_TIME_OWNER;
 
         using Updater = std::function<void(const std::string&)>;
 
