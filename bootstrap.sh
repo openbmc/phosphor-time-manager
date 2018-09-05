@@ -16,3 +16,6 @@ esac
 
 autoreconf -i
 echo 'Run "./configure ${CONFIGURE_FLAGS} && make"'
+echo 'To enable LTO, run'
+echo '"./configure ${CONFIGURE_FLAGS} --enable-lto \'
+echo 'AR=${TARGET_PREFIX}gcc-ar RANLIB=${TARGET_PREFIX}gcc-ranlib && make"'

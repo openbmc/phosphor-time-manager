@@ -29,6 +29,20 @@ PKG_CHECK_MODULES([GTEST], [gtest], [], [AC_MSG_NOTICE([gtest not found, tests w
 PKG_CHECK_MODULES([GMOCK], [gmock], [], [AC_MSG_NOTICE([gmock not found, tests will not build])])
 PKG_CHECK_MODULES([GTEST_MAIN], [gtest_main], [], [AC_MSG_NOTICE([gtest_main not found, tests will not build])])
 
+AC_ARG_ENABLE([lto],
+[AS_HELP_STRING([--enable-lto],[enable link-time optimization @<:@no@:>@])],
+[want_lto="${enableval}"], [want_lto=no])
+## FIXME: add a test for gcc >= 4.5.0
+if test "x${want_lto}" != xno; then
+  LTO=-flto
+fi
+if test "x${want_lto}" = xyes; then
+  LTOALL=-flto
+fi
+AC_SUBST(LTO)
+AC_SUBST(LTOALL)
+AM_CONDITIONAL(BUILD_LTO, [test "x${want_lto}" != xno])
+
 # Test cases require SDK so only build if we're told to (and SDK is available)
 AC_ARG_ENABLE([oe-sdk],
     AS_HELP_STRING([--enable-oe-sdk], [Link testcases absolutely against OE SDK so they can be ran within it.])
@@ -53,7 +67,7 @@ AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
 AS_IF([test "x$SDBUSPLUSPLUS" == "x"], AC_MSG_ERROR([Cannot find sdbus++]))
 
 # Checks for typedefs, structures, and compiler characteristics.
-AX_CXX_COMPILE_STDCXX_14([noext])
+AX_CXX_COMPILE_STDCXX_17([noext])
 AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
 # DBUS interface
