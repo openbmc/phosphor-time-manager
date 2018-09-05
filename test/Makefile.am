@@ -21,7 +21,7 @@ test_CPPFLAGS = $(GTEST_CPPFLAGS) \
 
 test_CXXFLAGS = $(PTHREAD_CFLAGS) \
                 $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
-                $(SDBUSPLUS_CFLAGS)
+                $(SDBUSPLUS_CFLAGS) -flto
 
 test_LDFLAGS = $(GMOCK_LIBS) \
                $(GTEST_MAIN_LIBS) \
