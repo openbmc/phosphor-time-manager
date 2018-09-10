@@ -15,14 +15,16 @@ test_SOURCES = \
 test_LDADD = $(top_builddir)/libtimemanager.la
 
 test_CPPFLAGS = $(GTEST_CPPFLAGS) \
+                $(GMOCK_CFLAGS) \
+                $(GTEST_MAIN_CFLAGS) \
                 $(AM_CPPFLAGS)
 
 test_CXXFLAGS = $(PTHREAD_CFLAGS) \
                 $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
                 $(SDBUSPLUS_CFLAGS)
 
-test_LDFLAGS = -lgmock_main \
-               -lgmock \
+test_LDFLAGS = $(GMOCK_LIBS) \
+               $(GTEST_MAIN_LIBS) \
                $(PTHREAD_LIBS) \
                $(OESDK_TESTCASE_FLAGS)
 
