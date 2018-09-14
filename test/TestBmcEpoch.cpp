@@ -1,12 +1,14 @@
-#include "bmc_epoch.hpp"
 #include "config.h"
-#include "types.hpp"
-#include "mocked_bmc_time_change_listener.hpp"
 
-#include <gtest/gtest.h>
+#include "bmc_epoch.hpp"
+#include "mocked_bmc_time_change_listener.hpp"
+#include "types.hpp"
+
 #include <memory>
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Time/error.hpp>
+
+#include <gtest/gtest.h>
 
 namespace phosphor
 {
@@ -15,57 +17,52 @@ namespace time
 
 using ::testing::_;
 using namespace std::chrono;
-using NotAllowed =
-    sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
+using NotAllowed = sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
 
 class TestBmcEpoch : public testing::Test
 {
-    public:
-        sdbusplus::bus::bus bus;
-        sd_event* event;
-        MockBmcTimeChangeListener listener;
-        std::unique_ptr<BmcEpoch> bmcEpoch;
+  public:
+    sdbusplus::bus::bus bus;
+    sd_event* event;
+    MockBmcTimeChangeListener listener;
+    std::unique_ptr<BmcEpoch> bmcEpoch;
 
-        TestBmcEpoch()
-            : bus(sdbusplus::bus::new_default())
-        {
-            // BmcEpoch requires sd_event to init
-            sd_event_default(&event);
-            bus.attach_event(event, SD_EVENT_PRIORITY_NORMAL);
-            bmcEpoch = std::make_unique<BmcEpoch>(bus, OBJPATH_BMC);
-            bmcEpoch->setBmcTimeChangeListener(&listener);
-        }
+    TestBmcEpoch() : bus(sdbusplus::bus::new_default())
+    {
+        // BmcEpoch requires sd_event to init
+        sd_event_default(&event);
+        bus.attach_event(event, SD_EVENT_PRIORITY_NORMAL);
+        bmcEpoch = std::make_unique<BmcEpoch>(bus, OBJPATH_BMC);
+        bmcEpoch->setBmcTimeChangeListener(&listener);
+    }
 
-        ~TestBmcEpoch()
-        {
-            bus.detach_event();
-            sd_event_unref(event);
-        }
+    ~TestBmcEpoch()
+    {
+        bus.detach_event();
+        sd_event_unref(event);
+    }
 
-        // Proxies for BmcEpoch's private members and functions
-        Mode getTimeMode()
-        {
-            return bmcEpoch->timeMode;
-        }
-        Owner getTimeOwner()
-        {
-            return bmcEpoch->timeOwner;
-        }
-        void setTimeOwner(Owner owner)
-        {
-            bmcEpoch->timeOwner = owner;
-        }
-        void setTimeMode(Mode mode)
-        {
-            bmcEpoch->timeMode = mode;
-        }
-        void triggerTimeChange()
-        {
-            bmcEpoch->onTimeChange(nullptr,
-                                   -1,
-                                   0,
-                                   bmcEpoch.get());
-        }
+    // Proxies for BmcEpoch's private members and functions
+    Mode getTimeMode()
+    {
+        return bmcEpoch->timeMode;
+    }
+    Owner getTimeOwner()
+    {
+        return bmcEpoch->timeOwner;
+    }
+    void setTimeOwner(Owner owner)
+    {
+        bmcEpoch->timeOwner = owner;
+    }
+    void setTimeMode(Mode mode)
+    {
+        bmcEpoch->timeMode = mode;
+    }
+    void triggerTimeChange()
+    {
+        bmcEpoch->onTimeChange(nullptr, -1, 0, bmcEpoch.get());
+    }
 };
 
 TEST_F(TestBmcEpoch, empty)
@@ -85,15 +82,14 @@ TEST_F(TestBmcEpoch, getElapsed)
 
 TEST_F(TestBmcEpoch, setElapsedNotAllowed)
 {
-    auto epochNow = duration_cast<microseconds>(
-        system_clock::now().time_since_epoch()).count();
+    auto epochNow =
+        duration_cast<microseconds>(system_clock::now().time_since_epoch())
+            .count();
 
     // In Host owner, setting time is not allowed
     setTimeMode(Mode::Manual);
     setTimeOwner(Owner::Host);
-    EXPECT_THROW(
-        bmcEpoch->elapsed(epochNow),
-        NotAllowed);
+    EXPECT_THROW(bmcEpoch->elapsed(epochNow), NotAllowed);
 }
 
 TEST_F(TestBmcEpoch, setElapsedOK)
@@ -110,5 +106,5 @@ TEST_F(TestBmcEpoch, onTimeChange)
     triggerTimeChange();
 }
 
-}
-}
+} // namespace time
+} // namespace phosphor

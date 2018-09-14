@@ -1,15 +1,15 @@
 #include "bmc_epoch.hpp"
-#include "utils.hpp"
 
-#include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
-#include <xyz/openbmc_project/Common/error.hpp>
-#include <xyz/openbmc_project/Time/error.hpp>
+#include "utils.hpp"
 
 #include <sys/timerfd.h>
 #include <unistd.h>
 
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/elog.hpp>
+#include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Time/error.hpp>
 
 // Need to do this since its not exported outside of the kernel.
 // Refer : https://gist.github.com/lethean/446cea944b7441228298
@@ -30,54 +30,47 @@ using namespace phosphor::logging;
 using NotAllowedError =
     sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
 
-BmcEpoch::BmcEpoch(sdbusplus::bus::bus& bus,
-                   const char* objPath)
-    : EpochBase(bus, objPath),
-      bus(bus)
+BmcEpoch::BmcEpoch(sdbusplus::bus::bus& bus, const char* objPath) :
+    EpochBase(bus, objPath), bus(bus)
 {
     initialize();
 }
 
 void BmcEpoch::initialize()
 {
-    using InternalFailure = sdbusplus::xyz::openbmc_project::Common::
-                                Error::InternalFailure;
+    using InternalFailure =
+        sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
     // Subscribe time change event
     // Choose the MAX time that is possible to avoid mis fires.
     constexpr itimerspec maxTime = {
-        {0, 0}, // it_interval
-        {TIME_T_MAX, 0}, //it_value
+        {0, 0},          // it_interval
+        {TIME_T_MAX, 0}, // it_value
     };
 
     timeFd = timerfd_create(CLOCK_REALTIME, 0);
     if (timeFd == -1)
     {
-        log<level::ERR>("Failed to create timerfd",
-                        entry("ERRNO=%d", errno),
+        log<level::ERR>("Failed to create timerfd", entry("ERRNO=%d", errno),
                         entry("ERR=%s", strerror(errno)));
         elog<InternalFailure>();
     }
 
-    auto r = timerfd_settime(timeFd,
-                             TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET,
-                             &maxTime,
-                             nullptr);
+    auto r = timerfd_settime(
+        timeFd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &maxTime, nullptr);
     if (r != 0)
     {
-        log<level::ERR>("Failed to set timerfd",
-                        entry("ERRNO=%d", errno),
+        log<level::ERR>("Failed to set timerfd", entry("ERRNO=%d", errno),
                         entry("ERR=%s", strerror(errno)));
         elog<InternalFailure>();
     }
 
     sd_event_source* es;
-    r = sd_event_add_io(bus.get_event(), &es,
-                        timeFd, EPOLLIN, onTimeChange, this);
+    r = sd_event_add_io(bus.get_event(), &es, timeFd, EPOLLIN, onTimeChange,
+                        this);
     if (r < 0)
     {
-        log<level::ERR>("Failed to add event",
-                        entry("ERRNO=%d", -r),
+        log<level::ERR>("Failed to add event", entry("ERRNO=%d", -r),
                         entry("ERR=%s", strerror(-r)));
         elog<InternalFailure>();
     }
@@ -143,16 +136,17 @@ void BmcEpoch::notifyBmcTimeChange(const microseconds& time)
     }
 }
 
-int BmcEpoch::onTimeChange(sd_event_source* es, int fd,
-                           uint32_t /* revents */, void* userdata)
+int BmcEpoch::onTimeChange(sd_event_source* es, int fd, uint32_t /* revents */,
+                           void* userdata)
 {
     auto bmcEpoch = static_cast<BmcEpoch*>(userdata);
 
-    std::array<char, 64> time {};
+    std::array<char, 64> time{};
 
     // We are not interested in the data here.
     // So read until there is no new data here in the FD
-    while (read(fd, time.data(), time.max_size()) > 0);
+    while (read(fd, time.data(), time.max_size()) > 0)
+        ;
 
     log<level::INFO>("BMC system time is changed");
     bmcEpoch->notifyBmcTimeChange(bmcEpoch->getTime());
@@ -162,4 +156,3 @@ int BmcEpoch::onTimeChange(sd_event_source* es, int fd,
 
 } // namespace time
 } // namespace phosphor
-

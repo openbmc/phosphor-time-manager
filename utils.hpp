@@ -2,10 +2,9 @@
 
 #include "types.hpp"
 
+#include <fstream>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
-
-#include <fstream>
 
 namespace phosphor
 {
@@ -60,16 +59,11 @@ void writeData(const char* fileName, T&& data)
  * @return The value of the property
  */
 template <typename T>
-T getProperty(sdbusplus::bus::bus& bus,
-              const char* service,
-              const char* path,
-              const char* interface,
-              const char* propertyName)
+T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
+              const char* interface, const char* propertyName)
 {
-    auto method = bus.new_method_call(service,
-                                      path,
-                                      "org.freedesktop.DBus.Properties",
-                                      "Get");
+    auto method = bus.new_method_call(service, path,
+                                      "org.freedesktop.DBus.Properties", "Get");
     method.append(interface, propertyName);
     try
     {
@@ -80,8 +74,7 @@ T getProperty(sdbusplus::bus::bus& bus,
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {
-        log<level::ERR>("GetProperty call failed",
-                        entry("PATH=%s", path),
+        log<level::ERR>("GetProperty call failed", entry("PATH=%s", path),
                         entry("INTERFACE=%s", interface),
                         entry("PROPERTY=%s", propertyName));
         throw std::runtime_error("GetProperty call failed");
@@ -96,8 +89,7 @@ T getProperty(sdbusplus::bus::bus& bus,
  *
  * @return The name of the service
  */
-std::string getService(sdbusplus::bus::bus& bus,
-                       const char* path,
+std::string getService(sdbusplus::bus::bus& bus, const char* path,
                        const char* interface);
 
 /** @brief Convert a string to enum Mode

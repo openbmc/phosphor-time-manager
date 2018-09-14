@@ -1,8 +1,9 @@
 #include "manager.hpp"
+
 #include "utils.hpp"
 
-#include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/State/Host/server.hpp>
@@ -17,7 +18,7 @@ constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
 constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
 constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
 constexpr auto METHOD_SET_NTP = "SetNTP";
-}
+} // namespace
 
 namespace phosphor
 {
@@ -26,29 +27,25 @@ namespace time
 
 using namespace phosphor::logging;
 
-const std::set<std::string>
-Manager::managedProperties = {PROPERTY_TIME_MODE, PROPERTY_TIME_OWNER};
+const std::set<std::string> Manager::managedProperties = {PROPERTY_TIME_MODE,
+                                                          PROPERTY_TIME_OWNER};
 
-Manager::Manager(sdbusplus::bus::bus& bus)
-    : bus(bus)
+Manager::Manager(sdbusplus::bus::bus& bus) : bus(bus)
 {
     using namespace sdbusplus::bus::match::rules;
     hostStateChangeMatch =
         std::make_unique<decltype(hostStateChangeMatch)::element_type>(
-            bus,
-            propertiesChanged(settings.hostState, settings::hostStateIntf),
-            std::bind(std::mem_fn(&Manager::onHostStateChanged),
-                      this, std::placeholders::_1));
+            bus, propertiesChanged(settings.hostState, settings::hostStateIntf),
+            std::bind(std::mem_fn(&Manager::onHostStateChanged), this,
+                      std::placeholders::_1));
     settingsMatches.emplace_back(
-        bus,
-        propertiesChanged(settings.timeOwner, settings::timeOwnerIntf),
-        std::bind(std::mem_fn(&Manager::onSettingsChanged),
-                  this, std::placeholders::_1));
+        bus, propertiesChanged(settings.timeOwner, settings::timeOwnerIntf),
+        std::bind(std::mem_fn(&Manager::onSettingsChanged), this,
+                  std::placeholders::_1));
     settingsMatches.emplace_back(
-        bus,
-        propertiesChanged(settings.timeSyncMethod, settings::timeSyncIntf),
-        std::bind(std::mem_fn(&Manager::onSettingsChanged),
-          this, std::placeholders::_1));
+        bus, propertiesChanged(settings.timeSyncMethod, settings::timeSyncIntf),
+        std::bind(std::mem_fn(&Manager::onSettingsChanged), this,
+                  std::placeholders::_1));
 
     checkHostOn();
 
@@ -57,10 +54,8 @@ Manager::Manager(sdbusplus::bus::bus& bus)
 
     // Check the settings daemon to process the new settings
     auto mode = getSetting(settings.timeSyncMethod.c_str(),
-                           settings::timeSyncIntf,
-                           PROPERTY_TIME_MODE);
-    auto owner = getSetting(settings.timeOwner.c_str(),
-                            settings::timeOwnerIntf,
+                           settings::timeSyncIntf, PROPERTY_TIME_MODE);
+    auto owner = getSetting(settings.timeOwner.c_str(), settings::timeOwnerIntf,
                             PROPERTY_TIME_OWNER);
 
     onPropertyChanged(PROPERTY_TIME_MODE, mode);
@@ -93,14 +88,11 @@ void Manager::restoreSettings()
 void Manager::checkHostOn()
 {
     using Host = sdbusplus::xyz::openbmc_project::State::server::Host;
-    auto hostService = utils::getService(bus,
-                                         settings.hostState.c_str(),
+    auto hostService = utils::getService(bus, settings.hostState.c_str(),
                                          settings::hostStateIntf);
-    auto stateStr = utils::getProperty<std::string>(bus,
-                                                    hostService.c_str(),
-                                                    settings.hostState.c_str(),
-                                                    settings::hostStateIntf,
-                                                    HOST_CURRENT_STATE);
+    auto stateStr = utils::getProperty<std::string>(
+        bus, hostService.c_str(), settings.hostState.c_str(),
+        settings::hostStateIntf, HOST_CURRENT_STATE);
     auto state = Host::convertHostStateFromString(stateStr);
     hostOn = (state == Host::HostState::Running);
 }
@@ -142,7 +134,7 @@ int Manager::onSettingsChanged(sdbusplus::message::message& msg)
 
     msg.read(interface, properties);
 
-    for(const auto& p : properties)
+    for (const auto& p : properties)
     {
         onPropertyChanged(p.first, p.second.get<std::string>());
     }
@@ -187,18 +179,15 @@ void Manager::updateNtpSetting(const std::string& value)
 {
     bool isNtp =
         (value == "xyz.openbmc_project.Time.Synchronization.Method.NTP");
-    auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE,
-                                      SYSTEMD_TIME_PATH,
-                                      SYSTEMD_TIME_INTERFACE,
-                                      METHOD_SET_NTP);
+    auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE, SYSTEMD_TIME_PATH,
+                                      SYSTEMD_TIME_INTERFACE, METHOD_SET_NTP);
     method.append(isNtp, false); // isNtp: 'true/false' means Enable/Disable
                                  // 'false' meaning no policy-kit
 
     try
     {
         bus.call_noreply(method);
-        log<level::INFO>("Updated NTP setting",
-                         entry("ENABLED=%d", isNtp));
+        log<level::INFO>("Updated NTP setting", entry("ENABLED=%d", isNtp));
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {
@@ -220,11 +209,12 @@ void Manager::onHostStateChanged(sdbusplus::message::message& msg)
 
     msg.read(interface, properties);
 
-    for(const auto& p : properties)
+    for (const auto& p : properties)
     {
         if (p.first == HOST_CURRENT_STATE)
         {
-            auto state = Host::convertHostStateFromString(p.second.get<std::string>());
+            auto state =
+                Host::convertHostStateFromString(p.second.get<std::string>());
             onHostState(state == Host::HostState::Running);
             break;
         }
@@ -310,17 +300,13 @@ void Manager::onTimeOwnerChanged()
     }
 }
 
-std::string Manager::getSetting(const char* path,
-                                const char* interface,
+std::string Manager::getSetting(const char* path, const char* interface,
                                 const char* setting) const
 {
     std::string settingManager = utils::getService(bus, path, interface);
-    return utils::getProperty<std::string>(bus,
-                                           settingManager.c_str(),
-                                           path,
-                                           interface,
-                                           setting);
+    return utils::getProperty<std::string>(bus, settingManager.c_str(), path,
+                                           interface, setting);
 }
 
-}
-}
+} // namespace time
+} // namespace phosphor

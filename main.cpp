@@ -1,23 +1,22 @@
-#include <sdbusplus/bus.hpp>
-
 #include "config.h"
+
 #include "bmc_epoch.hpp"
 #include "host_epoch.hpp"
 #include "manager.hpp"
+
+#include <sdbusplus/bus.hpp>
 
 int main()
 {
     auto bus = sdbusplus::bus::new_default();
     sd_event* event = nullptr;
 
-    auto eventDeleter = [](sd_event* e) {
-        e = sd_event_unref(e);
-    };
+    auto eventDeleter = [](sd_event* e) { e = sd_event_unref(e); };
     using SdEvent = std::unique_ptr<sd_event, decltype(eventDeleter)>;
 
     // acquire a reference to the default event loop
     sd_event_default(&event);
-    SdEvent sdEvent {event, eventDeleter};
+    SdEvent sdEvent{event, eventDeleter};
     event = nullptr;
 
     // attach bus to this event loop
@@ -29,7 +28,7 @@ int main()
 
     phosphor::time::Manager manager(bus);
     phosphor::time::BmcEpoch bmc(bus, OBJPATH_BMC);
-    phosphor::time::HostEpoch host(bus,OBJPATH_HOST);
+    phosphor::time::HostEpoch host(bus, OBJPATH_HOST);
 
     manager.addListener(&bmc);
     manager.addListener(&host);

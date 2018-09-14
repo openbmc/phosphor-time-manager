@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <sdbusplus/bus.hpp>
+#include <string>
 
 namespace settings
 {
@@ -20,37 +20,37 @@ constexpr auto hostStateIntf = "xyz.openbmc_project.State.Host";
  */
 struct Objects
 {
-    public:
-        /** @brief Constructor - fetch settings objects
-         *
-         * @param[in] bus - The D-bus bus object
-         */
-        Objects();
-        Objects(const Objects&) = default;
-        Objects& operator=(const Objects&) = default;
-        Objects(Objects&&) = default;
-        Objects& operator=(Objects&&) = default;
-        ~Objects() = default;
+  public:
+    /** @brief Constructor - fetch settings objects
+     *
+     * @param[in] bus - The D-bus bus object
+     */
+    Objects();
+    Objects(const Objects&) = default;
+    Objects& operator=(const Objects&) = default;
+    Objects(Objects&&) = default;
+    Objects& operator=(Objects&&) = default;
+    ~Objects() = default;
 
-        /** @brief Fetch D-bus service, given a path and an interface. The
-         *         service can't be cached because mapper returns unique
-         *         service names.
-         *
-         * @param[in] path - The D-bus object
-         * @param[in] interface - The D-bus interface
-         *
-         * @return std::string - the D-bus service
-         */
-        Service service(const Path& path, const Interface& interface) const;
+    /** @brief Fetch D-bus service, given a path and an interface. The
+     *         service can't be cached because mapper returns unique
+     *         service names.
+     *
+     * @param[in] path - The D-bus object
+     * @param[in] interface - The D-bus interface
+     *
+     * @return std::string - the D-bus service
+     */
+    Service service(const Path& path, const Interface& interface) const;
 
-        /** @brief time owner settings object */
-        Path timeOwner;
+    /** @brief time owner settings object */
+    Path timeOwner;
 
-        /** @brief time sync method settings object */
-        Path timeSyncMethod;
+    /** @brief time sync method settings object */
+    Path timeSyncMethod;
 
-        /** @brief host state object */
-        Path hostState;
+    /** @brief host state object */
+    Path hostState;
 };
 
 } // namespace settings
