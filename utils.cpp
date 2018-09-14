@@ -2,7 +2,6 @@
 
 #include <phosphor-logging/log.hpp>
 
-
 namespace phosphor
 {
 namespace time
@@ -13,21 +12,18 @@ namespace // anonymous
 constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
 constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
 constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
-}
+} // namespace
 
 namespace utils
 {
 
 using namespace phosphor::logging;
 
-std::string getService(sdbusplus::bus::bus& bus,
-                       const char* path,
+std::string getService(sdbusplus::bus::bus& bus, const char* path,
                        const char* interface)
 {
-    auto mapper = bus.new_method_call(MAPPER_BUSNAME,
-                                      MAPPER_PATH,
-                                      MAPPER_INTERFACE,
-                                      "GetObject");
+    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                      MAPPER_INTERFACE, "GetObject");
 
     mapper.append(path, std::vector<std::string>({interface}));
     try
@@ -42,15 +38,15 @@ std::string getService(sdbusplus::bus::bus& bus,
             log<level::ERR>("Error reading mapper response");
             throw std::runtime_error("Error reading mapper response");
         }
-        if (mapperResponse.size() < 1){
+        if (mapperResponse.size() < 1)
+        {
             return "";
         }
         return mapperResponse[0].first;
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {
-        log<level::ERR>("Mapper call failed",
-                        entry("METHOD=%d", "GetObject"),
+        log<level::ERR>("Mapper call failed", entry("METHOD=%d", "GetObject"),
                         entry("PATH=%s", path),
                         entry("INTERFACE=%s", interface));
         throw std::runtime_error("Mapper call failed");
@@ -69,12 +65,14 @@ Owner strToOwner(const std::string& owner)
 
 std::string modeToStr(Mode mode)
 {
-    return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(mode);
+    return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(
+        mode);
 }
 
 std::string ownerToStr(Owner owner)
 {
-    return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(owner);
+    return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(
+        owner);
 }
 
 } // namespace utils

@@ -1,4 +1,5 @@
 #include "host_epoch.hpp"
+
 #include "utils.hpp"
 
 #include <phosphor-logging/elog-errors.hpp>
@@ -16,14 +17,13 @@ using namespace std::chrono;
 using NotAllowedError =
     sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
 
-HostEpoch::HostEpoch(sdbusplus::bus::bus& bus,
-                     const char* objPath)
-    : EpochBase(bus, objPath),
-      offset(utils::readData<decltype(offset)::rep>(offsetFile))
+HostEpoch::HostEpoch(sdbusplus::bus::bus& bus, const char* objPath) :
+    EpochBase(bus, objPath),
+    offset(utils::readData<decltype(offset)::rep>(offsetFile))
 {
     // Initialize the diffToSteadyClock
-    auto steadyTime = duration_cast<microseconds>(
-        steady_clock::now().time_since_epoch());
+    auto steadyTime =
+        duration_cast<microseconds>(steady_clock::now().time_since_epoch());
     diffToSteadyClock = getTime() + offset - steadyTime;
 }
 
@@ -52,8 +52,8 @@ uint64_t HostEpoch::elapsed(uint64_t value)
         MANUAL| BOTH  | OK, and set time to BMC
     */
     if (timeOwner == Owner::BMC ||
-        (timeMode == Mode::NTP
-         && (timeOwner == Owner::Host || timeOwner == Owner::Both)))
+        (timeMode == Mode::NTP &&
+         (timeOwner == Owner::Host || timeOwner == Owner::Both)))
     {
         using namespace xyz::openbmc_project::Time;
         elog<NotAllowedError>(
@@ -70,8 +70,8 @@ uint64_t HostEpoch::elapsed(uint64_t value)
         saveOffset();
 
         // Calculate the diff between host and steady time
-        auto steadyTime = duration_cast<microseconds>(
-            steady_clock::now().time_since_epoch());
+        auto steadyTime =
+            duration_cast<microseconds>(steady_clock::now().time_since_epoch());
         diffToSteadyClock = time - steadyTime;
     }
     else
@@ -98,8 +98,8 @@ void HostEpoch::onOwnerChanged(Owner owner)
     {
         // In SPLIT, need to re-calculate the diff between
         // host and steady time
-        auto steadyTime = duration_cast<microseconds>(
-            steady_clock::now().time_since_epoch());
+        auto steadyTime =
+            duration_cast<microseconds>(steady_clock::now().time_since_epoch());
         diffToSteadyClock = getTime() - steadyTime;
     }
 }
@@ -116,8 +116,8 @@ void HostEpoch::onBmcTimeChanged(const microseconds& bmcTime)
     // the offset shall be adjusted
     if (timeOwner == Owner::Split)
     {
-        auto steadyTime = duration_cast<microseconds>(
-            steady_clock::now().time_since_epoch());
+        auto steadyTime =
+            duration_cast<microseconds>(steady_clock::now().time_since_epoch());
         auto hostTime = steadyTime + diffToSteadyClock;
         offset = hostTime - bmcTime;
 
@@ -127,4 +127,3 @@ void HostEpoch::onBmcTimeChanged(const microseconds& bmcTime)
 
 } // namespace time
 } // namespace phosphor
-
