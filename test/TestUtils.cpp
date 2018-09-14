@@ -1,7 +1,8 @@
 #include "utils.hpp"
 
-#include <gtest/gtest.h>
 #include <xyz/openbmc_project/Common/error.hpp>
+
+#include <gtest/gtest.h>
 
 namespace phosphor
 {
@@ -14,9 +15,8 @@ using InvalidEnumString = sdbusplus::exception::InvalidEnumString;
 
 TEST(TestUtil, strToMode)
 {
-    EXPECT_EQ(
-        Mode::NTP,
-        strToMode("xyz.openbmc_project.Time.Synchronization.Method.NTP"));
+    EXPECT_EQ(Mode::NTP,
+              strToMode("xyz.openbmc_project.Time.Synchronization.Method.NTP"));
     EXPECT_EQ(
         Mode::Manual,
         strToMode("xyz.openbmc_project.Time.Synchronization.Method.Manual"));
@@ -28,7 +28,6 @@ TEST(TestUtil, strToMode)
         InvalidEnumString);
     EXPECT_THROW(strToMode("whatever"), InvalidEnumString);
 }
-
 
 TEST(TestUtil, strToOwner)
 {

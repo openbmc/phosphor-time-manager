@@ -1,7 +1,9 @@
+#include "settings.hpp"
+
+#include "xyz/openbmc_project/Common/error.hpp"
+
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
-#include "xyz/openbmc_project/Common/error.hpp"
-#include "settings.hpp"
 
 namespace settings
 {
@@ -16,13 +18,11 @@ constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
 Objects::Objects()
 {
     auto bus = sdbusplus::bus::new_default();
-    std::vector<std::string> settingsIntfs =
-        {timeOwnerIntf, timeSyncIntf, hostStateIntf};
+    std::vector<std::string> settingsIntfs = {timeOwnerIntf, timeSyncIntf,
+                                              hostStateIntf};
     auto depth = 0;
 
-    auto mapperCall = bus.new_method_call(mapperService,
-                                          mapperPath,
-                                          mapperIntf,
+    auto mapperCall = bus.new_method_call(mapperService, mapperPath, mapperIntf,
                                           "GetSubTree");
     mapperCall.append(root);
     mapperCall.append(depth);
@@ -48,9 +48,9 @@ Objects::Objects()
     for (const auto& iter : result)
     {
         const Path& path = iter.first;
-        for (const auto& service_iter: iter.second)
+        for (const auto& service_iter : iter.second)
         {
-            for (const Interface& interface: service_iter.second)
+            for (const Interface& interface : service_iter.second)
             {
                 if (timeOwnerIntf == interface)
                 {
@@ -73,10 +73,8 @@ Service Objects::service(const Path& path, const Interface& interface) const
 {
     auto bus = sdbusplus::bus::new_default();
     using Interfaces = std::vector<Interface>;
-    auto mapperCall = bus.new_method_call(mapperService,
-                                          mapperPath,
-                                          mapperIntf,
-                                          "GetObject");
+    auto mapperCall =
+        bus.new_method_call(mapperService, mapperPath, mapperIntf, "GetObject");
     mapperCall.append(path);
     mapperCall.append(Interfaces({interface}));
 

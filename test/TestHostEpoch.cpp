@@ -1,13 +1,13 @@
-#include "host_epoch.hpp"
-#include "utils.hpp"
 #include "config.h"
-#include "types.hpp"
 
-#include <xyz/openbmc_project/Time/error.hpp>
+#include "host_epoch.hpp"
+#include "types.hpp"
+#include "utils.hpp"
 
 #include <sdbusplus/bus.hpp>
-#include <gtest/gtest.h>
+#include <xyz/openbmc_project/Time/error.hpp>
 
+#include <gtest/gtest.h>
 
 namespace phosphor
 {
@@ -16,129 +16,128 @@ namespace time
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
-using NotAllowed =
-    sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
+using NotAllowed = sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
 
 const constexpr microseconds USEC_ZERO{0};
 
 class TestHostEpoch : public testing::Test
 {
-    public:
-        sdbusplus::bus::bus bus;
-        HostEpoch hostEpoch;
+  public:
+    sdbusplus::bus::bus bus;
+    HostEpoch hostEpoch;
 
-        static constexpr auto FILE_NOT_EXIST = "path/to/file-not-exist";
-        static constexpr auto FILE_OFFSET = "saved_host_offset";
-        const microseconds delta = 2s;
+    static constexpr auto FILE_NOT_EXIST = "path/to/file-not-exist";
+    static constexpr auto FILE_OFFSET = "saved_host_offset";
+    const microseconds delta = 2s;
 
-        TestHostEpoch()
-            : bus(sdbusplus::bus::new_default()),
-              hostEpoch(bus, OBJPATH_HOST)
-        {
-            // Make sure the file does not exist
-            std::remove(FILE_NOT_EXIST);
-        }
-        ~TestHostEpoch()
-        {
-            // Cleanup test file
-            std::remove(FILE_OFFSET);
-        }
+    TestHostEpoch() :
+        bus(sdbusplus::bus::new_default()), hostEpoch(bus, OBJPATH_HOST)
+    {
+        // Make sure the file does not exist
+        std::remove(FILE_NOT_EXIST);
+    }
+    ~TestHostEpoch()
+    {
+        // Cleanup test file
+        std::remove(FILE_OFFSET);
+    }
 
-        // Proxies for HostEpoch's private members and functions
-        Mode getTimeMode()
-        {
-            return hostEpoch.timeMode;
-        }
-        Owner getTimeOwner()
-        {
-            return hostEpoch.timeOwner;
-        }
-        microseconds getOffset()
-        {
-            return hostEpoch.offset;
-        }
-        void setOffset(microseconds us)
-        {
-            hostEpoch.offset = us;
-        }
-        void setTimeOwner(Owner owner)
-        {
-            hostEpoch.onOwnerChanged(owner);
-        }
-        void setTimeMode(Mode mode)
-        {
-            hostEpoch.onModeChanged(mode);
-        }
+    // Proxies for HostEpoch's private members and functions
+    Mode getTimeMode()
+    {
+        return hostEpoch.timeMode;
+    }
+    Owner getTimeOwner()
+    {
+        return hostEpoch.timeOwner;
+    }
+    microseconds getOffset()
+    {
+        return hostEpoch.offset;
+    }
+    void setOffset(microseconds us)
+    {
+        hostEpoch.offset = us;
+    }
+    void setTimeOwner(Owner owner)
+    {
+        hostEpoch.onOwnerChanged(owner);
+    }
+    void setTimeMode(Mode mode)
+    {
+        hostEpoch.onModeChanged(mode);
+    }
 
-        void checkSettingTimeNotAllowed()
-        {
-            // By default offset shall be 0
-            EXPECT_EQ(0, getOffset().count());
+    void checkSettingTimeNotAllowed()
+    {
+        // By default offset shall be 0
+        EXPECT_EQ(0, getOffset().count());
 
-            // Set time is not allowed,
-            // so verify offset is still 0 after set time
-            microseconds diff = 1min;
-            EXPECT_THROW(
-                hostEpoch.elapsed(hostEpoch.elapsed() + diff.count()),
-                NotAllowed);
-            EXPECT_EQ(0, getOffset().count());
-        }
+        // Set time is not allowed,
+        // so verify offset is still 0 after set time
+        microseconds diff = 1min;
+        EXPECT_THROW(hostEpoch.elapsed(hostEpoch.elapsed() + diff.count()),
+                     NotAllowed);
+        EXPECT_EQ(0, getOffset().count());
+    }
 
-        void checkSetSplitTimeInFuture()
-        {
-            // Get current time, and set future +1min time
-            auto t1 = hostEpoch.elapsed();
-            EXPECT_NE(0, t1);
-            microseconds diff = 1min;
-            auto t2 = t1 + diff.count();
-            hostEpoch.elapsed(t2);
+    void checkSetSplitTimeInFuture()
+    {
+        // Get current time, and set future +1min time
+        auto t1 = hostEpoch.elapsed();
+        EXPECT_NE(0, t1);
+        microseconds diff = 1min;
+        auto t2 = t1 + diff.count();
+        hostEpoch.elapsed(t2);
 
-            // Verify that the offset shall be positive,
-            // and less or equal to diff, and shall be not too less.
-            auto offset = getOffset();
-            EXPECT_GT(offset, USEC_ZERO);
-            EXPECT_LE(offset, diff);
-            diff -= delta;
-            EXPECT_GE(offset, diff);
+        // Verify that the offset shall be positive,
+        // and less or equal to diff, and shall be not too less.
+        auto offset = getOffset();
+        EXPECT_GT(offset, USEC_ZERO);
+        EXPECT_LE(offset, diff);
+        diff -= delta;
+        EXPECT_GE(offset, diff);
 
-            // Now get time shall be around future +1min time
-            auto epochNow = duration_cast<microseconds>(
-                                system_clock::now().time_since_epoch()).count();
-            auto elapsedGot = hostEpoch.elapsed();
-            EXPECT_LT(epochNow, elapsedGot);
-            auto epochDiff = elapsedGot - epochNow;
-            diff = 1min;
-            EXPECT_GT(epochDiff, (diff - delta).count());
-            EXPECT_LT(epochDiff, (diff + delta).count());
-        }
-        void checkSetSplitTimeInPast()
-        {
-            // Get current time, and set past -1min time
-            auto t1 = hostEpoch.elapsed();
-            EXPECT_NE(0, t1);
-            microseconds diff = 1min;
-            auto t2 = t1 - diff.count();
-            hostEpoch.elapsed(t2);
+        // Now get time shall be around future +1min time
+        auto epochNow =
+            duration_cast<microseconds>(system_clock::now().time_since_epoch())
+                .count();
+        auto elapsedGot = hostEpoch.elapsed();
+        EXPECT_LT(epochNow, elapsedGot);
+        auto epochDiff = elapsedGot - epochNow;
+        diff = 1min;
+        EXPECT_GT(epochDiff, (diff - delta).count());
+        EXPECT_LT(epochDiff, (diff + delta).count());
+    }
+    void checkSetSplitTimeInPast()
+    {
+        // Get current time, and set past -1min time
+        auto t1 = hostEpoch.elapsed();
+        EXPECT_NE(0, t1);
+        microseconds diff = 1min;
+        auto t2 = t1 - diff.count();
+        hostEpoch.elapsed(t2);
 
-            // Verify that the offset shall be negative, and the absolute value
-            // shall be equal or greater than diff, and shall not be too greater
-            auto offset = getOffset();
-            EXPECT_LT(offset, USEC_ZERO);
-            offset = -offset;
-            EXPECT_GE(offset, diff);
-            diff += 10s;
-            EXPECT_LE(offset, diff);
+        // Verify that the offset shall be negative, and the absolute value
+        // shall be equal or greater than diff, and shall not be too greater
+        auto offset = getOffset();
+        EXPECT_LT(offset, USEC_ZERO);
+        offset = -offset;
+        EXPECT_GE(offset, diff);
+        diff += 10s;
+        EXPECT_LE(offset, diff);
 
-            // Now get time shall be around past -1min time
-            auto epochNow = duration_cast<microseconds>(
-                                system_clock::now().time_since_epoch()).count();
-            auto elapsedGot = hostEpoch.elapsed();
-            EXPECT_LT(elapsedGot, epochNow);
-            auto epochDiff = epochNow - elapsedGot;
-            diff = 1min;
-            EXPECT_GT(epochDiff, (diff - delta).count());
-            EXPECT_LT(epochDiff, (diff + delta).count());
-        }
+        // Now get time shall be around past -1min time
+        auto epochNow =
+            duration_cast<microseconds>(system_clock::now().time_since_epoch())
+                .count();
+        auto elapsedGot = hostEpoch.elapsed();
+        EXPECT_LT(elapsedGot, epochNow);
+        auto epochDiff = epochNow - elapsedGot;
+        diff = 1min;
+        EXPECT_GT(epochDiff, (diff - delta).count());
+        EXPECT_LT(epochDiff, (diff + delta).count());
+    }
 };
 
 TEST_F(TestHostEpoch, empty)
@@ -160,13 +159,13 @@ TEST_F(TestHostEpoch, writeAndReadData)
 {
     // Write offset to file
     microseconds offsetToWrite(1234567);
-    utils::writeData<decltype(offsetToWrite)::rep>(
-        FILE_OFFSET, offsetToWrite.count());
+    utils::writeData<decltype(offsetToWrite)::rep>(FILE_OFFSET,
+                                                   offsetToWrite.count());
 
     // Read it back
     microseconds offsetToRead;
-    offsetToRead = microseconds(
-                       utils::readData<decltype(offsetToRead)::rep>(FILE_OFFSET));
+    offsetToRead =
+        microseconds(utils::readData<decltype(offsetToRead)::rep>(FILE_OFFSET));
     EXPECT_EQ(offsetToWrite, offsetToRead);
 }
 
@@ -295,5 +294,5 @@ TEST_F(TestHostEpoch, clearOffsetOnOwnerChange)
     EXPECT_EQ(USEC_ZERO, getOffset());
 }
 
-}
-}
+} // namespace time
+} // namespace phosphor

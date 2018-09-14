@@ -1,8 +1,9 @@
-#include <sdbusplus/bus.hpp>
-#include <gtest/gtest.h>
-
-#include "types.hpp"
 #include "epoch_base.hpp"
+#include "types.hpp"
+
+#include <sdbusplus/bus.hpp>
+
+#include <gtest/gtest.h>
 
 namespace phosphor
 {
@@ -11,25 +12,23 @@ namespace time
 
 class TestEpochBase : public testing::Test
 {
-    public:
-        sdbusplus::bus::bus bus;
-        EpochBase epochBase;
+  public:
+    sdbusplus::bus::bus bus;
+    EpochBase epochBase;
 
-        TestEpochBase()
-            : bus(sdbusplus::bus::new_default()),
-              epochBase(bus, "")
-        {
-            // Empty
-        }
+    TestEpochBase() : bus(sdbusplus::bus::new_default()), epochBase(bus, "")
+    {
+        // Empty
+    }
 
-        Mode getMode()
-        {
-            return epochBase.timeMode;
-        }
-        Owner getOwner()
-        {
-            return epochBase.timeOwner;
-        }
+    Mode getMode()
+    {
+        return epochBase.timeMode;
+    }
+    Owner getOwner()
+    {
+        return epochBase.timeOwner;
+    }
 };
 
 TEST_F(TestEpochBase, onModeChange)
@@ -56,5 +55,5 @@ TEST_F(TestEpochBase, onOwnerChange)
     EXPECT_EQ(Owner::Both, getOwner());
 }
 
-}
-}
+} // namespace time
+} // namespace phosphor

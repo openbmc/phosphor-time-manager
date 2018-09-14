@@ -1,9 +1,10 @@
-#include <sdbusplus/bus.hpp>
-#include <gtest/gtest.h>
-
-#include "types.hpp"
 #include "manager.hpp"
 #include "mocked_property_change_listener.hpp"
+#include "types.hpp"
+
+#include <sdbusplus/bus.hpp>
+
+#include <gtest/gtest.h>
 
 using ::testing::_;
 
@@ -14,52 +15,49 @@ namespace time
 
 class TestManager : public testing::Test
 {
-    public:
-        sdbusplus::bus::bus bus;
-        Manager manager;
-        MockPropertyChangeListner listener1;
-        MockPropertyChangeListner listener2;
+  public:
+    sdbusplus::bus::bus bus;
+    Manager manager;
+    MockPropertyChangeListner listener1;
+    MockPropertyChangeListner listener2;
 
-        TestManager()
-            : bus(sdbusplus::bus::new_default()),
-              manager(bus)
-        {
-            // Add two mocked listeners so that we can test
-            // the behavior related to listeners
-            manager.addListener(&listener1);
-            manager.addListener(&listener2);
-        }
+    TestManager() : bus(sdbusplus::bus::new_default()), manager(bus)
+    {
+        // Add two mocked listeners so that we can test
+        // the behavior related to listeners
+        manager.addListener(&listener1);
+        manager.addListener(&listener2);
+    }
 
-        // Proxies for Manager's private members and functions
-        Mode getTimeMode()
-        {
-            return manager.timeMode;
-        }
-        Owner getTimeOwner()
-        {
-            return manager.timeOwner;
-        }
-        bool hostOn()
-        {
-            return manager.hostOn;
-        }
-        std::string getRequestedMode()
-        {
-            return manager.requestedMode;
-        }
-        std::string getRequestedOwner()
-        {
-            return manager.requestedOwner;
-        }
-        void notifyPropertyChanged(const std::string& key,
-                                   const std::string& value)
-        {
-            manager.onPropertyChanged(key, value);
-        }
-        void notifyOnHostState(bool hostOn)
-        {
-            manager.onHostState(hostOn);
-        }
+    // Proxies for Manager's private members and functions
+    Mode getTimeMode()
+    {
+        return manager.timeMode;
+    }
+    Owner getTimeOwner()
+    {
+        return manager.timeOwner;
+    }
+    bool hostOn()
+    {
+        return manager.hostOn;
+    }
+    std::string getRequestedMode()
+    {
+        return manager.requestedMode;
+    }
+    std::string getRequestedOwner()
+    {
+        return manager.requestedOwner;
+    }
+    void notifyPropertyChanged(const std::string& key, const std::string& value)
+    {
+        manager.onPropertyChanged(key, value);
+    }
+    void notifyOnHostState(bool hostOn)
+    {
+        manager.onHostState(hostOn);
+    }
 };
 
 TEST_F(TestManager, DISABLED_empty)
@@ -72,7 +70,6 @@ TEST_F(TestManager, DISABLED_empty)
     EXPECT_EQ(Mode::Manual, getTimeMode());
     EXPECT_EQ(Owner::Both, getTimeOwner());
 }
-
 
 TEST_F(TestManager, DISABLED_hostStateChange)
 {
@@ -96,9 +93,8 @@ TEST_F(TestManager, DISABLED_propertyChanged)
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
-    notifyPropertyChanged(
-        "TimeOwner",
-        "xyz.openbmc_project.Time.Owner.Owners.Host");
+    notifyPropertyChanged("TimeOwner",
+                          "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     EXPECT_EQ("", getRequestedMode());
     EXPECT_EQ("", getRequestedOwner());
@@ -115,15 +111,13 @@ TEST_F(TestManager, DISABLED_propertyChanged)
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.NTP");
-    notifyPropertyChanged(
-        "TimeOwner",
-        "xyz.openbmc_project.Time.Owner.Owners.Split");
+    notifyPropertyChanged("TimeOwner",
+                          "xyz.openbmc_project.Time.Owner.Owners.Split");
 
     EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.NTP",
               getRequestedMode());
     EXPECT_EQ("xyz.openbmc_project.Time.Owner.Owners.Split",
               getRequestedOwner());
-
 
     // When host becomes off, the requested mode/owner shall be notified
     // to listeners, and be cleared
@@ -149,9 +143,8 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
-    notifyPropertyChanged(
-        "TimeOwner",
-        "xyz.openbmc_project.Time.Owner.Owners.Host");
+    notifyPropertyChanged("TimeOwner",
+                          "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     // Set host on
     notifyOnHostState(true);
@@ -165,9 +158,8 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.NTP");
-    notifyPropertyChanged(
-        "TimeOwner",
-        "xyz.openbmc_project.Time.Owner.Owners.Split");
+    notifyPropertyChanged("TimeOwner",
+                          "xyz.openbmc_project.Time.Owner.Owners.Split");
 
     // Saved as requested mode/owner
     EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.NTP",
@@ -179,9 +171,8 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
-    notifyPropertyChanged(
-        "TimeOwner",
-        "xyz.openbmc_project.Time.Owner.Owners.Host");
+    notifyPropertyChanged("TimeOwner",
+                          "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     // Requested mode/owner shall be updated
     EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.Manual",
@@ -206,5 +197,5 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
 // TODO: if gmock is ready, add case to test
 // updateNtpSetting() and updateNetworkSetting()
 
-}
-}
+} // namespace time
+} // namespace phosphor
