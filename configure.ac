@@ -6,6 +6,10 @@ AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
 AM_SILENT_RULES([yes])
 
+# Use gcc-ar and gcc-ranlib for static libraries built with -flto
+AC_SUBST([AR], [${TARGET_PREFIX}gcc-ar])
+AC_SUBST([RANLIB], [${TARGET_PREFIX}gcc-ranlib])
+
 # Checks for programs
 AC_PROG_CXX
 AM_PROG_AR
@@ -53,7 +57,7 @@ AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
 AS_IF([test "x$SDBUSPLUSPLUS" == "x"], AC_MSG_ERROR([Cannot find sdbus++]))
 
 # Checks for typedefs, structures, and compiler characteristics.
-AX_CXX_COMPILE_STDCXX_14([noext])
+AX_CXX_COMPILE_STDCXX_17([noext])
 AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
 # DBUS interface
