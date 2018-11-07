@@ -136,7 +136,9 @@ int Manager::onSettingsChanged(sdbusplus::message::message& msg)
 
     for (const auto& p : properties)
     {
-        onPropertyChanged(p.first, p.second.get<std::string>());
+        onPropertyChanged(
+            p.first,
+            sdbusplus::message::variant_ns::get<std::string>(p.second));
     }
 
     return 0;
@@ -213,8 +215,8 @@ void Manager::onHostStateChanged(sdbusplus::message::message& msg)
     {
         if (p.first == HOST_CURRENT_STATE)
         {
-            auto state =
-                Host::convertHostStateFromString(p.second.get<std::string>());
+            auto state = Host::convertHostStateFromString(
+                sdbusplus::message::variant_ns::get<std::string>(p.second));
             onHostState(state == Host::HostState::Running);
             break;
         }

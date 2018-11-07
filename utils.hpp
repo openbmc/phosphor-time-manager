@@ -70,7 +70,7 @@ T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
         sdbusplus::message::variant<T> value{};
         auto reply = bus.call(method);
         reply.read(value);
-        return value.template get<T>();
+        return sdbusplus::message::variant_ns::get<T>(value);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {
