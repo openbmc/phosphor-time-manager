@@ -19,10 +19,13 @@ phosphor_timemanager_SOURCES = \
 phosphor_timemanager_LDADD = libtimemanager.la
 
 generic_cxx_flags = $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
-                    $(SDBUSPLUS_CFLAGS) -flto
+                    $(SDBUSPLUS_CFLAGS) \
+                    $(PHOSPHOR_LOGGING_CFLAGS) \
+                    -flto
 
 generic_ld_flags = $(PHOSPHOR_DBUS_INTERFACES_LIBS) \
-                   $(SDBUSPLUS_LIBS)
+                   $(SDBUSPLUS_LIBS) \
+                   $(PHOSPHOR_LOGGING_LIBS)
 
 libtimemanager_la_CXXFLAGS = $(generic_cxx_flags)
 libtimemanager_la_LIBADD = $(generic_ld_flags)
