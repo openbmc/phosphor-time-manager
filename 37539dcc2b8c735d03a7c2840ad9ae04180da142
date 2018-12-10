@@ -1,0 +1,11 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Andrew Geissler <geissonator@yahoo.com>
+Code-Review+1: Vishwanatha Subbanna <vishwa@linux.vnet.ibm.com>
+Ok-To-Test+1: Lei YU <mine260309@gmail.com>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+2: Lei YU <mine260309@gmail.com>
+Submitted-by: Lei YU <mine260309@gmail.com>
+Submitted-at: Mon, 10 Dec 2018 03:03:00 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/16510
+Project: openbmc/phosphor-time-manager
+Branch: refs/heads/master
