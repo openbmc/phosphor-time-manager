@@ -15,19 +15,18 @@ constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
 
-Objects::Objects()
+Objects::Objects(sdbusplus::bus::bus& bus) : m_bus(bus)
 {
-    auto bus = sdbusplus::bus::new_default();
     std::vector<std::string> settingsIntfs = {timeOwnerIntf, timeSyncIntf,
                                               hostStateIntf};
     auto depth = 0;
 
-    auto mapperCall = bus.new_method_call(mapperService, mapperPath, mapperIntf,
-                                          "GetSubTree");
+    auto mapperCall = m_bus.new_method_call(mapperService, mapperPath,
+                                            mapperIntf, "GetSubTree");
     mapperCall.append(root);
     mapperCall.append(depth);
     mapperCall.append(settingsIntfs);
-    auto response = bus.call(mapperCall);
+    auto response = m_bus.call(mapperCall);
     if (response.is_method_error())
     {
         log<level::ERR>("Error in mapper GetSubTree");
@@ -71,14 +70,13 @@ Objects::Objects()
 
 Service Objects::service(const Path& path, const Interface& interface) const
 {
-    auto bus = sdbusplus::bus::new_default();
     using Interfaces = std::vector<Interface>;
-    auto mapperCall =
-        bus.new_method_call(mapperService, mapperPath, mapperIntf, "GetObject");
+    auto mapperCall = m_bus.new_method_call(mapperService, mapperPath,
+                                            mapperIntf, "GetObject");
     mapperCall.append(path);
     mapperCall.append(Interfaces({interface}));
 
-    auto response = bus.call(mapperCall);
+    auto response = m_bus.call(mapperCall);
     if (response.is_method_error())
     {
         log<level::ERR>("Error in mapper GetObject");

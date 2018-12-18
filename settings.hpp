@@ -25,9 +25,10 @@ struct Objects
      *
      * @param[in] bus - The D-bus bus object
      */
-    Objects();
-    Objects(const Objects&) = default;
-    Objects& operator=(const Objects&) = default;
+    Objects() = delete;
+    explicit Objects(sdbusplus::bus::bus&);
+    Objects(const Objects&) = delete;
+    Objects& operator=(const Objects&) = delete;
     Objects(Objects&&) = default;
     Objects& operator=(Objects&&) = default;
     ~Objects() = default;
@@ -51,6 +52,9 @@ struct Objects
 
     /** @brief host state object */
     Path hostState;
+
+  private:
+    sdbusplus::bus::bus& m_bus;
 };
 
 } // namespace settings
