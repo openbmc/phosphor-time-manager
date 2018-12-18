@@ -15,9 +15,8 @@ constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
 
-Objects::Objects()
+Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
 {
-    auto bus = sdbusplus::bus::new_default();
     std::vector<std::string> settingsIntfs = {timeOwnerIntf, timeSyncIntf,
                                               hostStateIntf};
     auto depth = 0;
@@ -71,7 +70,6 @@ Objects::Objects()
 
 Service Objects::service(const Path& path, const Interface& interface) const
 {
-    auto bus = sdbusplus::bus::new_default();
     using Interfaces = std::vector<Interface>;
     auto mapperCall =
         bus.new_method_call(mapperService, mapperPath, mapperIntf, "GetObject");

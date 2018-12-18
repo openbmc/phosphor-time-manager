@@ -30,7 +30,7 @@ using namespace phosphor::logging;
 const std::set<std::string> Manager::managedProperties = {PROPERTY_TIME_MODE,
                                                           PROPERTY_TIME_OWNER};
 
-Manager::Manager(sdbusplus::bus::bus& bus) : bus(bus)
+Manager::Manager(sdbusplus::bus::bus& bus) : bus(bus), settings(bus)
 {
     using namespace sdbusplus::bus::match::rules;
     hostStateChangeMatch =
