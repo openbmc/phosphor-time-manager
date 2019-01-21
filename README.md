@@ -101,6 +101,19 @@ MANUAL    | BOTH  | OK            | OK
        https://${BMC_IP}/xyz/openbmc_project/time/owner/attr/TimeOwner
    ```
 
+### Special note on changing NTP setting
+Starting from OpenBMC 2.6 (with systemd v239), systemd's timedated introduces
+a new beahvior that it checks the NTP services' status during setting time,
+instead of checking the NTP setting:
+
+* When NTP server is set to disabled, and the NTP service is stopping but not
+   stopped, setting time will get an error.
+
+In OpenBMC 2.4 (with systemd v236), the above will always succeed.
+
+This results in [openbmc/openbmc#3459][1], and the related test cases are
+updated to cooperate with this behavior change.
+
 ### Special note on host on
 When the host is on, the changes of the above time mode/owner are not applied but
 deferred. The changes of the mode/owner are saved to persistent storage.
@@ -110,3 +123,6 @@ applied.
 
 Note: A user can set the time mode and owner in the settings daemon at any time,
 but the time manager applying them is governed by the above condition.
+
+
+[1]: https://github.com/openbmc/openbmc/issues/3459
