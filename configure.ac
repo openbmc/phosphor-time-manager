@@ -18,14 +18,10 @@ AM_PROG_AR
 LT_INIT
 
 # Check for libraries
-PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221],,\
-    AC_MSG_ERROR(["Systemd required and not found"]))
-PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces],,\
-    AC_MSG_ERROR(["Requires phosphor-dbus-interfaces package."]))
-PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus],,\
-    AC_MSG_ERROR(["Requires sdbusplus package."]))
-PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging],,\
-    AC_MSG_ERROR(["Requires phosphor-logging package."]))
+PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221])
+PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
+PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
+PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging])
 AX_PTHREAD([], [AC_MSG_ERROR(["pthread required and not found"])])
 
 # Check/set gtest specific functions.
