@@ -1,6 +1,6 @@
 AM_DEFAULT_SOURCE_EXT = .cpp
 
-sbin_PROGRAMS = phosphor-timemanager
+bin_PROGRAMS = phosphor-timemanager
 
 noinst_LTLIBRARIES = libtimemanager.la
 
