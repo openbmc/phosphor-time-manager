@@ -1,0 +1,6 @@
+[options]
+buildtype = plain
+
+[properties]
+cross_file = ['/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/share/meson/arm-openbmc-linux-gnueabi-meson.cross']
+

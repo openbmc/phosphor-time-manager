@@ -1,0 +1,10 @@
+# ninja log v5
+5	3369	1573709979450765276	libtimemanager@sta/utils.cpp.o	c64a71d0e4d32824
+1	3615	1573709979695765654	libtimemanager@sta/host_epoch.cpp.o	5ba5170465a6395a
+1	4086	1573709980167766382	libtimemanager@sta/bmc_epoch.cpp.o	62dbbdcade165489
+0	4255	1573709980336766642	libtimemanager@sta/epoch_base.cpp.o	56d26cb09c803272
+7	4427	1573709980508766908	libtimemanager@sta/settings.cpp.o	e4d11b24f826408a
+3370	5092	1573709981174767935	phosphor-timemanager@exe/main.cpp.o	59dab6a437a9d384
+4	5316	1573709981397768279	libtimemanager@sta/manager.cpp.o	f4d57013f5dac715
+5317	5362	1573709981443768350	liblibtimemanager.a	6395ac3d5f8dc161
+5362	5696	1573709981777768865	phosphor-timemanager	69224d527306c0ec

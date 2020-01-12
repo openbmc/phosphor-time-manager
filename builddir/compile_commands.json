@@ -1,0 +1,44 @@
+[
+  {
+    "directory": "/home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir",
+    "command": "arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi -Ilibtimemanager@sta -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Werror -std=c++17 -Wno-psabi -fPIC -pthread -MD -MQ 'libtimemanager@sta/epoch_base.cpp.o' -MF 'libtimemanager@sta/epoch_base.cpp.o.d' -o 'libtimemanager@sta/epoch_base.cpp.o' -c ../epoch_base.cpp",
+    "file": "../epoch_base.cpp",
+    "output": "libtimemanager@sta/epoch_base.cpp.o"
+  },
+  {
+    "directory": "/home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir",
+    "command": "arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi -Ilibtimemanager@sta -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Werror -std=c++17 -Wno-psabi -fPIC -pthread -MD -MQ 'libtimemanager@sta/bmc_epoch.cpp.o' -MF 'libtimemanager@sta/bmc_epoch.cpp.o.d' -o 'libtimemanager@sta/bmc_epoch.cpp.o' -c ../bmc_epoch.cpp",
+    "file": "../bmc_epoch.cpp",
+    "output": "libtimemanager@sta/bmc_epoch.cpp.o"
+  },
+  {
+    "directory": "/home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir",
+    "command": "arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi -Ilibtimemanager@sta -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Werror -std=c++17 -Wno-psabi -fPIC -pthread -MD -MQ 'libtimemanager@sta/host_epoch.cpp.o' -MF 'libtimemanager@sta/host_epoch.cpp.o.d' -o 'libtimemanager@sta/host_epoch.cpp.o' -c ../host_epoch.cpp",
+    "file": "../host_epoch.cpp",
+    "output": "libtimemanager@sta/host_epoch.cpp.o"
+  },
+  {
+    "directory": "/home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir",
+    "command": "arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi -Ilibtimemanager@sta -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Werror -std=c++17 -Wno-psabi -fPIC -pthread -MD -MQ 'libtimemanager@sta/manager.cpp.o' -MF 'libtimemanager@sta/manager.cpp.o.d' -o 'libtimemanager@sta/manager.cpp.o' -c ../manager.cpp",
+    "file": "../manager.cpp",
+    "output": "libtimemanager@sta/manager.cpp.o"
+  },
+  {
+    "directory": "/home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir",
+    "command": "arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi -Ilibtimemanager@sta -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Werror -std=c++17 -Wno-psabi -fPIC -pthread -MD -MQ 'libtimemanager@sta/utils.cpp.o' -MF 'libtimemanager@sta/utils.cpp.o.d' -o 'libtimemanager@sta/utils.cpp.o' -c ../utils.cpp",
+    "file": "../utils.cpp",
+    "output": "libtimemanager@sta/utils.cpp.o"
+  },
+  {
+    "directory": "/home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir",
+    "command": "arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi -Ilibtimemanager@sta -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Werror -std=c++17 -Wno-psabi -fPIC -pthread -MD -MQ 'libtimemanager@sta/settings.cpp.o' -MF 'libtimemanager@sta/settings.cpp.o.d' -o 'libtimemanager@sta/settings.cpp.o' -c ../settings.cpp",
+    "file": "../settings.cpp",
+    "output": "libtimemanager@sta/settings.cpp.o"
+  },
+  {
+    "directory": "/home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir",
+    "command": "arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi -Iphosphor-timemanager@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Werror -std=c++17 -Wno-psabi -pthread -MD -MQ 'phosphor-timemanager@exe/main.cpp.o' -MF 'phosphor-timemanager@exe/main.cpp.o.d' -o 'phosphor-timemanager@exe/main.cpp.o' -c ../main.cpp",
+    "file": "../main.cpp",
+    "output": "phosphor-timemanager@exe/main.cpp.o"
+  }
+]

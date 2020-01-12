@@ -1,0 +1,238 @@
+Build started at 2019-11-14T05:39:35.500061
+Main binary: /home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/python3
+Python system: Linux
+The Meson build system
+Version: 0.51.2
+Source dir: /home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager
+Build dir: /home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir
+Build type: cross build
+Project name: phosphor-time-manager
+Project version: 0.1
+Appending CXXFLAGS from environment: ' -O2 -pipe -g -feliminate-unused-debug-types '
+Appending LDFLAGS from environment: '-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed'
+No CPPFLAGS in the environment, not changing global flags.
+Sanity testing C++ compiler: ccache c++
+Is cross compiler: False.
+Sanity check compiler command line: ccache c++ -O2 -pipe -g -feliminate-unused-debug-types -Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed -pipe -D_FILE_OFFSET_BITS=64 /home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir/meson-private/sanitycheckcpp.cc -o /home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir/meson-private/sanitycheckcpp.exe
+Sanity check compile stdout:
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command: /home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir/meson-private/sanitycheckcpp.exe
+C++ compiler for the build machine: ccache c++ (gcc 9.2.1 "c++ (GCC) 9.2.1 20190827 (Red Hat 9.2.1-1)")
+Sanity testing C++ compiler: arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi
+Is cross compiler: True.
+Sanity check compiler command line: arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi -pipe -D_FILE_OFFSET_BITS=64 -c /home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir/meson-private/sanitycheckcpp.cc -o /home/whoami/Documents/hackathon/meson/giri/phosphor-time-manager/builddir/meson-private/sanitycheckcpp_cross.exe
+Sanity check compile stdout:
+
+-----
+Sanity check compile stderr:
+
+-----
+C++ compiler for the host machine: arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi (gcc 9.2.0 "arm-openbmc-linux-gnueabi-g++ (GCC) 9.2.0")
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Target machine cpu family: x86_64
+Target machine cpu: x86_64
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Configuring config.h using configuration
+Pkg-config binary for MachineChoice.HOST is not cached.
+Pkg-config binary for MachineChoice.HOST specified from cross file, native file, or env var as ['pkg-config']
+Trying pkg-config binary pkg-config for machine MachineChoice.HOST at ['/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config']
+Found pkg-config: /home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config (0.29.2)
+Determining dependency 'systemd' with pkg-config executable '/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config'
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config --modversion systemd` -> 0
+243
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config --cflags systemd` -> 0
+
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config systemd --libs` -> 0
+
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config systemd --libs` -> 0
+
+Run-time dependency systemd found: YES 243
+Pkg-config binary for MachineChoice.HOST is cached.
+Determining dependency 'sdbusplus' with pkg-config executable '/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config'
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config --modversion sdbusplus` -> 0
+1.0
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config --cflags sdbusplus` -> 0
+
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config sdbusplus --libs` -> 0
+-L/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib -L/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/lib -lsdbusplus -lsystemd
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config sdbusplus --libs` -> 0
+-lsdbusplus -lsystemd
+Running compile:
+Working directory:  /tmp/tmpi11mudfu
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmpi11mudfu/testfile.cpp -o /tmp/tmpi11mudfu/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive 
+
+Code:
+ #include <stdio.h>
+        
+        int main() {
+            void * something;
+            return 0;
+        }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Running compile:
+Working directory:  /tmp/tmp_qc7bws8
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmp_qc7bws8/testfile.cpp -o /tmp/tmp_qc7bws8/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive 
+
+Code:
+ #include <stdio.h>
+        
+        int main() { static int a[1-2*!(sizeof(void *) >= 0)]; a[0]=0; return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Running compile:
+Working directory:  /tmp/tmpj179lv5a
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmpj179lv5a/testfile.cpp -o /tmp/tmpj179lv5a/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive 
+
+Code:
+ #include <stdio.h>
+        
+        int main() { static int a[1-2*!(sizeof(void *) > 0)]; a[0]=0; return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Running compile:
+Working directory:  /tmp/tmprr_bcatt
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmprr_bcatt/testfile.cpp -o /tmp/tmprr_bcatt/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive 
+
+Code:
+ #include <stdio.h>
+        
+        int main() { static int a[1-2*!(sizeof(void *) > 1)]; a[0]=0; return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Running compile:
+Working directory:  /tmp/tmpw7ao9bs6
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmpw7ao9bs6/testfile.cpp -o /tmp/tmpw7ao9bs6/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive 
+
+Code:
+ #include <stdio.h>
+        
+        int main() { static int a[1-2*!(sizeof(void *) > 3)]; a[0]=0; return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Running compile:
+Working directory:  /tmp/tmpv164w489
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmpv164w489/testfile.cpp -o /tmp/tmpv164w489/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive 
+
+Code:
+ #include <stdio.h>
+        
+        int main() { static int a[1-2*!(sizeof(void *) > 7)]; a[0]=0; return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ /tmp/tmpv164w489/testfile.cpp: In function 'int main()':
+/tmp/tmpv164w489/testfile.cpp:3:60: error: narrowing conversion of '-1' from 'int' to 'unsigned int' [-Wnarrowing]
+    3 |         int main() { static int a[1-2*!(sizeof(void *) > 7)]; a[0]=0; return 0; }
+      |                                                            ^
+/tmp/tmpv164w489/testfile.cpp:3:36: error: size '-1' of array 'a' is negative
+    3 |         int main() { static int a[1-2*!(sizeof(void *) > 7)]; a[0]=0; return 0; }
+      |                                   ~^~~~~~~~~~~~~~~~~~~~~~~~
+
+Running compile:
+Working directory:  /tmp/tmpdbrmlnjq
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmpdbrmlnjq/testfile.cpp -o /tmp/tmpdbrmlnjq/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive 
+
+Code:
+ #include <stdio.h>
+        
+        int main() { static int a[1-2*!(sizeof(void *) <= 5)]; a[0]=0; return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Running compile:
+Working directory:  /tmp/tmpb5mgq5n7
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmpb5mgq5n7/testfile.cpp -o /tmp/tmpb5mgq5n7/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive 
+
+Code:
+ #include <stdio.h>
+        
+        int main() { static int a[1-2*!(sizeof(void *) <= 4)]; a[0]=0; return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Running compile:
+Working directory:  /tmp/tmpqcit7o_l
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmpqcit7o_l/testfile.cpp -o /tmp/tmpqcit7o_l/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive --print-search-dirs 
+
+Code:
+ 
+Compiler stdout:
+ install: /home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/lib/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/
+programs: =/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/libexec/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/:/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/libexec/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/:/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/libexec/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/:/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/lib/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/:/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/lib/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/:/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/lib/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/../../../../../arm-openbmc-linux-gnueabi/bin/arm-openbmc-linux-gnueabi/9.2.0/:/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/lib/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/../../../../../arm-openbmc-linux-gnueabi/bin/
+libraries: =/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/lib/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/:/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/lib/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/../../../../../arm-openbmc-linux-gnueabi/lib/arm-openbmc-linux-gnueabi/9.2.0/:/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/lib/arm-openbmc-linux-gnueabi/gcc/arm-openbmc-linux-gnueabi/9.2.0/../../../../../arm-openbmc-linux-gnueabi/lib/:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/lib/arm-openbmc-linux-gnueabi/9.2.0/:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/lib/:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/arm-openbmc-linux-gnueabi/9.2.0/:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/
+
+Compiler stderr:
+ 
+Run-time dependency sdbusplus found: YES 1.0
+Pkg-config binary for MachineChoice.HOST is cached.
+Determining dependency 'phosphor-logging' with pkg-config executable '/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config'
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config --modversion phosphor-logging` -> 0
+1.0
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config --cflags phosphor-logging` -> 0
+
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config phosphor-logging --libs` -> 0
+-L/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib -L/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/lib -L/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib -lphosphor_logging -lsdbusplus -lsystemd -lphosphor_dbus
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config phosphor-logging --libs` -> 0
+-lphosphor_logging -lsdbusplus -lsystemd -lphosphor_dbus
+Run-time dependency phosphor-logging found: YES 1.0
+Pkg-config binary for MachineChoice.HOST is cached.
+Determining dependency 'phosphor-dbus-interfaces' with pkg-config executable '/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config'
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config --modversion phosphor-dbus-interfaces` -> 0
+1.0
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config --cflags phosphor-dbus-interfaces` -> 0
+
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config phosphor-dbus-interfaces --libs` -> 0
+-L/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib -lphosphor_dbus
+PKG_CONFIG_PATH: /home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/lib/pkgconfig:/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi/usr/share/pkgconfig
+Called `/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/pkg-config phosphor-dbus-interfaces --libs` -> 0
+-lphosphor_dbus
+Run-time dependency phosphor-dbus-interfaces found: YES 1.0
+Run-time dependency threads found: YES 
+Program sdbus++ found: YES (/home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/sdbus++)
+Build targets in project: 2
+Found ninja-1.9.0 at /home/whoami/sdk/bmcenv/sysroots/x86_64-oesdk-linux/usr/bin/ninja
+Running compile:
+Working directory:  /tmp/tmp7m2h_r25
+Command line:  arm-openbmc-linux-gnueabi-g++ -marm -mcpu=arm1176jz-s --sysroot=/home/whoami/sdk/bmcenv/sysroots/arm1176jzs-openbmc-linux-gnueabi /tmp/tmp7m2h_r25/testfile.cpp -o /tmp/tmp7m2h_r25/output.obj -pipe -D_FILE_OFFSET_BITS=64 -c -std=c++17 
+
+Code:
+ int i = static_cast<int>(0);
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler accepts -std=c++17: YES
