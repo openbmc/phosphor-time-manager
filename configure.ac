@@ -65,10 +65,6 @@ AC_ARG_VAR(OBJPATH_BMC, [The bmc epoch Dbus root])
 AS_IF([test "x$OBJPATH_BMC" == "x"], [OBJPATH_BMC="/xyz/openbmc_project/time/bmc"])
 AC_DEFINE_UNQUOTED([OBJPATH_BMC], ["$OBJPATH_BMC"], [The bmc epoch Dbus root])
 
-AC_ARG_VAR(OBJPATH_HOST, [The host epoch Dbus root])
-AS_IF([test "x$OBJPATH_HOST" == "x"], [OBJPATH_HOST="/xyz/openbmc_project/time/host"])
-AC_DEFINE_UNQUOTED([OBJPATH_HOST], ["$OBJPATH_HOST"], [The host epoch Dbus root])
-
 AC_ARG_VAR(HOST_OFFSET_FILE, [The file to save host time offset])
 AS_IF([test "x$HOST_OFFSET_FILE" == "x"], [HOST_OFFSET_FILE="/var/lib/obmc/saved_host_offset"])
 AC_DEFINE_UNQUOTED([HOST_OFFSET_FILE], ["$HOST_OFFSET_FILE"], [The file to save host time offset])
@@ -76,10 +72,6 @@ AC_DEFINE_UNQUOTED([HOST_OFFSET_FILE], ["$HOST_OFFSET_FILE"], [The file to save 
 AC_ARG_VAR(DEFAULT_TIME_MODE, [The default time mode])
 AS_IF([test "x$DEFAULT_TIME_MODE" == "x"], [DEFAULT_TIME_MODE=Mode::Manual])
 AC_DEFINE_UNQUOTED([DEFAULT_TIME_MODE], [$DEFAULT_TIME_MODE], [The default time mode])
-
-AC_ARG_VAR(DEFAULT_TIME_OWNER, [The default time owner])
-AS_IF([test "x$DEFAULT_TIME_OWNER" == "x"], [DEFAULT_TIME_OWNER=Owner::Both])
-AC_DEFINE_UNQUOTED([DEFAULT_TIME_OWNER], [$DEFAULT_TIME_OWNER], [The default time owner])
 
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_OUTPUT

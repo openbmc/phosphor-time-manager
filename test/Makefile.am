@@ -8,7 +8,6 @@ check_PROGRAMS += test
 test_SOURCES = \
     TestEpochBase.cpp \
     TestBmcEpoch.cpp \
-    TestHostEpoch.cpp \
     TestManager.cpp \
     TestUtils.cpp
 
