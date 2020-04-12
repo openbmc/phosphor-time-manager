@@ -25,10 +25,6 @@ class TestEpochBase : public testing::Test
     {
         return epochBase.timeMode;
     }
-    Owner getOwner()
-    {
-        return epochBase.timeOwner;
-    }
 };
 
 TEST_F(TestEpochBase, onModeChange)
@@ -38,21 +34,6 @@ TEST_F(TestEpochBase, onModeChange)
 
     epochBase.onModeChanged(Mode::Manual);
     EXPECT_EQ(Mode::Manual, getMode());
-}
-
-TEST_F(TestEpochBase, onOwnerChange)
-{
-    epochBase.onOwnerChanged(Owner::BMC);
-    EXPECT_EQ(Owner::BMC, getOwner());
-
-    epochBase.onOwnerChanged(Owner::Host);
-    EXPECT_EQ(Owner::Host, getOwner());
-
-    epochBase.onOwnerChanged(Owner::Split);
-    EXPECT_EQ(Owner::Split, getOwner());
-
-    epochBase.onOwnerChanged(Owner::Both);
-    EXPECT_EQ(Owner::Both, getOwner());
 }
 
 } // namespace time

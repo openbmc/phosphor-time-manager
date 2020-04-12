@@ -30,18 +30,12 @@ class EpochBase : public sdbusplus::server::object::object<
     /** @brief Notified on time mode changed */
     void onModeChanged(Mode mode) override;
 
-    /** @brief Notified on time owner changed */
-    void onOwnerChanged(Owner owner) override;
-
   protected:
     /** @brief Persistent sdbusplus DBus connection */
     sdbusplus::bus::bus& bus;
 
     /** @brief The current time mode */
     Mode timeMode = DEFAULT_TIME_MODE;
-
-    /** @brief The current time owner */
-    Owner timeOwner = DEFAULT_TIME_OWNER;
 
     /** @brief Set current time to system
      *

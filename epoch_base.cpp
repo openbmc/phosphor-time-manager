@@ -33,11 +33,6 @@ void EpochBase::onModeChanged(Mode mode)
     timeMode = mode;
 }
 
-void EpochBase::onOwnerChanged(Owner owner)
-{
-    timeOwner = owner;
-}
-
 using namespace std::chrono;
 bool EpochBase::setTime(const microseconds& usec)
 {

@@ -34,10 +34,6 @@ class TestManager : public testing::Test
     {
         return manager.timeMode;
     }
-    Owner getTimeOwner()
-    {
-        return manager.timeOwner;
-    }
     bool hostOn()
     {
         return manager.hostOn;
@@ -45,10 +41,6 @@ class TestManager : public testing::Test
     std::string getRequestedMode()
     {
         return manager.requestedMode;
-    }
-    std::string getRequestedOwner()
-    {
-        return manager.requestedOwner;
     }
     void notifyPropertyChanged(const std::string& key, const std::string& value)
     {
@@ -64,11 +56,9 @@ TEST_F(TestManager, DISABLED_empty)
 {
     EXPECT_FALSE(hostOn());
     EXPECT_EQ("", getRequestedMode());
-    EXPECT_EQ("", getRequestedOwner());
 
-    // Default mode/owner is MANUAL/BOTH
+    // Default mode is MANUAL
     EXPECT_EQ(Mode::Manual, getTimeMode());
-    EXPECT_EQ(Owner::Both, getTimeOwner());
 }
 
 TEST_F(TestManager, DISABLED_hostStateChange)
@@ -86,50 +76,36 @@ TEST_F(TestManager, DISABLED_propertyChanged)
 
     // Check mocked listeners shall receive notifications on property changed
     EXPECT_CALL(listener1, onModeChanged(Mode::Manual)).Times(1);
-    EXPECT_CALL(listener1, onOwnerChanged(Owner::Host)).Times(1);
     EXPECT_CALL(listener2, onModeChanged(Mode::Manual)).Times(1);
-    EXPECT_CALL(listener2, onOwnerChanged(Owner::Host)).Times(1);
 
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
-    notifyPropertyChanged("TimeOwner",
-                          "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     EXPECT_EQ("", getRequestedMode());
-    EXPECT_EQ("", getRequestedOwner());
 
     // When host is on, property changes are saved as requested ones
     notifyOnHostState(true);
 
     // Check mocked listeners shall not receive notifications
     EXPECT_CALL(listener1, onModeChanged(Mode::Manual)).Times(0);
-    EXPECT_CALL(listener1, onOwnerChanged(Owner::Host)).Times(0);
     EXPECT_CALL(listener2, onModeChanged(Mode::Manual)).Times(0);
-    EXPECT_CALL(listener2, onOwnerChanged(Owner::Host)).Times(0);
 
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.NTP");
-    notifyPropertyChanged("TimeOwner",
-                          "xyz.openbmc_project.Time.Owner.Owners.Split");
 
     EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.NTP",
               getRequestedMode());
-    EXPECT_EQ("xyz.openbmc_project.Time.Owner.Owners.Split",
-              getRequestedOwner());
 
-    // When host becomes off, the requested mode/owner shall be notified
+    // When host becomes off, the requested mode shall be notified
     // to listeners, and be cleared
     EXPECT_CALL(listener1, onModeChanged(Mode::NTP)).Times(1);
-    EXPECT_CALL(listener1, onOwnerChanged(Owner::Split)).Times(1);
     EXPECT_CALL(listener2, onModeChanged(Mode::NTP)).Times(1);
-    EXPECT_CALL(listener2, onOwnerChanged(Owner::Split)).Times(1);
 
     notifyOnHostState(false);
 
     EXPECT_EQ("", getRequestedMode());
-    EXPECT_EQ("", getRequestedOwner());
 
     // When host is on, and invalid property is changed,
     // verify the code asserts because it shall never occur
@@ -143,55 +119,40 @@ TEST_F(TestManager, DISABLED_propertyChangedAndChangedbackWhenHostOn)
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
-    notifyPropertyChanged("TimeOwner",
-                          "xyz.openbmc_project.Time.Owner.Owners.Host");
 
     // Set host on
     notifyOnHostState(true);
 
     // Check mocked listeners shall not receive notifications
     EXPECT_CALL(listener1, onModeChanged(_)).Times(0);
-    EXPECT_CALL(listener1, onOwnerChanged(_)).Times(0);
     EXPECT_CALL(listener2, onModeChanged(_)).Times(0);
-    EXPECT_CALL(listener2, onOwnerChanged(_)).Times(0);
 
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.NTP");
-    notifyPropertyChanged("TimeOwner",
-                          "xyz.openbmc_project.Time.Owner.Owners.Split");
 
-    // Saved as requested mode/owner
+    // Saved as requested mode
     EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.NTP",
               getRequestedMode());
-    EXPECT_EQ("xyz.openbmc_project.Time.Owner.Owners.Split",
-              getRequestedOwner());
 
     // Property changed back to MANUAL/HOST
     notifyPropertyChanged(
         "TimeSyncMethod",
         "xyz.openbmc_project.Time.Synchronization.Method.Manual");
-    notifyPropertyChanged("TimeOwner",
-                          "xyz.openbmc_project.Time.Owner.Owners.Host");
 
-    // Requested mode/owner shall be updated
+    // Requested mode shall be updated
     EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.Manual",
               getRequestedMode());
-    EXPECT_EQ("xyz.openbmc_project.Time.Owner.Owners.Host",
-              getRequestedOwner());
 
-    // Because the latest mode/owner is the same as when host is off,
-    // The listeners shall not be notified, and requested mode/owner
+    // Because the latest mode is the same as when host is off,
+    // The listeners shall not be notified, and requested mode
     // shall be cleared
     EXPECT_CALL(listener1, onModeChanged(_)).Times(0);
-    EXPECT_CALL(listener1, onOwnerChanged(_)).Times(0);
     EXPECT_CALL(listener2, onModeChanged(_)).Times(0);
-    EXPECT_CALL(listener2, onOwnerChanged(_)).Times(0);
 
     notifyOnHostState(false);
 
     EXPECT_EQ("", getRequestedMode());
-    EXPECT_EQ("", getRequestedOwner());
 }
 
 // TODO: if gmock is ready, add case to test
