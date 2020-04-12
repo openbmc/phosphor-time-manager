@@ -12,7 +12,6 @@ class MockPropertyChangeListner : public PropertyChangeListner
 {
   public:
     MOCK_METHOD1(onModeChanged, void(Mode mode));
-    MOCK_METHOD1(onOwnerChanged, void(Owner owner));
 };
 
 } // namespace time
