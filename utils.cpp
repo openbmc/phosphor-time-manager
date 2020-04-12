@@ -58,21 +58,10 @@ Mode strToMode(const std::string& mode)
     return ModeSetting::convertMethodFromString(mode);
 }
 
-Owner strToOwner(const std::string& owner)
-{
-    return OwnerSetting::convertOwnersFromString(owner);
-}
-
 std::string modeToStr(Mode mode)
 {
     return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(
         mode);
-}
-
-std::string ownerToStr(Owner owner)
-{
-    return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(
-        owner);
 }
 
 } // namespace utils
