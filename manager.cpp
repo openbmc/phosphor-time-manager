@@ -27,8 +27,7 @@ namespace time
 
 using namespace phosphor::logging;
 
-const std::set<std::string> Manager::managedProperties = {PROPERTY_TIME_MODE,
-                                                          PROPERTY_TIME_OWNER};
+const std::set<std::string> Manager::managedProperties = {PROPERTY_TIME_MODE};
 
 Manager::Manager(sdbusplus::bus::bus& bus) : bus(bus), settings(bus)
 {
@@ -38,10 +37,6 @@ Manager::Manager(sdbusplus::bus::bus& bus) : bus(bus), settings(bus)
             bus, propertiesChanged(settings.hostState, settings::hostStateIntf),
             std::bind(std::mem_fn(&Manager::onHostStateChanged), this,
                       std::placeholders::_1));
-    settingsMatches.emplace_back(
-        bus, propertiesChanged(settings.timeOwner, settings::timeOwnerIntf),
-        std::bind(std::mem_fn(&Manager::onSettingsChanged), this,
-                  std::placeholders::_1));
     settingsMatches.emplace_back(
         bus, propertiesChanged(settings.timeSyncMethod, settings::timeSyncIntf),
         std::bind(std::mem_fn(&Manager::onSettingsChanged), this,
@@ -55,18 +50,14 @@ Manager::Manager(sdbusplus::bus::bus& bus) : bus(bus), settings(bus)
     // Check the settings daemon to process the new settings
     auto mode = getSetting(settings.timeSyncMethod.c_str(),
                            settings::timeSyncIntf, PROPERTY_TIME_MODE);
-    auto owner = getSetting(settings.timeOwner.c_str(), settings::timeOwnerIntf,
-                            PROPERTY_TIME_OWNER);
 
     onPropertyChanged(PROPERTY_TIME_MODE, mode);
-    onPropertyChanged(PROPERTY_TIME_OWNER, owner);
 }
 
 void Manager::addListener(PropertyChangeListner* listener)
 {
     // Notify listener about the initial value
     listener->onModeChanged(timeMode);
-    listener->onOwnerChanged(timeOwner);
 
     listeners.insert(listener);
 }
@@ -77,11 +68,6 @@ void Manager::restoreSettings()
     if (!mode.empty())
     {
         timeMode = utils::strToMode(mode);
-    }
-    auto owner = utils::readData<std::string>(ownerFile);
-    if (!owner.empty())
-    {
-        timeOwner = utils::strToOwner(owner);
     }
 }
 
@@ -102,7 +88,7 @@ void Manager::onPropertyChanged(const std::string& key,
 {
     if (hostOn)
     {
-        // If host is on, set the values as requested time mode/owner.
+        // If host is on, set the values as requested time mode.
         // And when host becomes off, notify the listeners.
         setPropertyAsRequested(key, value);
     }
@@ -113,11 +99,6 @@ void Manager::onPropertyChanged(const std::string& key,
         {
             setCurrentTimeMode(value);
             onTimeModeChanged(value);
-        }
-        else if (key == PROPERTY_TIME_OWNER)
-        {
-            setCurrentTimeOwner(value);
-            onTimeOwnerChanged();
         }
     }
 }
@@ -149,10 +130,6 @@ void Manager::setPropertyAsRequested(const std::string& key,
     {
         setRequestedMode(value);
     }
-    else if (key == PROPERTY_TIME_OWNER)
-    {
-        setRequestedOwner(value);
-    }
     else
     {
         // The key shall be already the supported one
@@ -168,11 +145,6 @@ void Manager::setPropertyAsRequested(const std::string& key,
 void Manager::setRequestedMode(const std::string& mode)
 {
     requestedMode = mode;
-}
-
-void Manager::setRequestedOwner(const std::string& owner)
-{
-    requestedOwner = owner;
 }
 
 void Manager::updateNtpSetting(const std::string& value)
@@ -238,14 +210,6 @@ void Manager::onHostState(bool on)
         }
         setRequestedMode({}); // Clear requested mode
     }
-    if (!requestedOwner.empty())
-    {
-        if (setCurrentTimeOwner(requestedOwner))
-        {
-            onTimeOwnerChanged();
-        }
-        setRequestedOwner({}); // Clear requested owner
-    }
 }
 
 bool Manager::setCurrentTimeMode(const std::string& mode)
@@ -265,23 +229,6 @@ bool Manager::setCurrentTimeMode(const std::string& mode)
     }
 }
 
-bool Manager::setCurrentTimeOwner(const std::string& owner)
-{
-    auto newOwner = utils::strToOwner(owner);
-    if (newOwner != timeOwner)
-    {
-        log<level::INFO>("Time owner is changed",
-                         entry("OWNER=%s", owner.c_str()));
-        timeOwner = newOwner;
-        utils::writeData(ownerFile, owner);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 void Manager::onTimeModeChanged(const std::string& mode)
 {
     for (const auto listener : listeners)
@@ -290,14 +237,6 @@ void Manager::onTimeModeChanged(const std::string& mode)
     }
     // When time_mode is updated, update the NTP setting
     updateNtpSetting(mode);
-}
-
-void Manager::onTimeOwnerChanged()
-{
-    for (const auto& listener : listeners)
-    {
-        listener->onOwnerChanged(timeOwner);
-    }
 }
 
 std::string Manager::getSetting(const char* path, const char* interface,
