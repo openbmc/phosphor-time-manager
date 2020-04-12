@@ -61,14 +61,8 @@ class Manager
     /** @brief The requested time mode when host is on*/
     std::string requestedMode;
 
-    /** @brief The requested time owner when host is on*/
-    std::string requestedOwner;
-
     /** @brief The current time mode */
     Mode timeMode = DEFAULT_TIME_MODE;
-
-    /** @brief The current time owner */
-    Owner timeOwner = DEFAULT_TIME_OWNER;
 
     /** @brief Restore saved settings */
     void restoreSettings();
@@ -96,15 +90,6 @@ class Manager
      */
     bool setCurrentTimeMode(const std::string& mode);
 
-    /** @brief Set current time owner from the time owner string
-     *
-     * @param[in] owner - The string of time owner
-     *
-     * @return - true if the owner is updated
-     *           false if it's the same as before
-     */
-    bool setCurrentTimeOwner(const std::string& owner);
-
     /** @brief Called on time mode is changed
      *
      * Notify listeners that time mode is changed and update ntp setting
@@ -112,12 +97,6 @@ class Manager
      * @param[in] mode - The string of time mode
      */
     void onTimeModeChanged(const std::string& mode);
-
-    /** @brief Called on time owner is changed
-     *
-     * Notify listeners that time owner is changed
-     */
-    void onTimeOwnerChanged();
 
     /** @brief Callback to handle change in a setting
      *
@@ -146,7 +125,7 @@ class Manager
      */
     void onHostState(bool on);
 
-    /** @brief Set the property as requested time mode/owner
+    /** @brief Set the property as requested time mode
      *
      * @param[in] key - The property name
      * @param[in] value - The property value
@@ -160,13 +139,6 @@ class Manager
      * @param[in] mode - The string of time mode
      */
     void setRequestedMode(const std::string& mode);
-
-    /** @brief Set the current owner to user requested one
-     *  if conditions allow it
-     *
-     * @param[in] owner - The string of time owner
-     */
-    void setRequestedOwner(const std::string& owner);
 
     /** @brief Update the NTP setting to systemd time service
      *
@@ -186,9 +158,6 @@ class Manager
     /** @brief The string of time mode property */
     static constexpr auto PROPERTY_TIME_MODE = "TimeSyncMethod";
 
-    /** @brief The string of time owner property */
-    static constexpr auto PROPERTY_TIME_OWNER = "TimeOwner";
-
     using Updater = std::function<void(const std::string&)>;
 
     /** @brief Map the property string to functions that shall
@@ -196,23 +165,15 @@ class Manager
      */
     const std::map<std::string, Updater> propertyUpdaters = {
         {PROPERTY_TIME_MODE,
-         std::bind(&Manager::setCurrentTimeMode, this, std::placeholders::_1)},
-        {PROPERTY_TIME_OWNER, std::bind(&Manager::setCurrentTimeOwner, this,
-                                        std::placeholders::_1)}};
+         std::bind(&Manager::setCurrentTimeMode, this, std::placeholders::_1)}};
 
     /** @brief The properties that manager shall notify the
      *  listeners when changed
      */
     static const std::set<std::string> managedProperties;
 
-    /** @brief The map that maps the string to Owners */
-    static const std::map<std::string, Owner> ownerMap;
-
     /** @brief The file name of saved time mode */
     static constexpr auto modeFile = "/var/lib/obmc/saved_time_mode";
-
-    /** @brief The file name of saved time owner */
-    static constexpr auto ownerFile = "/var/lib/obmc/saved_time_owner";
 };
 
 } // namespace time
