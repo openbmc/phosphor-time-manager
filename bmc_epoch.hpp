@@ -1,6 +1,5 @@
 #pragma once
 
-#include "bmc_time_change_listener.hpp"
 #include "epoch_base.hpp"
 
 #include <chrono>
@@ -39,24 +38,12 @@ class BmcEpoch : public EpochBase
      **/
     uint64_t elapsed(uint64_t value) override;
 
-    /** @brief Set the listner for bmc time change
-     *
-     * @param[in] listener - The pointer to the listener
-     */
-    void setBmcTimeChangeListener(BmcTimeChangeListener* listener);
-
   private:
     /** @brief The fd for time change event */
     int timeFd = -1;
 
     /** @brief Initialize timerFd related resource */
     void initialize();
-
-    /** @brief Notify the listeners that bmc time is changed
-     *
-     * @param[in] time - The epoch time in microseconds to notify
-     */
-    void notifyBmcTimeChange(const microseconds& time);
 
     /** @brief The callback function on system time change
      *
@@ -84,9 +71,6 @@ class BmcEpoch : public EpochBase
 
     /** @brief The event source on system time change */
     SdEventSource timeChangeEventSource{nullptr, sdEventSourceDeleter};
-
-    /** @brief The listener for bmc time change */
-    BmcTimeChangeListener* timeChangeListener = nullptr;
 };
 
 } // namespace time

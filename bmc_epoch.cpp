@@ -9,7 +9,6 @@
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
-#include <xyz/openbmc_project/Time/error.hpp>
 
 // Need to do this since its not exported outside of the kernel.
 // Refer : https://gist.github.com/lethean/446cea944b7441228298
@@ -26,9 +25,6 @@ namespace time
 {
 namespace server = sdbusplus::xyz::openbmc_project::Time::server;
 using namespace phosphor::logging;
-
-using NotAllowedError =
-    sdbusplus::xyz::openbmc_project::Time::Error::NotAllowed;
 
 BmcEpoch::BmcEpoch(sdbusplus::bus::bus& bus, const char* objPath) :
     EpochBase(bus, objPath), bus(bus)
@@ -84,72 +80,33 @@ BmcEpoch::~BmcEpoch()
 
 uint64_t BmcEpoch::elapsed() const
 {
-    // It does not needs to check owner when getting time
     return getTime().count();
 }
 
 uint64_t BmcEpoch::elapsed(uint64_t value)
 {
     /*
-        Mode  | Owner | Set BMC Time
-        ----- | ----- | -------------
-        NTP   | BMC   | Fail to set
-        NTP   | HOST  | Not allowed
-        NTP   | SPLIT | Fail to set
-        NTP   | BOTH  | Fail to set
-        MANUAL| BMC   | OK
-        MANUAL| HOST  | Not allowed
-        MANUAL| SPLIT | OK
-        MANUAL| BOTH  | OK
+        Mode  | Set BMC Time
+        ----- | -------------
+        NTP   | Fail to set
+        MANUAL| OK
     */
-    if (timeOwner == Owner::Host)
-    {
-        using namespace xyz::openbmc_project::Time;
-        elog<NotAllowedError>(
-            NotAllowed::OWNER(utils::ownerToStr(timeOwner).c_str()),
-            NotAllowed::SYNC_METHOD(utils::modeToStr(timeMode).c_str()),
-            NotAllowed::REASON(
-                "Setting BmcTime with HOST owner is not allowed"));
-    }
-
     auto time = microseconds(value);
-    if (setTime(time))
-    {
-        notifyBmcTimeChange(time);
-    }
+    setTime(time);
 
     server::EpochTime::elapsed(value);
     return value;
 }
 
-void BmcEpoch::setBmcTimeChangeListener(BmcTimeChangeListener* listener)
-{
-    timeChangeListener = listener;
-}
-
-void BmcEpoch::notifyBmcTimeChange(const microseconds& time)
-{
-    // Notify listener if it exists
-    if (timeChangeListener)
-    {
-        timeChangeListener->onBmcTimeChanged(time);
-    }
-}
-
 int BmcEpoch::onTimeChange(sd_event_source* es, int fd, uint32_t /* revents */,
                            void* userdata)
 {
-    auto bmcEpoch = static_cast<BmcEpoch*>(userdata);
-
     std::array<char, 64> time{};
 
     // We are not interested in the data here.
     // So read until there is no new data here in the FD
     while (read(fd, time.data(), time.max_size()) > 0)
         ;
-
-    log<level::INFO>("BMC system time is changed");
-    bmcEpoch->notifyBmcTimeChange(bmcEpoch->getTime());
 
     return 0;
 }
