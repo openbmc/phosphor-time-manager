@@ -11,7 +11,6 @@ using Service = std::string;
 using Interface = std::string;
 
 constexpr auto root = "/";
-constexpr auto timeOwnerIntf = "xyz.openbmc_project.Time.Owner";
 constexpr auto timeSyncIntf = "xyz.openbmc_project.Time.Synchronization";
 constexpr auto hostStateIntf = "xyz.openbmc_project.State.Host";
 
@@ -43,9 +42,6 @@ struct Objects
      * @return std::string - the D-bus service
      */
     Service service(const Path& path, const Interface& interface) const;
-
-    /** @brief time owner settings object */
-    Path timeOwner;
 
     /** @brief time sync method settings object */
     Path timeSyncMethod;

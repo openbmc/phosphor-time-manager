@@ -17,8 +17,7 @@ constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
 
 Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
 {
-    std::vector<std::string> settingsIntfs = {timeOwnerIntf, timeSyncIntf,
-                                              hostStateIntf};
+    std::vector<std::string> settingsIntfs = {timeSyncIntf, hostStateIntf};
     auto depth = 0;
 
     auto mapperCall = bus.new_method_call(mapperService, mapperPath, mapperIntf,
@@ -51,11 +50,7 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
         {
             for (const Interface& interface : service_iter.second)
             {
-                if (timeOwnerIntf == interface)
-                {
-                    timeOwner = path;
-                }
-                else if (timeSyncIntf == interface)
+                if (timeSyncIntf == interface)
                 {
                     timeSyncMethod = path;
                 }
