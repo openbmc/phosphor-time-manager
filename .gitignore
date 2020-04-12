@@ -54,3 +54,6 @@ phosphor-timemanager
 .dirstamp
 test/test
 test/test.trs
+
+.vscode
+
