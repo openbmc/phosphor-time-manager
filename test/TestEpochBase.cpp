@@ -27,7 +27,7 @@ class TestEpochBase : public testing::Test
     }
 };
 
-TEST_F(TestEpochBase, onModeChange)
+TEST_F(TestEpochBase, DISABLED_onModeChange)
 {
     epochBase.onModeChanged(Mode::NTP);
     EXPECT_EQ(Mode::NTP, getMode());
