@@ -46,29 +46,14 @@ class Manager
     /** @brief The match of settings property change */
     std::vector<sdbusplus::bus::match::match> settingsMatches;
 
-    /** @brief The match of host state change */
-    std::unique_ptr<sdbusplus::bus::match::match> hostStateChangeMatch;
-
     /** @brief The container to hold all the listeners */
     std::set<PropertyChangeListner*> listeners;
 
     /** @brief Settings objects of intereset */
     settings::Objects settings;
 
-    /** @brief The value to indicate if host is on */
-    bool hostOn = false;
-
-    /** @brief The requested time mode when host is on*/
-    std::string requestedMode;
-
     /** @brief The current time mode */
     Mode timeMode = DEFAULT_TIME_MODE;
-
-    /** @brief Restore saved settings */
-    void restoreSettings();
-
-    /** @brief Check if host is on and update hostOn variable */
-    void checkHostOn();
 
     /** @brief Get setting from settingsd service
      *
@@ -113,33 +98,6 @@ class Manager
      */
     void onPropertyChanged(const std::string& key, const std::string& value);
 
-    /** @brief Notified on host state has changed
-     *
-     * @param[in] msg - sdbusplus dbusmessage
-     */
-    void onHostStateChanged(sdbusplus::message::message& msg);
-
-    /** @brief Notified on host state has changed
-     *
-     * @param[in] on - Indicate if the host is on or off
-     */
-    void onHostState(bool on);
-
-    /** @brief Set the property as requested time mode
-     *
-     * @param[in] key - The property name
-     * @param[in] value - The property value
-     */
-    void setPropertyAsRequested(const std::string& key,
-                                const std::string& value);
-
-    /** @brief Set the current mode to user requested one
-     *  if conditions allow it
-     *
-     * @param[in] mode - The string of time mode
-     */
-    void setRequestedMode(const std::string& mode);
-
     /** @brief Update the NTP setting to systemd time service
      *
      * @param[in] value - The time mode value, e.g. "NTP" or "MANUAL"
@@ -160,20 +118,10 @@ class Manager
 
     using Updater = std::function<void(const std::string&)>;
 
-    /** @brief Map the property string to functions that shall
-     *  be called when the property is changed
-     */
-    const std::map<std::string, Updater> propertyUpdaters = {
-        {PROPERTY_TIME_MODE,
-         std::bind(&Manager::setCurrentTimeMode, this, std::placeholders::_1)}};
-
     /** @brief The properties that manager shall notify the
      *  listeners when changed
      */
     static const std::set<std::string> managedProperties;
-
-    /** @brief The file name of saved time mode */
-    static constexpr auto modeFile = "/var/lib/obmc/saved_time_mode";
 };
 
 } // namespace time
