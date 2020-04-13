@@ -89,15 +89,4 @@ In OpenBMC 2.4 (with systemd v236), the above will always succeed.
 This results in [openbmc/openbmc#3459][1], and the related test cases are
 updated to cooperate with this behavior change.
 
-### Special note on host on
-When the host is on, the changes of the above time mode are not applied but
-deferred. The changes of the mode are saved to persistent storage.
-
-When the host is off, the saved mode are read from persistent storage and are
-applied.
-
-Note: A user can set the time mode in the settings daemon at any time,
-but the time manager applying them is governed by the above condition.
-
-
 [1]: https://github.com/openbmc/openbmc/issues/3459
