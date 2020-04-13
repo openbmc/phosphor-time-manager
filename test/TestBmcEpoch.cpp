@@ -51,6 +51,15 @@ class TestBmcEpoch : public testing::Test
     }
 };
 
+TEST_F(TestBmcEpoch, onModeChange)
+{
+    bmcEpoch->onModeChanged(Mode::NTP);
+    EXPECT_EQ(Mode::NTP, getTimeMode());
+
+    bmcEpoch->onModeChanged(Mode::Manual);
+    EXPECT_EQ(Mode::Manual, getTimeMode());
+}
+
 TEST_F(TestBmcEpoch, empty)
 {
     // Default mode is MANUAL
