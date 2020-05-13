@@ -67,7 +67,7 @@ T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
     method.append(interface, propertyName);
     try
     {
-        sdbusplus::message::variant<T> value{};
+        std::variant<T> value{};
         auto reply = bus.call(method);
         reply.read(value);
         return std::get<T>(value);

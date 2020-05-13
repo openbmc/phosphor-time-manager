@@ -127,7 +127,7 @@ int Manager::onSettingsChanged(sdbusplus::message::message& msg)
     using Interface = std::string;
     using Property = std::string;
     using Value = std::string;
-    using Properties = std::map<Property, sdbusplus::message::variant<Value>>;
+    using Properties = std::map<Property, std::variant<Value>>;
 
     Interface interface;
     Properties properties;
@@ -201,7 +201,7 @@ void Manager::onHostStateChanged(sdbusplus::message::message& msg)
     using Interface = std::string;
     using Property = std::string;
     using Value = std::string;
-    using Properties = std::map<Property, sdbusplus::message::variant<Value>>;
+    using Properties = std::map<Property, std::variant<Value>>;
     using Host = sdbusplus::xyz::openbmc_project::State::server::Host;
 
     Interface interface;
