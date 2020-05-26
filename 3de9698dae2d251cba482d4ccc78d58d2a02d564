@@ -1,0 +1,8 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+2: Vishwanatha Subbanna <vishwa@linux.vnet.ibm.com>
+Submitted-by: Vishwanatha Subbanna <vishwa@linux.vnet.ibm.com>
+Submitted-at: Tue, 26 May 2020 13:12:40 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-time-manager/+/32749
+Project: openbmc/phosphor-time-manager
+Branch: refs/heads/master
