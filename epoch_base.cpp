@@ -28,11 +28,6 @@ EpochBase::EpochBase(sdbusplus::bus::bus& bus, const char* objPath) :
 {
 }
 
-void EpochBase::onModeChanged(Mode mode)
-{
-    timeMode = mode;
-}
-
 using namespace std::chrono;
 bool EpochBase::setTime(const microseconds& usec)
 {
