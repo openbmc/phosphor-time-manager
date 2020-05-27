@@ -1,7 +1,6 @@
 #include "config.h"
 
 #include "bmc_epoch.hpp"
-#include "types.hpp"
 
 #include <memory>
 #include <sdbusplus/bus.hpp>
@@ -37,25 +36,11 @@ class TestBmcEpoch : public testing::Test
     }
 
     // Proxies for BmcEpoch's private members and functions
-    Mode getTimeMode()
-    {
-        return bmcEpoch->timeMode;
-    }
-    void setTimeMode(Mode mode)
-    {
-        bmcEpoch->timeMode = mode;
-    }
     void triggerTimeChange()
     {
         bmcEpoch->onTimeChange(nullptr, -1, 0, bmcEpoch.get());
     }
 };
-
-TEST_F(TestBmcEpoch, empty)
-{
-    // Default mode is MANUAL
-    EXPECT_EQ(Mode::Manual, getTimeMode());
-}
 
 TEST_F(TestBmcEpoch, getElapsed)
 {

@@ -65,9 +65,5 @@ AC_ARG_VAR(OBJPATH_BMC, [The bmc epoch Dbus root])
 AS_IF([test "x$OBJPATH_BMC" == "x"], [OBJPATH_BMC="/xyz/openbmc_project/time/bmc"])
 AC_DEFINE_UNQUOTED([OBJPATH_BMC], ["$OBJPATH_BMC"], [The bmc epoch Dbus root])
 
-AC_ARG_VAR(DEFAULT_TIME_MODE, [The default time mode])
-AS_IF([test "x$DEFAULT_TIME_MODE" == "x"], [DEFAULT_TIME_MODE=Mode::Manual])
-AC_DEFINE_UNQUOTED([DEFAULT_TIME_MODE], [$DEFAULT_TIME_MODE], [The default time mode])
-
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_OUTPUT
