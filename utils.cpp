@@ -53,17 +53,6 @@ std::string getService(sdbusplus::bus::bus& bus, const char* path,
     }
 }
 
-Mode strToMode(const std::string& mode)
-{
-    return ModeSetting::convertMethodFromString(mode);
-}
-
-std::string modeToStr(Mode mode)
-{
-    return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(
-        mode);
-}
-
 } // namespace utils
 } // namespace time
 } // namespace phosphor

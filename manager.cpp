@@ -48,7 +48,6 @@ void Manager::onPropertyChanged(const std::string& key,
     assert(key == PROPERTY_TIME_MODE);
 
     // Notify listeners
-    setCurrentTimeMode(value);
     onTimeModeChanged(value);
 }
 
@@ -90,22 +89,6 @@ void Manager::updateNtpSetting(const std::string& value)
     {
         log<level::ERR>("Failed to update NTP setting",
                         entry("ERR=%s", ex.what()));
-    }
-}
-
-bool Manager::setCurrentTimeMode(const std::string& mode)
-{
-    auto newMode = utils::strToMode(mode);
-    if (newMode != timeMode)
-    {
-        log<level::INFO>("Time mode is changed",
-                         entry("MODE=%s", mode.c_str()));
-        timeMode = newMode;
-        return true;
-    }
-    else
-    {
-        return false;
     }
 }
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "types.hpp"
-
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 
@@ -57,29 +55,6 @@ T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
  */
 std::string getService(sdbusplus::bus::bus& bus, const char* path,
                        const char* interface);
-
-/** @brief Convert a string to enum Mode
- *
- * Convert the time mode string to enum.
- * Valid strings are
- *   "xyz.openbmc_project.Time.Synchronization.Method.NTP"
- *   "xyz.openbmc_project.Time.Synchronization.Method.Manual"
- * If it's not a valid time mode string, it means something
- * goes wrong so raise exception.
- *
- * @param[in] mode - The string of time mode
- *
- * @return The Mode enum
- */
-Mode strToMode(const std::string& mode);
-
-/** @brief Convert a mode enum to mode string
- *
- * @param[in] mode - The Mode enum
- *
- * @return The string of the mode
- */
-std::string modeToStr(Mode mode);
 
 } // namespace utils
 } // namespace time
