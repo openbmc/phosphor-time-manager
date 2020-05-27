@@ -2,9 +2,7 @@
 
 #include "config.h"
 
-#include "property_change_listener.hpp"
 #include "settings.hpp"
-#include "types.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -43,9 +41,6 @@ class Manager
     /** @brief Settings objects of intereset */
     settings::Objects settings;
 
-    /** @brief The current time mode */
-    Mode timeMode = DEFAULT_TIME_MODE;
-
     /** @brief Get setting from settingsd service
      *
      * @param[in] path - The dbus object path
@@ -56,15 +51,6 @@ class Manager
      */
     std::string getSetting(const char* path, const char* interface,
                            const char* setting) const;
-
-    /** @brief Set current time mode from the time mode string
-     *
-     * @param[in] mode - The string of time mode
-     *
-     * @return - true if the mode is updated
-     *           false if it's the same as before
-     */
-    bool setCurrentTimeMode(const std::string& mode);
 
     /** @brief Called on time mode is changed
      *

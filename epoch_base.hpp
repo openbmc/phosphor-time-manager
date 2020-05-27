@@ -2,8 +2,6 @@
 
 #include "config.h"
 
-#include "property_change_listener.hpp"
-
 #include <chrono>
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Time/EpochTime/server.hpp>
@@ -19,23 +17,16 @@ namespace time
  *  DBus API for epoch time.
  */
 class EpochBase : public sdbusplus::server::object::object<
-                      sdbusplus::xyz::openbmc_project::Time::server::EpochTime>,
-                  public PropertyChangeListner
+                      sdbusplus::xyz::openbmc_project::Time::server::EpochTime>
 {
   public:
     friend class TestEpochBase;
 
     EpochBase(sdbusplus::bus::bus& bus, const char* objPath);
 
-    /** @brief Notified on time mode changed */
-    void onModeChanged(Mode mode) override;
-
   protected:
     /** @brief Persistent sdbusplus DBus connection */
     sdbusplus::bus::bus& bus;
-
-    /** @brief The current time mode */
-    Mode timeMode = DEFAULT_TIME_MODE;
 
     /** @brief Set current time to system
      *
