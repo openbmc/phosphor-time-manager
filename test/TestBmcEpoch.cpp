@@ -3,8 +3,9 @@
 #include "bmc_epoch.hpp"
 #include "types.hpp"
 
-#include <memory>
 #include <sdbusplus/bus.hpp>
+
+#include <memory>
 
 #include <gtest/gtest.h>
 

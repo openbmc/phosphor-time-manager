@@ -20,8 +20,7 @@ class TestManager : public testing::Test
     Manager manager;
 
     TestManager() : bus(sdbusplus::bus::new_default()), manager(bus)
-    {
-    }
+    {}
 
     // Proxies for Manager's private members and functions
     Mode getTimeMode()

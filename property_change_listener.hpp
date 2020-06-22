@@ -11,8 +11,7 @@ class PropertyChangeListner
 {
   public:
     virtual ~PropertyChangeListner()
-    {
-    }
+    {}
 
     /** @brief Notified on time mode is changed */
     virtual void onModeChanged(Mode mode) = 0;

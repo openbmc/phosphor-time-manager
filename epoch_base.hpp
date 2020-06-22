@@ -4,9 +4,10 @@
 
 #include "property_change_listener.hpp"
 
-#include <chrono>
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Time/EpochTime/server.hpp>
+
+#include <chrono>
 
 namespace phosphor
 {
@@ -18,9 +19,10 @@ namespace time
  *  @details A base class that implements xyz.openbmc_project.Time.EpochTime
  *  DBus API for epoch time.
  */
-class EpochBase : public sdbusplus::server::object::object<
-                      sdbusplus::xyz::openbmc_project::Time::server::EpochTime>,
-                  public PropertyChangeListner
+class EpochBase :
+    public sdbusplus::server::object::object<
+        sdbusplus::xyz::openbmc_project::Time::server::EpochTime>,
+    public PropertyChangeListner
 {
   public:
     friend class TestEpochBase;
