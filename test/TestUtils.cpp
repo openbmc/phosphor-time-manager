@@ -40,6 +40,15 @@ TEST(TestUtil, modeToStr)
     EXPECT_ANY_THROW(modeToStr(static_cast<Mode>(100)));
 }
 
+TEST(TestUtil, parseToEpoch)
+{
+    std::vector<uint8_t> respData = {0, 57, 0,  2, 0,   11, 21,  160, 0,
+                                     1, 44, 72, 0, 251, 72, 166, 96};
+
+    // valid response vector will return non zero epoctime
+    EXPECT_NE(0, parseToEpoch(respData));
+}
+
 } // namespace utils
 } // namespace time
 } // namespace phosphor
