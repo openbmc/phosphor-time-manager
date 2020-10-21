@@ -47,6 +47,13 @@ class Manager
     /** @brief The current time mode */
     Mode timeMode = DEFAULT_TIME_MODE;
 
+    /** @brief callback to get the hos time and set that time to bmc
+     *
+     * @param[in] mode - The string of mode,HostSync
+     *
+     */
+    void updateHostSyncSetting(const std::string& mode);
+
     /** @brief Get setting from settingsd service
      *
      * @param[in] path - The dbus object path
@@ -66,7 +73,6 @@ class Manager
      *           false if it's the same as before
      */
     bool setCurrentTimeMode(const std::string& mode);
-
     /** @brief Called on time mode is changed
      *
      * Notify listeners that time mode is changed and update ntp setting
