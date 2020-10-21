@@ -5,6 +5,8 @@
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 
+#include <chrono>
+
 namespace phosphor
 {
 namespace time
@@ -80,6 +82,65 @@ Mode strToMode(const std::string& mode);
  * @return The string of the mode
  */
 std::string modeToStr(Mode mode);
+
+/** @brief The function to set time of BMC
+ *
+ * @param[in] bus           - The Dbus bus object
+ * @param[in] timeofDayUsec - Time in microseconds since EPOCH
+ *
+ * @return The value of the property
+ */
+bool setTime(sdbusplus::bus::bus& bus,
+             const std::chrono::microseconds& timeOfDayUsec);
+
+/** @brief callback to get the host time and set that time to bmc
+ *
+ * @param[in] hostId - host port ID
+ * @param[in] netFn - net function value
+ * @param[in] lun - logical time unit value
+ * @param[in] cmd - request message to bridge
+ * @param[in] cmdData - vector of cmdData
+ * @param[in] respData - vector of response data
+ * @param[in] bridgeInterface - bridge between host and BMC
+ *
+ */
+bool readHostTimeViaIpmb(sdbusplus::bus::bus& bus, std::vector<uint8_t>& hostId,
+                         uint8_t netFn, uint8_t lun, uint8_t cmd,
+                         std::vector<uint8_t>& cmdData,
+                         std::vector<uint8_t>& respData,
+                         std::string bridgeInterface);
+
+/** @brief Read IPMB cell information (netfn,lun,hostid,cmd,cmdData) from
+ * configuration file
+ *
+ *  @param[in] netFn - to store netFn value from configuration file
+ *  @param[in] lun   - to store lun value from configuration file
+ *  @param[in] cmd   - to store cmd value from configuration file
+ *  @param[in] cmdData   - to store cmd value from configuration file
+ *  @param[in] cmd   - to store cmd value from configuration file
+ *  @param[in] bridgeInterface - to store bridge interface from
+ * configuration file
+ *
+ */
+void loadIPMBCmd(sdbusplus::bus::bus& bus, uint8_t& netFn, uint8_t& lun,
+                 uint8_t& cmd, std::vector<uint8_t>& hostData,
+                 std::vector<uint8_t>& cmdData, std::string& bridgeInterface);
+
+/** @brief parse the response data to epoch time
+ *
+ * @param[in] reponse data - vector of response data
+ *
+ * @return return the epoch time
+ */
+uint64_t parseToEpoch(std::vector<uint8_t>& respData);
+/** @brief get the time from host and store in bmc time
+ *
+ * @param[in] bus           - The Dbus bus object
+ *
+ * @return return nothing
+ */
+
+void updateBmcTimeFromHost(sdbusplus::bus::bus& bus);
 
 } // namespace utils
 } // namespace time
