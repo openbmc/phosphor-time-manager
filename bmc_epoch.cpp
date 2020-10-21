@@ -92,7 +92,7 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
         MANUAL| OK
     */
     auto time = microseconds(value);
-    setTime(time);
+    utils::setTime(bus, time);
 
     server::EpochTime::elapsed(value);
     return value;
