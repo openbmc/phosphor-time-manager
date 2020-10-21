@@ -29,17 +29,6 @@ TEST(TestUtil, strToMode)
     EXPECT_THROW(strToMode("whatever"), InvalidEnumString);
 }
 
-TEST(TestUtil, modeToStr)
-{
-    EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.NTP",
-              modeToStr(Mode::NTP));
-    EXPECT_EQ("xyz.openbmc_project.Time.Synchronization.Method.Manual",
-              modeToStr(Mode::Manual));
-
-    // All unrecognized strings result in exception
-    EXPECT_ANY_THROW(modeToStr(static_cast<Mode>(100)));
-}
-
 } // namespace utils
 } // namespace time
 } // namespace phosphor
