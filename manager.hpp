@@ -6,6 +6,8 @@
 #include "settings.hpp"
 #include "types.hpp"
 
+
+#include <boost/container/flat_map.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 
