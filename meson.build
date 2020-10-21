@@ -47,6 +47,11 @@ deps            =   [sdbusplus, logging, dbus]
 conf_data = configuration_data()
 conf_data.set('DEFAULT_TIME_MODE', get_option('default_time_mode'))
 
+if(get_option('use-ipmb-host-time').enabled())
+    conf_data.set('USE_IPMB_HOST_TIME', 1)
+endif
+
+
 configure_file(output: 'config.h', configuration: conf_data)
 
 

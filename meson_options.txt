@@ -17,3 +17,4 @@ option ( 'default_time_mode', type : 'combo',
           choices: ['Mode::Manual', 'Mode::NTP'],
           value : 'Mode::Manual',
           description : 'The default time mode')
+option('use-ipmb-host-time', type : 'feature', value : 'enabled', description : 'Enable read host time via ipmb support')
