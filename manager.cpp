@@ -9,6 +9,9 @@
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 
+#include <chrono>
+#include <sstream>
+
 namespace rules = sdbusplus::bus::match::rules;
 
 namespace // anonymous
@@ -18,6 +21,7 @@ constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
 constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
 constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
 constexpr auto METHOD_SET_NTP = "SetNTP";
+constexpr auto METHOD_SET_TIME = "SetTime";
 } // namespace
 
 namespace phosphor
@@ -26,6 +30,8 @@ namespace time
 {
 
 using namespace phosphor::logging;
+using namespace std::chrono;
+using sdbusplus::exception::SdBusError;
 
 Manager::Manager(sdbusplus::bus::bus& bus) : bus(bus), settings(bus)
 {
@@ -111,8 +117,12 @@ bool Manager::setCurrentTimeMode(const std::string& mode)
 
 void Manager::onTimeModeChanged(const std::string& mode)
 {
-    // When time_mode is updated, update the NTP setting
-    updateNtpSetting(mode);
+    updateNtpSetting(mode); // NTP Mode
+
+    if (mode == "xyz.openbmc_project.Time.Synchronization.Method.HostSync")
+    {
+        utils::updateBmcTimeFromHost(bus);
+    }
 }
 
 std::string Manager::getSetting(const char* path, const char* interface,

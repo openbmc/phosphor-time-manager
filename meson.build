@@ -38,7 +38,8 @@ compiler = meson.get_compiler('cpp')
 sdbusplus       =   dependency ('sdbusplus')
 logging         =   dependency ('phosphor-logging')
 dbus            =   dependency ('phosphor-dbus-interfaces')
-deps            =   [sdbusplus, logging, dbus]
+threads         =   dependency ('threads')
+deps            =   [sdbusplus, logging, dbus, threads]
 
 ###########################################################################
 
