@@ -1,9 +1,13 @@
 #pragma once
 
-#include "types.hpp"
+#include "config.h"
 
+#include "types.hpp"
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+
+#include <chrono>
+#include <iostream>
 
 namespace phosphor
 {
@@ -80,6 +84,87 @@ Mode strToMode(const std::string& mode);
  * @return The string of the mode
  */
 std::string modeToStr(Mode mode);
+
+/** @brief The function to set time of BMC
+ *
+ * @param[in] bus           - The Dbus bus object
+ * @param[in] timeofDayUsec - Time in microseconds since EPOCH
+ *
+ * @return The value of the property
+ */
+bool setTime(sdbusplus::bus::bus& bus,
+             const std::chrono::microseconds& timeOfDayUsec);
+
+typedef struct
+{
+    uint8_t netFn;
+    uint8_t lun;
+    uint8_t cmd;
+    std::vector<uint8_t> ipmbAddr;
+    std::vector<uint8_t> cmdData;
+    std::string bridgeInterface;
+} ipmbCmdInfo;
+
+/** @brief callback to get the host time and set that time to bmc
+ *
+ * @param[in] bus data - the dbus object
+ *
+ * @param[in] ipmbCmdInfo the host time ipmb command
+ *
+ * @param[out] respData - vector of response data
+ *
+ * @return bool
+
+ */
+bool readHostTimeViaIpmb(sdbusplus::bus::bus& bus, ipmbCmdInfo hostTimeCmd,
+                         std::vector<uint8_t>& respData);
+
+/** @brief Read IPMB cell information (netfn,lun,hostid,cmd,cmdData) from
+ * configuration file
+ * @param[in] bus data - the dbus object
+ *
+ * @return return the ipmg host time read cmd info
+ *
+ */
+ipmbCmdInfo loadIPMBCmd(sdbusplus::bus::bus& bus);
+
+/** @brief parse the response data to epoch time
+ *
+ * @param[in] reponse data - vector of response data
+ *
+ * @return return the epoch time
+ */
+uint64_t parseToEpoch(std::vector<uint8_t>& respData);
+
+/** @brief parse the response data to epoch time
+ *
+ * @param[in] bus data - the dbus object
+ *
+ * @return return the epoch time
+ */
+uint64_t getTimeFromHost(sdbusplus::bus::bus& bus);
+
+/** @brief parse the response data to epoch time
+ *
+ * @param[in] bus data - the dbus object
+ *
+ * @return return the epoch time
+ */
+uint64_t getHostTimeViaIpmb(sdbusplus::bus::bus& bus);
+
+/** @brief get the time from host and store in bmc time
+ *
+ * @param[in] bus           - The Dbus bus object
+ *
+ * @return return nothing
+ */
+
+void updateBmcTimeFromHost(sdbusplus::bus::bus& bus);
+
+const std::vector<std::string> getSubTreePaths(sdbusplus::bus::bus& bus,
+                                               const std::string& objectPath,
+                                               const std::string& interface);
+std::vector<uint8_t> strToIntArray(std::string stream);
 
 } // namespace utils
 } // namespace time

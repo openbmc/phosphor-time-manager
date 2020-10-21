@@ -39,17 +39,6 @@ class EpochBase :
     /** @brief The current time mode */
     Mode timeMode = DEFAULT_TIME_MODE;
 
-    /** @brief Set current time to system
-     *
-     * This function set the time to system by invoking systemd
-     * org.freedesktop.timedate1's SetTime method.
-     *
-     * @param[in] timeOfDayUsec - Microseconds since UTC
-     *
-     * @return true or false to indicate if it sets time successfully
-     */
-    bool setTime(const std::chrono::microseconds& timeOfDayUsec);
-
     /** @brief Get current time
      *
      * @return Microseconds since UTC
