@@ -1,13 +1,19 @@
 #include "manager.hpp"
 
+#include "VariantVisitors.hpp"
 #include "utils.hpp"
-
-#include <assert.h>
+//#include "bmc_epoch.hpp"
 
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+
+#include <chrono>
+#include <sstream>
+
+#define RESP_DATA_INDEX 5
+#define RESP_DATA_LENGTH 11
 
 namespace rules = sdbusplus::bus::match::rules;
 
@@ -18,6 +24,10 @@ constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
 constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
 constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
 constexpr auto METHOD_SET_NTP = "SetNTP";
+constexpr auto METHOD_SET_TIME = "SetTime";
+const constexpr char* entityManagerName = "xyz.openbmc_project.EntityManager";
+constexpr const char* configInterface = 
+    "xyz.openbmc_project.Configuration.IpmbSelInfo";
 } // namespace
 
 namespace phosphor
@@ -26,6 +36,8 @@ namespace time
 {
 
 using namespace phosphor::logging;
+using namespace std::chrono;
+using sdbusplus::exception::SdBusError;
 
 Manager::Manager(sdbusplus::bus::bus& bus) : bus(bus), settings(bus)
 {
@@ -109,10 +121,148 @@ bool Manager::setCurrentTimeMode(const std::string& mode)
     }
 }
 
+static constexpr auto systemdBusname = "org.freedesktop.systemd1";
+static constexpr auto systemdPath = "/org/freedesktop/systemd1";
+static constexpr auto systemdInterface = "org.freedesktop.systemd1.Manager";
+using IpmbMethodType =
+    std::tuple<int, uint8_t, uint8_t, uint8_t, uint8_t, std::vector<uint8_t>>;
+
+void Manager::updateHostSyncSetting(std::vector<uint8_t>& meAddress,
+                                    uint8_t netFn, uint8_t lun, uint8_t cmd,
+                                    std::vector<uint8_t>& cmdData,
+                                    std::vector<uint8_t>& respData,
+                                    std::string bridgeInterface)
+{
+    if (bridgeInterface == "Ipmb")
+    {
+        auto method =
+            bus.new_method_call("xyz.openbmc_project.Ipmi.Channel.Ipmb",
+                                "/xyz/openbmc_project/Ipmi/Channel/Ipmb",
+                                "org.openbmc.Ipmb", "sendRequest");
+        try
+        {
+            for (uint8_t i = 0; i < meAddress.size(); i++)
+            {
+                method.append(meAddress[i], netFn, lun, cmd, cmdData);
+                auto reply = bus.call(method);
+                if (reply.is_method_error())
+                {
+                    phosphor::logging::log<phosphor::logging::level::ERR>(
+                        "Error reading from ME");
+                    continue;
+                }
+                IpmbMethodType resp;
+                reply.read(resp);
+                respData = std::get<RESP_DATA_INDEX>(resp);
+                if (respData.size() >= RESP_DATA_LENGTH)
+                {
+                    utils::setTime(
+                        bus, microseconds(seconds(parseToEpoch(respData))));
+                    break;
+                }
+            }
+        }
+        catch (...)
+        {
+            log<level::ERR>("unable to connect to given hostID");
+        }
+    }
+}
+
+uint64_t Manager::parseToEpoch(std::vector<uint8_t>& respData)
+{
+    std::string infoMsg;
+    uint16_t size = respData.size();
+    uint16_t last = size - 1;
+    uint16_t fourthValFrmLast = size - 4;
+    uint64_t epochTime = 0;
+    // fetch last 4 value from response data and concatenate them to make epoch
+    // time
+    for (uint16_t i = last; i >= fourthValFrmLast; i--)
+    {
+        if (i != fourthValFrmLast)
+            epochTime = (epochTime | respData[i]) << 8;
+        else if (i == fourthValFrmLast)
+            epochTime = (epochTime | respData[i]);
+    }
+
+    infoMsg = "respData at epochTime " + std::to_string(epochTime);
+    phosphor::logging::log<phosphor::logging::level::INFO>(infoMsg.c_str());
+    return epochTime;
+}
+
 void Manager::onTimeModeChanged(const std::string& mode)
 {
-    // When time_mode is updated, update the NTP setting
-    updateNtpSetting(mode);
+    updateNtpSetting(mode); // NTP Mode
+    if (mode == "xyz.openbmc_project.Time.Synchronization.Method.HostSync")
+    {
+        sleep(20);
+        uint8_t netFn, cmd, lun;
+        std::vector<uint8_t> cmdData, hostData;
+        std::string bridgeInterface;
+        readFromJson(netFn, lun, cmd, hostData, cmdData, bridgeInterface);
+        updateHostSyncSetting(hostData, netFn, lun, cmd, cmdData, respData,
+                              bridgeInterface); // HostSync mode
+    }
+}
+
+void Manager::readFromJson(uint8_t& netFn, uint8_t& lun, uint8_t& cmd,
+                           std::vector<uint8_t>& hostData,
+                           std::vector<uint8_t>& cmdData,
+                           std::string& bridgeInterface)
+{
+    unsigned int num = 0;
+    auto method = bus.new_method_call(entityManagerName, "/",
+                                      "org.freedesktop.DBus.ObjectManager",
+                                      "GetManagedObjects");
+    method.append();
+    auto reply = bus.call(method);
+    if (reply.is_method_error())
+    {
+        phosphor::logging::log<phosphor::logging::level::ERR>(
+            "Error contacting entity manager");
+        return;
+    }
+    try
+    {
+        ManagedObjectType resp;
+        reply.read(resp);
+        for (const auto& pathPair : resp)
+        {
+            for (const auto& entry : pathPair.second)
+            {
+                if (entry.first != configInterface)
+                {
+                    continue;
+                }
+                std::stringstream dataStream(
+                    loadVariant<std::string>(entry.second, "Bus")); //HostId
+                while (dataStream >> num)
+                {
+                    hostData.push_back(num);
+                }
+                num = 0;
+                dataStream.str("");
+                dataStream.clear();
+                netFn = loadVariant<uint8_t>(entry.second, "Index"); //NetFn
+                lun = loadVariant<uint8_t>(entry.second, "Lun"); 
+                cmd = loadVariant<uint8_t>(entry.second, "C1"); //Cmd
+                dataStream << (loadVariant<std::string>(entry.second,
+                                                        "CmdData"));
+                while (dataStream >> num)
+                {
+                    cmdData.push_back(num);
+                }
+                
+                bridgeInterface = loadVariant<std::string>(entry.second, "Interface"); 
+            }
+        }
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
+    {
+        log<level::ERR>("Error in reading from IPMB cell info",
+                        entry("ERR=%s", ex.what()));
+    }
 }
 
 std::string Manager::getSetting(const char* path, const char* interface,
