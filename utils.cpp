@@ -1,6 +1,9 @@
 #include "utils.hpp"
 
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/log.hpp>
+#include <xyz/openbmc_project/Time/error.hpp>
 
 namespace phosphor
 {
@@ -62,6 +65,34 @@ std::string modeToStr(Mode mode)
 {
     return sdbusplus::xyz::openbmc_project::Time::server::convertForMessage(
         mode);
+}
+
+constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
+constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
+constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
+constexpr auto METHOD_SET_TIME = "SetTime";
+
+using namespace std::chrono;
+bool setTime(sdbusplus::bus::bus& bus, const microseconds& usec)
+{
+    auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE, SYSTEMD_TIME_PATH,
+                                      SYSTEMD_TIME_INTERFACE, METHOD_SET_TIME);
+    method.append(static_cast<int64_t>(usec.count()),
+                  false,  // relative
+                  false); // user_interaction
+
+    try
+    {
+        bus.call_noreply(method);
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
+    {
+        log<level::ERR>("Error in setting system time");
+        using FailedError = sdbusplus::xyz::openbmc_project::Time::Error::Failed;
+        using namespace xyz::openbmc_project::Time;
+        elog<FailedError>(Failed::REASON(ex.what()));
+    }
+    return true;
 }
 
 } // namespace utils

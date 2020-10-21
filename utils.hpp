@@ -1,6 +1,9 @@
 #pragma once
 
+#include <chrono>
+
 #include "types.hpp"
+#include "LoadVariant.hpp"
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
@@ -81,6 +84,14 @@ Mode strToMode(const std::string& mode);
  */
 std::string modeToStr(Mode mode);
 
+/** @brief The function to set time of BMC
+ *
+ * @param[in] bus           - The Dbus bus object
+ * @param[in] timeofDayUsec - Time in microseconds since EPOCH
+ *
+ * @return The value of the property
+ */
+bool setTime(sdbusplus::bus::bus& bus, const std::chrono::microseconds& timeOfDayUsec);
 } // namespace utils
 } // namespace time
 } // namespace phosphor

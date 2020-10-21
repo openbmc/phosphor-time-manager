@@ -15,7 +15,7 @@ libtimemanager_la_SOURCES = \
 phosphor_timemanager_SOURCES = \
 	main.cpp
 
-phosphor_timemanager_LDADD = libtimemanager.la
+phosphor_timemanager_LDADD = libtimemanager.la -lpthread
 
 generic_cxx_flags = $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
                     $(SDBUSPLUS_CFLAGS) \

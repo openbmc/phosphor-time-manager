@@ -8,6 +8,8 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
+#include <boost/asio/deadline_timer.hpp>
+#include <boost/container/flat_map.hpp>
 
 #include <string>
 
@@ -46,6 +48,45 @@ class Manager
 
     /** @brief The current time mode */
     Mode timeMode = DEFAULT_TIME_MODE;
+	
+    /** @brief resonse data from ipmb method call */
+    std::vector<uint8_t> respData;
+	
+    /** @brief callback to get the host time and set that time to bmc
+     *
+     * @param[in] hostId - host port ID
+     * @param[in] netFn - net function value
+     * @param[in] lun - logical time unit value
+     * @param[in] cmd - request message to bridge
+     * @param[in] cmdData - vector of cmdData
+     * @param[in] respData - vector of response data
+     * @param[in] bridgeInterface - bridge between host and BMC
+     *
+     */
+    void updateHostSyncSetting(std::vector<uint8_t>&  hostId, uint8_t netFn, uint8_t lun, uint8_t cmd,
+                              std::vector<uint8_t>& cmdData, std::vector<uint8_t>& respData,
+                              std::string bridgeInterface);
+	
+    /** @brief parse the response data to epoch time
+     *
+     * @param[in] reponse data - vector of response data
+     * 
+     * @return return the epoch time
+     */
+     uint64_t parseToEpoch(std::vector<uint8_t>& respData);
+	
+    /** @brief Read IPMB cell information (netfn,lun,hostid,cmd,cmdData) from configuration file
+     *
+     *  @param[in] netFn - to store netFn value from configuration file
+     *  @param[in] lun   - to store lun value from configuration file
+     *  @param[in] cmd   - to store cmd value from configuration file
+     *  @param[in] cmdData   - to store cmd value from configuration file
+     *  @param[in] cmd   - to store cmd value from configuration file
+     *  @param[in] bridgeInterface - to store bridge interface from configuration file 
+     *
+     */
+    void readFromJson(uint8_t &netFn, uint8_t &lun, uint8_t &cmd, std::vector<uint8_t> &hostData,
+                     std::vector<uint8_t> &cmdData, std::string &bridgeInterface);
 
     /** @brief Get setting from settingsd service
      *
@@ -66,7 +107,6 @@ class Manager
      *           false if it's the same as before
      */
     bool setCurrentTimeMode(const std::string& mode);
-
     /** @brief Called on time mode is changed
      *
      * Notify listeners that time mode is changed and update ntp setting
