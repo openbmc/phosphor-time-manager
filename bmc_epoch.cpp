@@ -98,8 +98,8 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
     return value;
 }
 
-int BmcEpoch::onTimeChange(sd_event_source* es, int fd, uint32_t /* revents */,
-                           void* userdata)
+int BmcEpoch::onTimeChange(sd_event_source* /* es */, int fd,
+                           uint32_t /* revents */, void* /* userdata */)
 {
     std::array<char, 64> time{};
 
