@@ -1,0 +1,30 @@
+# Features List
+
+# command : meson configure -Dfeature_name=enabled
+
+option( 'tests', type : 'feature',
+        description: 'Build unit tests'
+      )
+
+option(
+    'oe-sdk', type: 'feature', description: 'Enable OE SDK'
+)
+
+# Commandline variables list
+# Value can be assigned from commandline to below variables
+# otherwise default value will be considered
+# Command: meson configure -Doption=value
+
+# Ex: meson configure -DOECORE_TARGET_SYSROOT=path
+
+option ( 'BUSNAME', type : 'string',
+          value : 'xyz.openbmc_project.Time.Manager',
+          description : 'The Time Manager DBus busname to own')
+
+option ( 'OBJPATH_BMC', type : 'string',
+          value : '/xyz/openbmc_project/time/bmc',
+          description : 'The bmc epoch Dbus root')
+
+option ( 'DEFAULT_TIME_MODE', type : 'string',
+          value : 'Mode::Manual',
+          description : 'The default time mode')
