@@ -69,6 +69,21 @@ libtimemanager = static_library('libtimemanager',
                                  dependencies : deps)
 ############################################################################
 
+# Install the files into the build directory
+
+systemd = dependency ('systemd')
+systemd_system_unit_dir = systemd.get_pkgconfig_variable('systemdsystemunitdir',
+                                                         define_variable: ['prefix',
+                                                                           get_option('prefix')
+                                                                          ])
+configure_file(input : 'xyz.openbmc_project.Time.Manager.service.in',
+               output : '@BASENAME@',
+               configuration : conf_data,
+               install_dir : systemd_system_unit_dir,
+               install : true)
+
+#############################################################################
+
 # Build binaries
 
 executable('phosphor-time-manager',
