@@ -11,15 +11,7 @@ option( 'tests', type : 'feature',
 # otherwise default value will be considered
 # Command: meson configure -Doption=value
 
-# Ex: meson configure -Dobj_path_bmc=path
-
-option ( 'busname', type : 'string',
-          value : 'xyz.openbmc_project.Time.Manager',
-          description : 'The Time Manager DBus busname to own')
-
-option ( 'obj_path_bmc', type : 'string',
-          value : '/xyz/openbmc_project/time/bmc',
-          description : 'The bmc epoch Dbus root')
+# Ex: meson configure -Ddefault_time_mode=Mode::Manual
 
 option ( 'default_time_mode', type : 'combo',
           choices: ['Mode::Manual', 'Mode::NTP'],
