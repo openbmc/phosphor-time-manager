@@ -45,8 +45,6 @@ deps            =   [sdbusplus, logging, dbus]
 # Get the config data and enable options
 
 conf_data = configuration_data()
-conf_data.set_quoted('BUSNAME', get_option('busname'))
-conf_data.set_quoted('OBJPATH_BMC', get_option('obj_path_bmc'))
 conf_data.set('DEFAULT_TIME_MODE', get_option('default_time_mode'))
 
 configure_file(output: 'config.h', configuration: conf_data)
@@ -68,6 +66,21 @@ libtimemanager = static_library('libtimemanager',
                                  phosphor_time_manager_sources,
                                  dependencies : deps)
 ############################################################################
+
+# Install the files into the build directory
+
+systemd = dependency ('systemd')
+systemd_system_unit_dir = systemd.get_pkgconfig_variable('systemdsystemunitdir',
+                                                         define_variable: ['prefix',
+                                                                           get_option('prefix')
+                                                                          ])
+configure_file(input : 'xyz.openbmc_project.Time.Manager.service.in',
+               output : '@BASENAME@',
+               configuration : conf_data,
+               install_dir : systemd_system_unit_dir,
+               install : true)
+
+#############################################################################
 
 # Build binaries
 
