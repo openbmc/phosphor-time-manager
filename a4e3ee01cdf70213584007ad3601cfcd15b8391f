@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1c18c2a1_949cf667",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-02-03T05:31:10Z",
+      "side": 1,
+      "message": "Some of the `:` has both spaces on the left and right, but this one does not. Possibly make it consistent with others.",
+      "range": {
+        "startLine": 107,
+        "startChar": 28,
+        "endLine": 107,
+        "endChar": 29
+      },
+      "revId": "a4e3ee01cdf70213584007ad3601cfcd15b8391f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29992d7d_a5a7b2be",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-02-03T05:31:10Z",
+      "side": 1,
+      "message": "The same as above.",
+      "range": {
+        "startLine": 108,
+        "startChar": 26,
+        "endLine": 108,
+        "endChar": 27
+      },
+      "revId": "a4e3ee01cdf70213584007ad3601cfcd15b8391f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
