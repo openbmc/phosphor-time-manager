@@ -1,9 +1,9 @@
 #################################################################################
 # Enforce the test dependencies when tests are enabled
-dl_dep         =        compiler.find_library('dl', required : get_option('tests'))
-gtest          =        dependency('gtest', main: true, disabler: true,required : get_option('tests'))
-gmock          =        dependency('gmock',required : get_option('tests'))
-thread_dep     =        dependency('threads', required : get_option('tests'))
+dl_dep = compiler.find_library('dl', required : get_option('tests'))
+gtest = dependency('gtest', main: true, disabler: true,required : get_option('tests'))
+gmock = dependency('gmock',required : get_option('tests'))
+thread_dep = dependency('threads', required : get_option('tests'))
 
 
 ##################################################################################
