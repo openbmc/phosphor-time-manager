@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "757221ad_c6db4863",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "please also add default buildtype to debugoptimized.",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 24
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7dc43a32_c92e8496",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "is this even needed for cpp17 ? experimental fs is not std::fs in cpp 17.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 53
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb7d0cfd_1119ea4e",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "checking the dependency for systemd does not take care of it ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 4
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a7cfd95_abaf7688",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "I just see fpic in the autotool repo, we should not be adding new flags , incase if it is unavoidable i would like to see why we are adding those.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 25
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5f2583c_4e92c1dd",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "I dont understand the reason why we are exposing these to be meson_options, agree that there are present in autotools.\n\nBut i feel ,its better to add these in config.h \u0026 remove them from the meson_option.txt.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 62
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f027d203_91e29fc5",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "is there a need for generating a static library ? if it is only for tests i guess this can be removed, \u0026 the respective sources can be added to tests as meson can take care of it for you.",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 53
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f89be491_ac3517f7",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "obsolete, please prefer using the docker CI infrastructure.why is this even needed ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 1
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e777213_091ea351",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "please maintain consistency in the meson options casing, either lower case or upper case.",
+      "range": {
+        "startLine": 28,
+        "startChar": 10,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1b41695_b2d64acb",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "https://mesonbuild.com/Build-options.html#arrays\n\nIf this can be a string, user can give any string, i guess An Array of strings with possible choices is the right way to do this.",
+      "range": {
+        "startLine": 29,
+        "startChar": 18,
+        "endLine": 29,
+        "endChar": 32
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f49cdd7d_2c2878b4",
+        "filename": "test/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "This looks like a bug, why are we doing all this logic to get the link_args \u0026 rpath ? is the x86_sdk not giving us what we wanted ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 5
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "359e6796_703d02df",
+        "filename": "test/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:07:28Z",
+      "side": 1,
+      "message": "time out for a single test is 40 seconds ? why is this needed ?",
+      "range": {
+        "startLine": 46,
+        "startChar": 43,
+        "endLine": 46,
+        "endChar": 53
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
