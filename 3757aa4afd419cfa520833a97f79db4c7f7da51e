@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1d45ad5c_3b7ab281",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "757221ad_c6db4863",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 24
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7dc43a32_c92e8496",
         "filename": "meson.build",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2021-02-11T04:07:28Z",
       "side": 1,
       "message": "is this even needed for cpp17 ? experimental fs is not std::fs in cpp 17.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 53
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0de80c08_2ac658cd",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "ahh, Not needed",
+      "parentUuid": "7dc43a32_c92e8496",
       "range": {
         "startLine": 37,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "e1acdb99_51895d02",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fb7d0cfd_1119ea4e",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 4
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4a7cfd95_abaf7688",
         "filename": "meson.build",
         "patchSetId": 3
@@ -82,6 +154,30 @@
       "writtenOn": "2021-02-11T04:07:28Z",
       "side": 1,
       "message": "I just see fpic in the autotool repo, we should not be adding new flags , incase if it is unavoidable i would like to see why we are adding those.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 25
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56809824_b047f837",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "I would go with not adding anything extra.",
+      "parentUuid": "4a7cfd95_abaf7688",
       "range": {
         "startLine": 58,
         "startChar": 0,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "744e13f0_f930de9d",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "This is just a migration commit so I will keep it simple , whatsoever was there in the autotools, we will migrate the same in meson.",
+      "parentUuid": "c5f2583c_4e92c1dd",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 62
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f027d203_91e29fc5",
         "filename": "meson.build",
         "patchSetId": 3
@@ -128,6 +248,30 @@
       "writtenOn": "2021-02-11T04:07:28Z",
       "side": 1,
       "message": "is there a need for generating a static library ? if it is only for tests i guess this can be removed, \u0026 the respective sources can be added to tests as meson can take care of it for you.",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 53
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40305056_50fd01ed",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "Line no 103 , phosphor-time-manager requires that, It is same as autotools.",
+      "parentUuid": "f027d203_91e29fc5",
       "range": {
         "startLine": 94,
         "startChar": 0,
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "3dd5a241_31bf591e",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "I refer other openbmc repo, which already have this meson configuration.\n\nhttps://github.com/openbmc/phosphor-bmc-code-mgmt/blob/master/meson_options.txt#L20\nhttps://github.com/openbmc/phosphor-debug-collector/blob/master/meson_options.txt#L5\n\n\nDo you mean to say as X86 SDK is not available and we are using the docker CI infra, hence this option not needed?",
+      "parentUuid": "f89be491_ac3517f7",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 1
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6e777213_091ea351",
         "filename": "meson_options.txt",
         "patchSetId": 3
@@ -174,6 +342,30 @@
       "writtenOn": "2021-02-11T04:07:28Z",
       "side": 1,
       "message": "please maintain consistency in the meson options casing, either lower case or upper case.",
+      "range": {
+        "startLine": 28,
+        "startChar": 10,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36494abe_bca8442f",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "I didn\u0027t get, This is upper case and all other option is uppercase.",
+      "parentUuid": "6e777213_091ea351",
       "range": {
         "startLine": 28,
         "startChar": 10,
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "1685522d_61d3cffc",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "Yes makes sense",
+      "parentUuid": "c1b41695_b2d64acb",
+      "range": {
+        "startLine": 29,
+        "startChar": 18,
+        "endLine": 29,
+        "endChar": 32
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f49cdd7d_2c2878b4",
         "filename": "test/meson.build",
         "patchSetId": 3
@@ -232,6 +448,30 @@
     },
     {
       "key": {
+        "uuid": "29b4ea35_ed93d93e",
+        "filename": "test/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "Do we still need that if we have to use the Docker CI infrastructure.",
+      "parentUuid": "f49cdd7d_2c2878b4",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 5
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "359e6796_703d02df",
         "filename": "test/meson.build",
         "patchSetId": 3
@@ -243,6 +483,30 @@
       "writtenOn": "2021-02-11T04:07:28Z",
       "side": 1,
       "message": "time out for a single test is 40 seconds ? why is this needed ?",
+      "range": {
+        "startLine": 46,
+        "startChar": 43,
+        "endLine": 46,
+        "endChar": 53
+      },
+      "revId": "3757aa4afd419cfa520833a97f79db4c7f7da51e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5981f551_c3f96f9f",
+        "filename": "test/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-02-12T14:05:08Z",
+      "side": 1,
+      "message": "Do you mean to say that as the default is 30 sec so keep the default value? +1 for that",
+      "parentUuid": "359e6796_703d02df",
       "range": {
         "startLine": 46,
         "startChar": 43,
