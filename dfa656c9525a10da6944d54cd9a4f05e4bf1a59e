@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "55fe6a78_16ab9799",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-02-26T19:59:00Z",
+      "side": 1,
+      "message": "you could use \u0027@BASENAME@\u0027 as the output to prevent typos, this ensures that the output has the same name as the input.",
+      "revId": "dfa656c9525a10da6944d54cd9a4f05e4bf1a59e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d1a15a5_a96e63b7",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-02-26T19:59:00Z",
+      "side": 1,
+      "message": "extra line sneaked in",
+      "revId": "dfa656c9525a10da6944d54cd9a4f05e4bf1a59e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d5c8ead_769f3ce4",
+        "filename": "xyz.openbmc_project.Time.Manager.service.in",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-02-26T19:59:00Z",
+      "side": 1,
+      "message": "Have you checked that this variable replacement takes place for BUSNAME?",
+      "revId": "dfa656c9525a10da6944d54cd9a4f05e4bf1a59e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
