@@ -122,6 +122,24 @@
       "revId": "dfa656c9525a10da6944d54cd9a4f05e4bf1a59e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "252dff44_51571107",
+        "filename": "xyz.openbmc_project.Time.Manager.service.in",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-01T15:12:57Z",
+      "side": 1,
+      "message": "Yes adriana, It should be @BUSNAME@. Thanks",
+      "parentUuid": "e2d04dbc_ad4524db",
+      "revId": "dfa656c9525a10da6944d54cd9a4f05e4bf1a59e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
