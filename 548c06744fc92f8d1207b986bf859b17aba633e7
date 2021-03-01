@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0076b05e_78e9e0c2",
+        "filename": "test/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-01T16:12:17Z",
+      "side": 1,
+      "message": "Added the space related changes here as Lei-Yu wanted it to be single space.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 66
+      },
+      "revId": "548c06744fc92f8d1207b986bf859b17aba633e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
