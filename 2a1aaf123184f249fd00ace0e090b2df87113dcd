@@ -2,6 +2,86 @@
   "comments": [
     {
       "key": {
+        "uuid": "c56695fa_682afc30",
+        "filename": "meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-01T18:36:48Z",
+      "side": 1,
+      "message": "I see no cases where you are directly including a systemd header file.  Do you actually need this dependency?  \u0027sdbusplus\u0027 pulls in systemd for you as needed, since it needs systemd directly.\n\nYou should never be pulling in secondary dependencies in a Makefile.  If you have to, something is wrong with __that__ package and you should report it and get it fixed.",
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29d38602_b9035e55",
+        "filename": "meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-01T18:36:48Z",
+      "side": 1,
+      "message": "Is all this extra whitespace doing something?  It seems like noise to me.",
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ba67f6b_aa2c4dd0",
+        "filename": "meson_options.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-01T18:36:48Z",
+      "side": 1,
+      "message": "This example doesn\u0027t align with any of the options below.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 50
+      },
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20714bd8_a779d1da",
+        "filename": "meson_options.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-01T18:36:48Z",
+      "side": 1,
+      "message": "Are these useful config options?  Does anyone ever change them?  Seems like we should remove the build complexity when we get a chance.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 50
+      },
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e8f80529_dcba4774",
         "filename": "test/meson.build",
         "patchSetId": 5
@@ -52,6 +132,24 @@
       "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3708fcf1_64186f63",
+        "filename": "test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-01T18:36:48Z",
+      "side": 1,
+      "message": "\u003e gtest requires it.\n\nWhat?  No.  It does not.  See \u0027sdbusplus\u0027 as an example of a Meson project that uses both gtest and gmock and does not add this dependency.\n\nIf it did, the \"dependency(\u0027gtest\u0027...\" should satisfy its own requirements.",
+      "parentUuid": "b8fb8523_67af0be1",
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     },
     {
       "key": {
