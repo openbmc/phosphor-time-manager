@@ -3,6 +3,33 @@
 interface `xyz/openbmc_project/Time/EpochTime.interface.yaml`.
 The user can get or set the BMC's time via this interface.
 
+
+
+## Configuration
+phosphor-time-manager is configured by setting `-D` flags that correspond to options
+in `phosphor-time-manager/meson_options.txt`.
+The option names become C++ preprocessor symbols that control which code
+is compiled into the program.
+
+* Compile phosphor-time-manager with default options:
+
+    ```
+       meson builddir
+       ninja -C builddir
+    ```
+* Compile phosphor-time-manager with some configurable options:
+
+    ```
+       meson builddir -Dbuildtype=minsize  -Dtests=disabled
+       ninja -C buildir
+    ```
+* Generate test coverage report:
+
+    ```
+       meson builddir -Db_coverage=true -Dtests=enabled
+       ninja coverage -C builddir test
+    ```
+
 ### General usage
 The service `xyz.openbmc_project.Time.Manager` provides an object on D-Bus:
 * /xyz/openbmc_project/time/bmc
