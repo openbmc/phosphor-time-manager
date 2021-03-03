@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e14f3ce8_6ac11d52",
+        "filename": "meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-03T11:34:35Z",
+      "side": 1,
+      "message": "Do you want to say that it was not required even in the autotools? https://github.com/openbmc/phosphor-time-manager/blob/master/configure.ac#L21?",
+      "parentUuid": "c56695fa_682afc30",
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "29d38602_b9035e55",
         "filename": "meson.build",
         "patchSetId": 5
@@ -33,6 +51,24 @@
       "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2855573f_c38a382b",
+        "filename": "meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-03T11:34:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "29d38602_b9035e55",
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "a39333f5_d12aa5b0",
+        "filename": "meson_options.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-03T11:34:35Z",
+      "side": 1,
+      "message": "will make this change.",
+      "parentUuid": "4ba67f6b_aa2c4dd0",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 50
+      },
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "20714bd8_a779d1da",
         "filename": "meson_options.txt",
         "patchSetId": 5
@@ -70,6 +130,30 @@
       "writtenOn": "2021-03-01T18:36:48Z",
       "side": 1,
       "message": "Are these useful config options?  Does anyone ever change them?  Seems like we should remove the build complexity when we get a chance.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 50
+      },
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d4a8178_533b641a",
+        "filename": "meson_options.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-03T11:34:35Z",
+      "side": 1,
+      "message": "We are just migrating it from Autotools to Meson..It was there before let it be.We can take it out later in the next commit.",
+      "parentUuid": "20714bd8_a779d1da",
       "range": {
         "startLine": 16,
         "startChar": 0,
@@ -150,6 +234,24 @@
       "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48dcef75_41a6055f",
+        "filename": "test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-03T11:34:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3708fcf1_64186f63",
+      "revId": "2a1aaf123184f249fd00ace0e090b2df87113dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
