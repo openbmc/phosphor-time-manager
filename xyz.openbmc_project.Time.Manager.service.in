@@ -10,7 +10,7 @@ Restart=always
 ExecStart=/usr/bin/env phosphor-timemanager
 SyslogIdentifier=phosphor-timemanager
 Type=dbus
-BusName=@BUSNAME@
+BusName=xyz.openbmc_project.Time.Manager
 
 [Install]
 WantedBy=multi-user.target
