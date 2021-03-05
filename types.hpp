@@ -2,6 +2,15 @@
 
 #include <xyz/openbmc_project/Time/Synchronization/server.hpp>
 
+namespace // anonymous
+{
+
+constexpr auto OBJPATH_BMC = "/xyz/openbmc_project/time/bmc";
+constexpr auto BUSNAME = "xyz.openbmc_project.Time.Manager";
+
+} // namespace
+
+
 namespace phosphor
 {
 namespace time
