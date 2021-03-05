@@ -45,8 +45,6 @@ deps            =   [sdbusplus, logging, dbus]
 # Get the config data and enable options
 
 conf_data = configuration_data()
-conf_data.set('BUSNAME', get_option('busname'))
-conf_data.set('OBJPATH_BMC', get_option('obj_path_bmc'))
 conf_data.set('DEFAULT_TIME_MODE', get_option('default_time_mode'))
 
 configure_file(output: 'config.h', configuration: conf_data)
