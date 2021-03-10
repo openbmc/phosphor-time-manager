@@ -34,6 +34,24 @@
       "revId": "8e0a0ccc29bdca2a36da15a52e0761624d15f9f7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd7ed72d_3f4e4975",
+        "filename": "meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-10T12:41:51Z",
+      "side": 1,
+      "message": "Seems it was correct at first instance, I verified it with the autotools generated config.h.\n\nBusname have to be in quotes.\n\n/* config.h.  Generated from config.h.in by configure.  */\n/* config.h.in.  Generated from configure.ac by autoheader.  */\n\n/* The Time Manager DBus busname to own */\n#define BUSNAME \"xyz.openbmc_project.Time.Manager\"",
+      "parentUuid": "22b451c2_048a705a",
+      "revId": "8e0a0ccc29bdca2a36da15a52e0761624d15f9f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
