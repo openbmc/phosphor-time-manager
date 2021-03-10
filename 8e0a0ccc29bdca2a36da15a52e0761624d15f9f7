@@ -52,6 +52,24 @@
       "revId": "8e0a0ccc29bdca2a36da15a52e0761624d15f9f7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4175a81d_50d76f11",
+        "filename": "meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-03-10T14:51:04Z",
+      "side": 1,
+      "message": "Yup, the problem here is that for the `BUSNAME` in C++ code, it shall be with quote.\nBut there shall not be quotes in the service file (which was correct in the old way, but not now).\nThat\u0027s why I think it\u0027s not worth the effort to make this right, simply squash the later commit wit this one, then everything looks fine and clear.",
+      "parentUuid": "bd7ed72d_3f4e4975",
+      "revId": "8e0a0ccc29bdca2a36da15a52e0761624d15f9f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
