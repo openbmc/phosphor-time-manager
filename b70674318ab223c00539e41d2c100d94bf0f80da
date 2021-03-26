@@ -34,6 +34,24 @@
       "revId": "b70674318ab223c00539e41d2c100d94bf0f80da",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44b82083_57a079c2",
+        "filename": "meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-03-26T13:42:16Z",
+      "side": 1,
+      "message": "Is it not happening in other repo?\nhttps://github.com/openbmc/phosphor-bmc-code-mgmt/blob/master/meson.build#L224\n\nCan you guide me with some other way through which I can copy it to systemd_unit_dir?",
+      "parentUuid": "3a2aef3f_5b955c1a",
+      "revId": "b70674318ab223c00539e41d2c100d94bf0f80da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
