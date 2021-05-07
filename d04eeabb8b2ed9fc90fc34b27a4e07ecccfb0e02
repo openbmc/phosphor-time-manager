@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6040b7df_9b4433f8",
+        "filename": "xyz.openbmc_project.Time.Manager.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2021-05-07T08:19:01Z",
+      "side": 0,
+      "message": "Should we do this as systemd override in the meta layer as it is needed for a certain machines?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 58
+      },
+      "revId": "d04eeabb8b2ed9fc90fc34b27a4e07ecccfb0e02",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
