@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7eebe329_7fc9df3d",
+        "filename": "manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-06-17T02:50:07Z",
+      "side": 0,
+      "message": "Keep the empty line",
+      "revId": "9c02e7ec0afff8e9a1cd7ecff6060c85f0ad70b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}

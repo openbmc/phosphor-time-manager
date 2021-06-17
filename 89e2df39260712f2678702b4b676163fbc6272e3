@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45e2886b_2f830fc9",
+        "filename": "manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-06-17T02:50:07Z",
+      "side": 1,
+      "message": "Remove it",
+      "revId": "89e2df39260712f2678702b4b676163fbc6272e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20fb6246_7757a858",
+        "filename": "manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-06-17T02:50:07Z",
+      "side": 1,
+      "message": "This function should be put in a separated file or in a separated config, because it calls IPMB that is not generic for all the machines.",
+      "revId": "89e2df39260712f2678702b4b676163fbc6272e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca725a7e_818b152a",
+        "filename": "manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-06-17T02:50:07Z",
+      "side": 1,
+      "message": "This one as well",
+      "revId": "89e2df39260712f2678702b4b676163fbc6272e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b161bfe3_57756748",
+        "filename": "manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-06-17T02:50:07Z",
+      "side": 1,
+      "message": "I could not find any interface defined HostSync in phosphor-dbus-interfaces. Where is it from?",
+      "revId": "89e2df39260712f2678702b4b676163fbc6272e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "140aa720_9e871805",
+        "filename": "manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-06-17T02:50:07Z",
+      "side": 1,
+      "message": "This blocks the time manager\u0027s event loop for 20 seconds, you should schedule a timer to delay a function call.",
+      "revId": "89e2df39260712f2678702b4b676163fbc6272e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01e3ffc5_e57ea88a",
+        "filename": "manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-06-17T02:50:07Z",
+      "side": 1,
+      "message": "The function name does not reflect what it does. Probably rename it to a more meaningful name?",
+      "revId": "89e2df39260712f2678702b4b676163fbc6272e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
