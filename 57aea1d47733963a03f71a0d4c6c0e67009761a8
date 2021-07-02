@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "427628ff_5434cb17",
+        "filename": "meson.build",
+        "patchSetId": 11
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-02T07:13:05Z",
+      "side": 1,
+      "message": "I have concern on threads here.\nIn sdbusplus, the boost thread support is disabled specifically, and it becomes a package config. So this repo will be built without boost thread support.\nIf you use any feature that is related to boot thread here, you will get a runtime exception.\n\nAre you sure the threads support is necessary here?",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0807b9bf_0a197922",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-02T07:13:05Z",
+      "side": 1,
+      "message": "Could you add a config option for the function related to IPMB and make it opt-in.\nSo users could use this repo as before without any impact, and users who need this feature could add the package config.",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "503ff827_b7c78b48",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-02T07:13:05Z",
+      "side": 1,
+      "message": "The is_method_error() is deprecated, exceptions will be thrown on dbus errors.\nRemove it.",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "106794d8_aad651ff",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-02T07:13:05Z",
+      "side": 1,
+      "message": "Add an empty line",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c93ef52a_05fd764a",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-02T07:13:05Z",
+      "side": 1,
+      "message": "This gets all the objects from the entity manager service, this is a waste.\nCould you use mapper to get the objects of the specific interface, instead of getting all the objects?",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29f8d587_652f1797",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-02T07:13:05Z",
+      "side": 1,
+      "message": "Remove this, and put the `auto reply \u003d bus.call(method);` into the try-catch block, otherwise exception will be thrown without catch, and it will cause service crash.",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "642e9a94_d3ea2c02",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-02T07:13:05Z",
+      "side": 1,
+      "message": "This functions deserves the unit test cases.",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25851299_4ed310fa",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-07-02T07:13:05Z",
+      "side": 1,
+      "message": "The log will be sent to journal, which only support metadata of CAPITAL letters, otherwise the metadata is ignored.\nSo you need to write like `entry(\"NETFN\u003d%d,\", netFn)`",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
