@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "6011f62f_1e043632",
+        "filename": "manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000869
+      },
+      "writtenOn": "2021-08-02T11:54:12Z",
+      "side": 1,
+      "message": "Interface name can be stored in another variable and use that variable here.",
+      "range": {
+        "startLine": 122,
+        "startChar": 17,
+        "endLine": 122,
+        "endChar": 73
+      },
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "427628ff_5434cb17",
         "filename": "meson.build",
         "patchSetId": 11
@@ -19,6 +42,29 @@
     },
     {
       "key": {
+        "uuid": "ead96de8_c825fc10",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000869
+      },
+      "writtenOn": "2021-08-02T11:54:12Z",
+      "side": 1,
+      "message": "Please call it as \"IpmbSELInfo\"",
+      "range": {
+        "startLine": 25,
+        "startChar": 39,
+        "endLine": 25,
+        "endChar": 50
+      },
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0807b9bf_0a197922",
         "filename": "utils.cpp",
         "patchSetId": 11
@@ -30,6 +76,52 @@
       "writtenOn": "2021-07-02T07:13:05Z",
       "side": 1,
       "message": "Could you add a config option for the function related to IPMB and make it opt-in.\nSo users could use this repo as before without any impact, and users who need this feature could add the package config.",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0925bc4f_42014125",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000869
+      },
+      "writtenOn": "2021-08-02T11:54:12Z",
+      "side": 1,
+      "message": "Is this condition required ?",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 34
+      },
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95f84858_638496cf",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000869
+      },
+      "writtenOn": "2021-08-02T11:54:12Z",
+      "side": 1,
+      "message": "This should be name as ipmbAddress ?",
+      "range": {
+        "startLine": 131,
+        "startChar": 36,
+        "endLine": 131,
+        "endChar": 45
+      },
       "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -104,6 +196,29 @@
     },
     {
       "key": {
+        "uuid": "048fded0_f75df6cd",
+        "filename": "utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000869
+      },
+      "writtenOn": "2021-08-02T11:54:12Z",
+      "side": 1,
+      "message": "Please name it as \"SEL\"",
+      "range": {
+        "startLine": 212,
+        "startChar": 52,
+        "endLine": 212,
+        "endChar": 56
+      },
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "642e9a94_d3ea2c02",
         "filename": "utils.cpp",
         "patchSetId": 11
@@ -132,6 +247,29 @@
       "writtenOn": "2021-07-02T07:13:05Z",
       "side": 1,
       "message": "The log will be sent to journal, which only support metadata of CAPITAL letters, otherwise the metadata is ignored.\nSo you need to write like `entry(\"NETFN\u003d%d,\", netFn)`",
+      "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac235952_00185d9c",
+        "filename": "utils.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000869
+      },
+      "writtenOn": "2021-08-02T11:54:12Z",
+      "side": 1,
+      "message": "Please name it as \"SEL\"",
+      "range": {
+        "startLine": 113,
+        "startChar": 21,
+        "endLine": 113,
+        "endChar": 25
+      },
       "revId": "57aea1d47733963a03f71a0d4c6c0e67009761a8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
