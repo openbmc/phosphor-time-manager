@@ -16,6 +16,109 @@
       "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "650559d9_e32206cb",
+        "filename": "manager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-02T02:31:39Z",
+      "side": 1,
+      "message": "Exactly, the phosphor-dbus-interface shall be updated to add this interface.\nAnd you should use the enum value instead of the string.",
+      "parentUuid": "94e08e99_6635419c",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07852bf1_b52f704e",
+        "filename": "manager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-02T02:31:39Z",
+      "side": 1,
+      "message": "And use sdbusplus\u0027s convertStringToMethod() to convert the string to enum",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d5ae0ae_e62b9347",
+        "filename": "manager.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-02T02:31:39Z",
+      "side": 1,
+      "message": "Remove unused includes",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d565a3bf_1fd9de46",
+        "filename": "meson.build",
+        "patchSetId": 15
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-02T02:31:39Z",
+      "side": 1,
+      "message": "I do not see where to use this config, did I miss something?",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3bb025a_d2706f7b",
+        "filename": "utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-02T02:31:39Z",
+      "side": 1,
+      "message": "The data here is not going to be changed in runtime, probably you could cache the returned values, so that is does not make so many getProperty() calls every time it is sending IPMB request.",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff4c772d_12c6a96b",
+        "filename": "utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-02T02:31:39Z",
+      "side": 1,
+      "message": "I still do not see the unit test case for this function",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
