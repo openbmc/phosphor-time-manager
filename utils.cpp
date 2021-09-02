@@ -44,7 +44,7 @@ std::string getService(sdbusplus::bus::bus& bus, const char* path,
         }
         return mapperResponse[0].first;
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         log<level::ERR>("Mapper call failed", entry("METHOD=%d", "GetObject"),
                         entry("PATH=%s", path),

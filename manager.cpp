@@ -86,7 +86,7 @@ void Manager::updateNtpSetting(const std::string& value)
         bus.call_noreply(method);
         log<level::INFO>("Updated NTP setting", entry("ENABLED=%d", isNtp));
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         log<level::ERR>("Failed to update NTP setting",
                         entry("ERR=%s", ex.what()));

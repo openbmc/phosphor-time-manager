@@ -38,7 +38,7 @@ T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
         reply.read(value);
         return std::get<T>(value);
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         log<level::ERR>("GetProperty call failed", entry("PATH=%s", path),
                         entry("INTERFACE=%s", interface),

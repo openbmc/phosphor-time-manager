@@ -46,7 +46,7 @@ bool EpochBase::setTime(const microseconds& usec)
     {
         bus.call_noreply(method);
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         log<level::ERR>("Error in setting system time");
         using namespace xyz::openbmc_project::Time;
