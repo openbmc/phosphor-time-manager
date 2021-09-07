@@ -160,6 +160,23 @@
     },
     {
       "key": {
+        "uuid": "a30362b4_bebbe855",
+        "filename": "meson_options.txt",
+        "patchSetId": 15
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-07T12:06:52Z",
+      "side": 1,
+      "message": "I think we are taking an approach in most repositories that features should be enabled by default and then disabled in the Yocto recipe if they are not commonly used.  Otherwise we end up with too much dead-code in repositories that is never tested by CI.",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c3bb025a_d2706f7b",
         "filename": "utils.cpp",
         "patchSetId": 15
