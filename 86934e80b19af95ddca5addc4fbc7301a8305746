@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "14c3d996_2916fa9b",
+        "filename": "manager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2021-09-07T06:12:12Z",
+      "side": 1,
+      "message": "yes dbus enumeration for hostsync is available.It will be submitted as a separate patch to \ndbus interfaces repo.",
+      "parentUuid": "650559d9_e32206cb",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "07852bf1_b52f704e",
         "filename": "manager.cpp",
         "patchSetId": 15
@@ -51,6 +69,24 @@
       "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aac7e381_d578354b",
+        "filename": "manager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2021-09-07T06:12:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "07852bf1_b52f704e",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "0fe6e947_caf1a536",
+        "filename": "manager.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2021-09-07T06:12:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4d5ae0ae_e62b9347",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d565a3bf_1fd9de46",
         "filename": "meson.build",
         "patchSetId": 15
@@ -82,6 +136,24 @@
       "writtenOn": "2021-09-02T02:31:39Z",
       "side": 1,
       "message": "I do not see where to use this config, did I miss something?",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3be1adf0_8876ed4d",
+        "filename": "meson.build",
+        "patchSetId": 15
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2021-09-07T06:12:12Z",
+      "side": 1,
+      "message": "It is enabled in platform specific machine layer.by default disabled for not supported \nplatforms",
+      "parentUuid": "d565a3bf_1fd9de46",
       "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -105,6 +177,24 @@
     },
     {
       "key": {
+        "uuid": "3fa09f60_f42f8fe3",
+        "filename": "utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2021-09-07T06:12:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c3bb025a_d2706f7b",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ff4c772d_12c6a96b",
         "filename": "utils.cpp",
         "patchSetId": 15
@@ -119,6 +209,24 @@
       "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9124cb4_8c74ef89",
+        "filename": "utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2021-09-07T06:12:12Z",
+      "side": 1,
+      "message": "Unit test was added and removed later since this code logic was enabled only when the \n\"use-ipmb-host-time\" feature is enabled which is disabled in all other not supported platforms by default.This caused utest build error.will add the utest again and exclude this part of the code logic away from the feature #ifdef block so that the code logic will be available even if the use-ipmb-host-time is disabled.",
+      "parentUuid": "ff4c772d_12c6a96b",
+      "revId": "86934e80b19af95ddca5addc4fbc7301a8305746",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
