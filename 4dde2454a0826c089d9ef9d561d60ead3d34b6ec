@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c39e8d9_f4452fbc",
+        "filename": "manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-23T03:29:48Z",
+      "side": 1,
+      "message": "This is still not removed.",
+      "revId": "4dde2454a0826c089d9ef9d561d60ead3d34b6ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b999532_9e218a6c",
+        "filename": "test/TestUtils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-23T03:29:48Z",
+      "side": 1,
+      "message": "It\u0027s better to expect the exact unit64_t value instead of NE to 0.",
+      "revId": "4dde2454a0826c089d9ef9d561d60ead3d34b6ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d656148a_3b90beb0",
+        "filename": "utils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-23T03:29:48Z",
+      "side": 1,
+      "message": "Why is this a for loop?\nIf you have multiple ipmb addresses, and some will fail to get the host time, the try-catch should be put inside the for loop so that it could try the other ipmb addresses.\nOtherwise when it throws on the first ipmb address, this function fails.",
+      "revId": "4dde2454a0826c089d9ef9d561d60ead3d34b6ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7eaae037_db768911",
+        "filename": "utils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-09-23T03:29:48Z",
+      "side": 1,
+      "message": "Should this be \u003d\u003d or \u003e\u003d?",
+      "revId": "4dde2454a0826c089d9ef9d561d60ead3d34b6ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
