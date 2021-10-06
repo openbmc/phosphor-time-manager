@@ -1,10 +1,10 @@
 project('phosphor-time-manager',
         'cpp',
          version: '0.1',
-         meson_version: '>=0.53.2',
+         meson_version: '>=0.57.0',
          default_options: [ 'warning_level=3',
                             'werror=true',
-                            'cpp_std=c++17',
+                            'cpp_std=c++20',
                             'buildtype=debugoptimized' ])
 
 ########################################################################
@@ -21,8 +21,8 @@ summary('Issue', project_issues_url, section : 'Report Issues')
 
 # Validate the c++ Standard
 
-if get_option('cpp_std') != 'c++17'
-    error('This project requires cpp std to be in c++17 mode')
+if get_option('cpp_std') != 'c++20'
+    error('This project requires cpp std to be in c++20 mode')
 endif
 
 #########################################################################
