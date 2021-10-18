@@ -19,14 +19,6 @@ summary('Issue', project_issues_url, section : 'Report Issues')
 
 #####################################################################
 
-# Validate the c++ Standard
-
-if get_option('cpp_std') != 'c++20'
-    error('This project requires cpp std to be in c++20 mode')
-endif
-
-#########################################################################
-
 # Get Compiler and default build type
 
 compiler = meson.get_compiler('cpp')
