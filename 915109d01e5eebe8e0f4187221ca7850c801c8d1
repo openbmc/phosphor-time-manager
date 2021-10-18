@@ -34,6 +34,24 @@
       "revId": "915109d01e5eebe8e0f4187221ca7850c801c8d1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f1e67d5_6e4d2a66",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-10-18T08:43:01Z",
+      "side": 1,
+      "message": "Yup, I would prefer to remove this part, thanks.",
+      "parentUuid": "869c834c_3b251327",
+      "revId": "915109d01e5eebe8e0f4187221ca7850c801c8d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
