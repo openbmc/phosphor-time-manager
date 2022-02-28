@@ -2,6 +2,7 @@
 
 #include "utils.hpp"
 
+#include <sys/time.h>
 #include <sys/timerfd.h>
 #include <unistd.h>
 
@@ -119,21 +120,15 @@ void BmcEpoch::onModeChanged(Mode mode)
 
 bool BmcEpoch::setTime(const microseconds& usec)
 {
-    auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE, SYSTEMD_TIME_PATH,
-                                      SYSTEMD_TIME_INTERFACE, METHOD_SET_TIME);
-    method.append(static_cast<int64_t>(usec.count()),
-                  false,  // relative
-                  false); // user_interaction
+    struct timeval tv;
 
-    try
+    tv.tv_sec = usec.count() / 1000000;
+    tv.tv_usec = usec.count() % 1000000;
+
+    if (settimeofday(&tv, NULL) != 0)
     {
-        bus.call_noreply(method);
-    }
-    catch (const sdbusplus::exception_t& ex)
-    {
-        lg2::error("Error in setting system time: {ERROR}", "ERROR", ex);
-        using namespace xyz::openbmc_project::Time;
-        elog<FailedError>(Failed::REASON(ex.what()));
+        lg2::error("Error in setting system time");
+        return false;
     }
     return true;
 }
