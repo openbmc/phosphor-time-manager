@@ -5,8 +5,7 @@ After=mapper-wait@-xyz-openbmc_project-time-sync_method.service
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/env phosphor-time-manager
-SyslogIdentifier=phosphor-time-manager
+ExecStart=/usr/bin/phosphor-time-manager
 Type=dbus
 BusName=xyz.openbmc_project.Time.Manager
 
