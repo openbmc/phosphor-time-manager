@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a51c777_79069bfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2022-05-31T20:58:01Z",
+      "side": 1,
+      "message": "\u003e Uploaded patch set 3: New patch set was added with same tree, parent, and commit message as Patch Set 2.\n\n\noops...sorry about the noise.",
+      "revId": "a3b59bc1c5c16667ce615c0c46afee696459c231",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
