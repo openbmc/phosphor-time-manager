@@ -1,7 +1,5 @@
 #include "utils.hpp"
 
-#include <phosphor-logging/log.hpp>
-
 namespace phosphor
 {
 namespace time
@@ -16,8 +14,6 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 
 namespace utils
 {
-
-using namespace phosphor::logging;
 
 std::string getService(sdbusplus::bus::bus& bus, const char* path,
                        const char* interface)
@@ -35,7 +31,7 @@ std::string getService(sdbusplus::bus::bus& bus, const char* path,
         mapperResponseMsg.read(mapperResponse);
         if (mapperResponse.empty())
         {
-            log<level::ERR>("Error reading mapper response");
+            lg2::error("Error reading mapper response");
             throw std::runtime_error("Error reading mapper response");
         }
         if (mapperResponse.size() < 1)
@@ -46,9 +42,9 @@ std::string getService(sdbusplus::bus::bus& bus, const char* path,
     }
     catch (const sdbusplus::exception::exception& ex)
     {
-        log<level::ERR>("Mapper call failed", entry("METHOD=%d", "GetObject"),
-                        entry("PATH=%s", path),
-                        entry("INTERFACE=%s", interface));
+        lg2::error("Mapper call failed: path:{PATH}, interface:{INTF}, "
+                   "propertyName:{NAME}, Erro:{ERROR}",
+                   "PATH", path, "INTF", interface, "ERROR", ex);
         throw std::runtime_error("Mapper call failed");
     }
 }

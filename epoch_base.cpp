@@ -2,7 +2,7 @@
 
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Time/error.hpp>
 
 #include <iomanip>
@@ -48,7 +48,7 @@ bool EpochBase::setTime(const microseconds& usec)
     }
     catch (const sdbusplus::exception::exception& ex)
     {
-        log<level::ERR>("Error in setting system time");
+        lg2::error("Error in setting system time: {ERROR}", ex);
         using namespace xyz::openbmc_project::Time;
         elog<FailedError>(Failed::REASON(ex.what()));
     }
