@@ -6,7 +6,7 @@
 
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 namespace rules = sdbusplus::bus::match::rules;
@@ -84,12 +84,11 @@ void Manager::updateNtpSetting(const std::string& value)
     try
     {
         bus.call_noreply(method);
-        log<level::INFO>("Updated NTP setting", entry("ENABLED=%d", isNtp));
+        lg2::info("Updated NTP setting: {ENABLED}", "ENABLED", isNtp);
     }
     catch (const sdbusplus::exception::exception& ex)
     {
-        log<level::ERR>("Failed to update NTP setting",
-                        entry("ERR=%s", ex.what()));
+        lg2::error("Failed to update NTP setting: {ERROR}", "ERROR", ex);
     }
 }
 
@@ -98,8 +97,7 @@ bool Manager::setCurrentTimeMode(const std::string& mode)
     auto newMode = utils::strToMode(mode);
     if (newMode != timeMode)
     {
-        log<level::INFO>("Time mode is changed",
-                         entry("MODE=%s", mode.c_str()));
+        lg2::info("Time mode has been changed to {MODE}", "MODE", newMode);
         timeMode = newMode;
         return true;
     }
