@@ -34,10 +34,7 @@ std::string getService(sdbusplus::bus::bus& bus, const char* path,
             lg2::error("Error reading mapper response");
             throw std::runtime_error("Error reading mapper response");
         }
-        if (mapperResponse.size() < 1)
-        {
-            return "";
-        }
+
         return mapperResponse[0].first;
     }
     catch (const sdbusplus::exception::exception& ex)

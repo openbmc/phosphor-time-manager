@@ -55,9 +55,6 @@ class BmcEpoch : public EpochBase
     static int onTimeChange(sd_event_source* es, int fd, uint32_t revents,
                             void* userdata);
 
-    /** @brief The reference of sdbusplus bus */
-    sdbusplus::bus::bus& bus;
-
     /** @brief The deleter of sd_event_source */
     std::function<void(sd_event_source*)> sdEventSourceDeleter =
         [](sd_event_source* p) {
