@@ -10,7 +10,7 @@ int main()
     auto bus = sdbusplus::bus::new_default();
     sd_event* event = nullptr;
 
-    auto eventDeleter = [](sd_event* e) { e = sd_event_unref(e); };
+    auto eventDeleter = [](sd_event* e) { sd_event_unref(e); };
     using SdEvent = std::unique_ptr<sd_event, decltype(eventDeleter)>;
 
     // acquire a reference to the default event loop
