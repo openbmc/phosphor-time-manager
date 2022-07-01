@@ -25,18 +25,22 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
     mapperCall.append(root);
     mapperCall.append(depth);
     mapperCall.append(settingsIntfs);
-    auto response = bus.call(mapperCall);
-    if (response.is_method_error())
-    {
-        log<level::ERR>("Error in mapper GetSubTree");
-        elog<InternalFailure>();
-    }
 
     using Interfaces = std::vector<Interface>;
     using MapperResponse = std::vector<
         std::pair<Path, std::vector<std::pair<Service, Interfaces>>>>;
     MapperResponse result;
-    response.read(result);
+
+    try
+    {
+        auto response = bus.call(mapperCall);
+        response.read(result);
+    }
+    catch (const sdbusplus::exception::exception& ex)
+    {
+        log<level::ERR>("Failed to invoke GetSubTree method");
+    }
+
     if (result.empty())
     {
         log<level::ERR>("Invalid response from mapper");
@@ -67,15 +71,17 @@ Service Objects::service(const Path& path, const Interface& interface) const
     mapperCall.append(path);
     mapperCall.append(Interfaces({interface}));
 
-    auto response = bus.call(mapperCall);
-    if (response.is_method_error())
+    std::map<Service, Interfaces> result;
+    try
+    {
+        auto response = bus.call(mapperCall);
+        response.read(result);
+    }
+    catch (const sdbusplus::exception::exception& ex)
     {
         log<level::ERR>("Error in mapper GetObject");
-        elog<InternalFailure>();
     }
 
-    std::map<Service, Interfaces> result;
-    response.read(result);
     if (result.empty())
     {
         log<level::ERR>("Invalid response from mapper");
