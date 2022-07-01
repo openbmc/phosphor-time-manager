@@ -27,10 +27,14 @@ compiler = meson.get_compiler('cpp')
 
 # Find the dependencies
 
-sdbusplus       =   dependency ('sdbusplus')
-logging         =   dependency ('phosphor-logging')
-dbus            =   dependency ('phosphor-dbus-interfaces')
-deps            =   [sdbusplus, logging, dbus]
+sdbusplus_dep = dependency ('sdbusplus')
+phosphor_logging_dep = dependency ('phosphor-logging')
+phosphor_dbus_interfaces_dep = dependency ('phosphor-dbus-interfaces')
+deps = [
+    sdbusplus_dep,
+    phosphor_logging_dep,
+    phosphor_dbus_interfaces_dep,
+]
 
 ###########################################################################
 
