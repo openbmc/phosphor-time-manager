@@ -7,7 +7,7 @@
 
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 // Need to do this since its not exported outside of the kernel.
@@ -47,8 +47,7 @@ void BmcEpoch::initialize()
     timeFd = timerfd_create(CLOCK_REALTIME, 0);
     if (timeFd == -1)
     {
-        log<level::ERR>("Failed to create timerfd", entry("ERRNO=%d", errno),
-                        entry("ERR=%s", strerror(errno)));
+        lg2::error("Failed to create timerfd: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
 
@@ -56,8 +55,7 @@ void BmcEpoch::initialize()
         timeFd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &maxTime, nullptr);
     if (r != 0)
     {
-        log<level::ERR>("Failed to set timerfd", entry("ERRNO=%d", errno),
-                        entry("ERR=%s", strerror(errno)));
+        lg2::error("Failed to set timerfd: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
 
@@ -66,8 +64,7 @@ void BmcEpoch::initialize()
                         this);
     if (r < 0)
     {
-        log<level::ERR>("Failed to add event", entry("ERRNO=%d", -r),
-                        entry("ERR=%s", strerror(-r)));
+        lg2::error("Failed to add event: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
     timeChangeEventSource.reset(es);
