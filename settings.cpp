@@ -3,7 +3,7 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 namespace settings
 {
@@ -38,12 +38,12 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
     }
     catch (const sdbusplus::exception::exception& ex)
     {
-        log<level::ERR>("Failed to invoke GetSubTree method");
+        lg2::error("Failed to invoke GetSubTree method: {ERRO}", "ERROR", ex);
     }
 
     if (result.empty())
     {
-        log<level::ERR>("Invalid response from mapper");
+        lg2::error("Invalid response from mapper");
         elog<InternalFailure>();
     }
 
@@ -79,12 +79,12 @@ Service Objects::service(const Path& path, const Interface& interface) const
     }
     catch (const sdbusplus::exception::exception& ex)
     {
-        log<level::ERR>("Error in mapper GetObject");
+        lg2::error("Error in mapper GetObject: {ERROR}", "ERROR", ex);
     }
 
     if (result.empty())
     {
-        log<level::ERR>("Invalid response from mapper");
+        lg2::error("Invalid response from mapper");
         elog<InternalFailure>();
     }
 
