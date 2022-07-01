@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65860f1f_f936e2fe",
+        "filename": "xyz.openbmc_project.Time.Manager.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-07-01T09:52:29Z",
+      "side": 1,
+      "message": "I think we tend to remove `SyslogIdentifier` and systemd will use `phosphor-time-manager` by default?",
+      "revId": "6c8a45b28cd2c5b1f142ee863200b4539e651377",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
