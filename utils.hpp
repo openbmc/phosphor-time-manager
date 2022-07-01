@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
 namespace phosphor
@@ -11,8 +11,6 @@ namespace time
 {
 namespace utils
 {
-
-using namespace phosphor::logging;
 
 /** @brief The template function to get property from the requested dbus path
  *
@@ -40,9 +38,7 @@ T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
     }
     catch (const sdbusplus::exception::exception& ex)
     {
-        log<level::ERR>("GetProperty call failed", entry("PATH=%s", path),
-                        entry("INTERFACE=%s", interface),
-                        entry("PROPERTY=%s", propertyName));
+        lg2::error("GetProperty call failed: {ERROR}", "ERROR", ex);
         throw std::runtime_error("GetProperty call failed");
     }
 }
