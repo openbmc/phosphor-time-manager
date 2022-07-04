@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ae9d4c1_992d8819",
+        "filename": "bmc_epoch.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-07-04T01:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4473c55e_9dcc2b20",
+      "revId": "6ef2f3d354de7e4e69b6265b7543a024e93b0b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08f9d8f4_4024016d",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-01T10:05:13Z",
       "side": 1,
       "message": "Better to keep the PATH, INTERFACE, PROPERTY",
+      "revId": "6ef2f3d354de7e4e69b6265b7543a024e93b0b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "215bd7c5_c61f39ef",
+        "filename": "utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-07-04T01:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08f9d8f4_4024016d",
       "revId": "6ef2f3d354de7e4e69b6265b7543a024e93b0b40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
