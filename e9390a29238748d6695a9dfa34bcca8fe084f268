@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bb0d85b_ed2c727b",
+        "filename": "settings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1001252
+      },
+      "writtenOn": "2022-07-04T01:53:27Z",
+      "side": 1,
+      "message": "here it should be {ERROR}",
+      "range": {
+        "startLine": 41,
+        "startChar": 56,
+        "endLine": 41,
+        "endChar": 62
+      },
+      "revId": "e9390a29238748d6695a9dfa34bcca8fe084f268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
