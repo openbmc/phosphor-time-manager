@@ -27,7 +27,7 @@ class Manager
   public:
     friend class TestManager;
 
-    explicit Manager(sdbusplus::bus::bus& bus);
+    explicit Manager(sdbusplus::bus_t& bus);
     Manager(const Manager&) = delete;
     Manager& operator=(const Manager&) = delete;
     Manager(Manager&&) = delete;
@@ -36,10 +36,10 @@ class Manager
 
   private:
     /** @brief Persistent sdbusplus DBus connection */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     /** @brief The match of settings property change */
-    std::vector<sdbusplus::bus::match::match> settingsMatches;
+    std::vector<sdbusplus::bus::match_t> settingsMatches;
 
     /** @brief Settings objects of intereset */
     settings::Objects settings;
@@ -81,7 +81,7 @@ class Manager
      *
      *  @return 0 on success, < 0 on failure.
      */
-    int onSettingsChanged(sdbusplus::message::message& msg);
+    int onSettingsChanged(sdbusplus::message_t& msg);
 
     /** @brief Notified on settings property changed
      *

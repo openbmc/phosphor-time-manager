@@ -16,7 +16,7 @@ namespace time
 class TestManager : public testing::Test
 {
   public:
-    sdbusplus::bus::bus bus;
+    sdbusplus::bus_t bus;
     Manager manager;
 
     TestManager() : bus(sdbusplus::bus::new_default()), manager(bus)

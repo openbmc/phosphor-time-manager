@@ -15,7 +15,7 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 namespace utils
 {
 
-std::string getService(sdbusplus::bus::bus& bus, const char* path,
+std::string getService(sdbusplus::bus_t& bus, const char* path,
                        const char* interface)
 {
     auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
@@ -37,7 +37,7 @@ std::string getService(sdbusplus::bus::bus& bus, const char* path,
 
         return mapperResponse[0].first;
     }
-    catch (const sdbusplus::exception::exception& ex)
+    catch (const sdbusplus::exception_t& ex)
     {
         lg2::error(
             "Mapper call failed: path:{PATH}, interface:{INTF}, error:{ERROR}",
