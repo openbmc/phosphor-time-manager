@@ -26,7 +26,7 @@ namespace time
 namespace server = sdbusplus::xyz::openbmc_project::Time::server;
 using namespace phosphor::logging;
 
-BmcEpoch::BmcEpoch(sdbusplus::bus::bus& bus, const char* objPath) :
+BmcEpoch::BmcEpoch(sdbusplus::bus_t& bus, const char* objPath) :
     EpochBase(bus, objPath)
 {
     initialize();

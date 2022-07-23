@@ -23,7 +23,7 @@ namespace utils
  * @return The value of the property
  */
 template <typename T>
-T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
+T getProperty(sdbusplus::bus_t& bus, const char* service, const char* path,
               const char* interface, const char* propertyName)
 {
     auto method = bus.new_method_call(service, path,
@@ -36,7 +36,7 @@ T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
         reply.read(value);
         return std::get<T>(value);
     }
-    catch (const sdbusplus::exception::exception& ex)
+    catch (const sdbusplus::exception_t& ex)
     {
         lg2::error("GetProperty call failed, path:{PATH}, interface:{INTF}, "
                    "propertyName:{NAME}, error:{ERROR}",
@@ -54,7 +54,7 @@ T getProperty(sdbusplus::bus::bus& bus, const char* service, const char* path,
  *
  * @return The name of the service
  */
-std::string getService(sdbusplus::bus::bus& bus, const char* path,
+std::string getService(sdbusplus::bus_t& bus, const char* path,
                        const char* interface);
 
 /** @brief Convert a string to enum Mode

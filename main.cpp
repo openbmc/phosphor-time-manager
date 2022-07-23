@@ -22,7 +22,7 @@ int main()
     bus.attach_event(sdEvent.get(), SD_EVENT_PRIORITY_NORMAL);
 
     // Add sdbusplus ObjectManager
-    sdbusplus::server::manager::manager bmcEpochObjManager(bus, OBJPATH_BMC);
+    sdbusplus::server::manager_t bmcEpochObjManager(bus, OBJPATH_BMC);
 
     phosphor::time::BmcEpoch bmc(bus, OBJPATH_BMC);
     phosphor::time::Manager manager(bus);

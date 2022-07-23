@@ -25,7 +25,7 @@ struct Objects
      * @param[in] bus - The D-bus bus object
      */
     Objects() = delete;
-    explicit Objects(sdbusplus::bus::bus&);
+    explicit Objects(sdbusplus::bus_t&);
     Objects(const Objects&) = delete;
     Objects& operator=(const Objects&) = delete;
     Objects(Objects&&) = default;
@@ -47,7 +47,7 @@ struct Objects
     Path timeSyncMethod;
 
   private:
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 };
 
 } // namespace settings

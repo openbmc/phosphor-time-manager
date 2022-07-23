@@ -19,7 +19,7 @@ using namespace std::chrono;
 class TestBmcEpoch : public testing::Test
 {
   public:
-    sdbusplus::bus::bus bus;
+    sdbusplus::bus_t bus;
     sd_event* event;
     std::unique_ptr<BmcEpoch> bmcEpoch;
 

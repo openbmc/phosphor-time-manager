@@ -15,7 +15,7 @@ constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
 
-Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
+Objects::Objects(sdbusplus::bus_t& bus) : bus(bus)
 {
     std::vector<std::string> settingsIntfs = {timeSyncIntf};
     auto depth = 0;
@@ -36,7 +36,7 @@ Objects::Objects(sdbusplus::bus::bus& bus) : bus(bus)
         auto response = bus.call(mapperCall);
         response.read(result);
     }
-    catch (const sdbusplus::exception::exception& ex)
+    catch (const sdbusplus::exception_t& ex)
     {
         lg2::error("Failed to invoke GetSubTree method: {ERROR}", "ERROR", ex);
     }
@@ -77,7 +77,7 @@ Service Objects::service(const Path& path, const Interface& interface) const
         auto response = bus.call(mapperCall);
         response.read(result);
     }
-    catch (const sdbusplus::exception::exception& ex)
+    catch (const sdbusplus::exception_t& ex)
     {
         lg2::error("Error in mapper GetObject: {ERROR}", "ERROR", ex);
     }

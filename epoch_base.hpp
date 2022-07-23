@@ -20,21 +20,21 @@ namespace time
  *  DBus API for epoch time.
  */
 class EpochBase :
-    public sdbusplus::server::object::object<
+    public sdbusplus::server::object_t<
         sdbusplus::xyz::openbmc_project::Time::server::EpochTime>,
     public PropertyChangeListner
 {
   public:
     friend class TestEpochBase;
 
-    EpochBase(sdbusplus::bus::bus& bus, const char* objPath);
+    EpochBase(sdbusplus::bus_t& bus, const char* objPath);
 
     /** @brief Notified on time mode changed */
     void onModeChanged(Mode mode) override;
 
   protected:
     /** @brief Persistent sdbusplus DBus connection */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     /** @brief The current time mode */
     Mode timeMode = DEFAULT_TIME_MODE;
