@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04938c5e_c4e6504a",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-08-02T01:17:15Z",
+      "side": 1,
+      "message": "format alignment, like this:\n\n```\nsystemd_system_unit_dir \u003d systemd.get_variable(\n    pkgconfig: \u0027systemdsystemunitdir\u0027,\n    pkgconfig_define: [\u0027prefix\u0027, get_option(\u0027prefix\u0027)])\n```",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 76
+      },
+      "revId": "fa36d03d44021b34ab0d90bd2f7ddc30a862f65f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
