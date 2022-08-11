@@ -22,6 +22,87 @@
       },
       "revId": "f4f9e53909e011d2fef023bef6f5960a4a2481d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2342c085_3d393c3b",
+        "filename": "bmc_epoch.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-11T17:05:10Z",
+      "side": 1,
+      "message": "It depends on the namespace / using.  Here they inserted PHOPSHOR_LOG2_USING on line 27.",
+      "parentUuid": "5617e65a_20772aa2",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 13
+      },
+      "revId": "f4f9e53909e011d2fef023bef6f5960a4a2481d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e75b6a8_963f79bc",
+        "filename": "utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-11T17:05:10Z",
+      "side": 1,
+      "message": "There is an implication here that exactly 1 service provides every interface+path combination, which is not necessarily true.  I guess this is an existing function though.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 53
+      },
+      "revId": "f4f9e53909e011d2fef023bef6f5960a4a2481d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c2df616_7db85e13",
+        "filename": "utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-11T17:05:10Z",
+      "side": 1,
+      "message": "Why forward declare?",
+      "revId": "f4f9e53909e011d2fef023bef6f5960a4a2481d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1389792a_b05bbcaf",
+        "filename": "utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-11T17:05:10Z",
+      "side": 1,
+      "message": "This will crash due to the variant not being assigned a value yet.\n\nJust use `return T{}`.",
+      "revId": "f4f9e53909e011d2fef023bef6f5960a4a2481d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
