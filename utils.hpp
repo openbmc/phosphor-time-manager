@@ -5,6 +5,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
+#include <string_view>
 #include <vector>
 
 namespace phosphor
@@ -21,10 +22,11 @@ using Interfaces = std::vector<Interface>;
 using MapperResponse =
     std::vector<std::pair<Path, std::vector<std::pair<Service, Interfaces>>>>;
 
+PHOSPHOR_LOG2_USING;
+
 /** @brief The template function to get property from the requested dbus path
  *
  * @param[in] bus          - The Dbus bus object
- * @param[in] service      - The Dbus service name
  * @param[in] path         - The Dbus object path
  * @param[in] interface    - The Dbus interface
  * @param[in] propertyName - The property name to get
@@ -47,10 +49,10 @@ T getProperty(sdbusplus::bus_t& bus, const char* service, const char* path,
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error("GetProperty call failed, path:{PATH}, interface:{INTF}, "
-                   "propertyName:{NAME}, error:{ERROR}",
-                   "PATH", path, "INTF", interface, "NAME", propertyName,
-                   "ERROR", ex);
+        error("GetProperty call failed, path:{PATH}, interface:{INTF}, "
+              "propertyName:{NAME}, error:{ERROR}",
+              "PATH", path, "INTF", interface, "NAME", propertyName, "ERROR",
+              ex);
         throw std::runtime_error("GetProperty call failed");
     }
 }

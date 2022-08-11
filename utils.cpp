@@ -15,6 +15,8 @@ constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
 namespace utils
 {
 
+PHOSPHOR_LOG2_USING;
+
 std::string getService(sdbusplus::bus_t& bus, const char* path,
                        const char* interface)
 {
@@ -31,7 +33,7 @@ std::string getService(sdbusplus::bus_t& bus, const char* path,
         mapperResponseMsg.read(mapperResponse);
         if (mapperResponse.empty())
         {
-            lg2::error("Error reading mapper response");
+            error("Error reading mapper response");
             throw std::runtime_error("Error reading mapper response");
         }
 
@@ -39,7 +41,7 @@ std::string getService(sdbusplus::bus_t& bus, const char* path,
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error(
+        error(
             "Mapper call failed: path:{PATH}, interface:{INTF}, error:{ERROR}",
             "PATH", path, "INTF", interface, "ERROR", ex);
         throw std::runtime_error("Mapper call failed");
