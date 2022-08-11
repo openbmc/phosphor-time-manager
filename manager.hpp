@@ -55,8 +55,9 @@ class Manager
      *
      * @return The setting value in string
      */
-    std::string getSetting(const char* path, const char* interface,
-                           const char* setting) const;
+    std::string getSetting(const std::string& path,
+                           const std::string& interface,
+                           const std::string& setting) const;
 
     /** @brief Set current time mode from the time mode string
      *

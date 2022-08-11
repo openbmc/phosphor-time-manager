@@ -21,6 +21,8 @@ namespace phosphor
 namespace time
 {
 
+PHOSPHOR_LOG2_USING;
+
 using namespace phosphor::logging;
 using FailedError = sdbusplus::xyz::openbmc_project::Time::Error::Failed;
 
@@ -48,7 +50,7 @@ bool EpochBase::setTime(const microseconds& usec)
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error("Error in setting system time: {ERROR}", "ERROR", ex);
+        error("Error in setting system time: {ERROR}", "ERROR", ex);
         using namespace xyz::openbmc_project::Time;
         elog<FailedError>(Failed::REASON(ex.what()));
     }
