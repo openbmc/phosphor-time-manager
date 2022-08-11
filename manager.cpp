@@ -22,6 +22,8 @@ namespace phosphor
 namespace time
 {
 
+PHOSPHOR_LOG2_USING;
+
 Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
 {
     using namespace sdbusplus::bus::match::rules;
@@ -79,11 +81,11 @@ void Manager::updateNtpSetting(const std::string& value)
                                      // 'false' meaning no policy-kit
 
         bus.call_noreply(method);
-        lg2::info("Updated NTP setting: {ENABLED}", "ENABLED", isNtp);
+        info("Updated NTP setting: {ENABLED}", "ENABLED", isNtp);
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error("Failed to update NTP setting: {ERROR}", "ERROR", ex);
+        error("Failed to update NTP setting: {ERROR}", "ERROR", ex);
     }
 }
 
@@ -94,14 +96,14 @@ bool Manager::setCurrentTimeMode(const std::string& mode)
         auto newMode = utils::strToMode(mode);
         if (newMode != timeMode)
         {
-            lg2::info("Time mode has been changed to {MODE}", "MODE", newMode);
+            info("Time mode has been changed to {MODE}", "MODE", newMode);
             timeMode = newMode;
             return true;
         }
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error("Failed to convert mode from string: {ERROR}", "ERROR", ex);
+        error("Failed to convert mode from string: {ERROR}", "ERROR", ex);
     }
 
     return false;
@@ -124,7 +126,7 @@ std::string Manager::getSetting(const char* path, const char* interface,
     }
     catch (const std::exception& ex)
     {
-        lg2::error(
+        error(
             "Failed to get property: {ERROR}, path: {PATH}, interface: {INTERFACE}, name: {NAME}",
             "ERROR", ex, "PATH", path, "INTERFACE", interface, "NAME", setting);
         return {};

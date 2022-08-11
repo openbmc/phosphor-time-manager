@@ -32,6 +32,8 @@ constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
 constexpr auto METHOD_SET_TIME = "SetTime";
 } // namespace
 
+PHOSPHOR_LOG2_USING;
+
 namespace server = sdbusplus::xyz::openbmc_project::Time::server;
 using namespace phosphor::logging;
 using FailedError = sdbusplus::xyz::openbmc_project::Time::Error::Failed;
@@ -51,7 +53,7 @@ void BmcEpoch::initialize()
     timeFd = timerfd_create(CLOCK_REALTIME, 0);
     if (timeFd == -1)
     {
-        lg2::error("Failed to create timerfd: {ERRNO}", "ERRNO", errno);
+        error("Failed to create timerfd: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
 
@@ -59,7 +61,7 @@ void BmcEpoch::initialize()
         timeFd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &maxTime, nullptr);
     if (r != 0)
     {
-        lg2::error("Failed to set timerfd: {ERRNO}", "ERRNO", errno);
+        error("Failed to set timerfd: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
 
@@ -68,7 +70,7 @@ void BmcEpoch::initialize()
                         this);
     if (r < 0)
     {
-        lg2::error("Failed to add event: {ERRNO}", "ERRNO", errno);
+        error("Failed to add event: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
     timeChangeEventSource.reset(es);
@@ -131,7 +133,7 @@ bool BmcEpoch::setTime(const microseconds& usec)
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error("Error in setting system time: {ERROR}", "ERROR", ex);
+        error("Error in setting system time: {ERROR}", "ERROR", ex);
         using namespace xyz::openbmc_project::Time;
         elog<FailedError>(Failed::REASON(ex.what()));
     }
