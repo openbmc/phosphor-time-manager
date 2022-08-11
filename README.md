@@ -21,7 +21,7 @@ is compiled into the program.
 
     ```
        meson builddir -Dbuildtype=minsize  -Dtests=disabled
-       ninja -C buildir
+       ninja -C builddir
     ```
 * Generate test coverage report:
 
