@@ -3,4 +3,4 @@ url = https://github.com/openbmc/phosphor-logging.git
 revision = HEAD
 
 [provide]
-phosphor-logging = phosphor-logging_dep
+phosphor-logging = phosphor_logging_dep

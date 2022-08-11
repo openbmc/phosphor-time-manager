@@ -25,6 +25,8 @@ namespace phosphor
 namespace time
 {
 
+PHOSPHOR_LOG2_USING;
+
 using namespace phosphor::logging;
 
 Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
@@ -36,8 +38,8 @@ Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
                   std::placeholders::_1));
 
     // Check the settings daemon to process the new settings
-    auto mode = getSetting(settings.timeSyncMethod.c_str(),
-                           settings::timeSyncIntf, PROPERTY_TIME_MODE);
+    auto mode = getSetting(settings.timeSyncMethod, settings::timeSyncIntf,
+                           PROPERTY_TIME_MODE);
 
     onPropertyChanged(PROPERTY_TIME_MODE, mode);
 }
@@ -84,11 +86,11 @@ void Manager::updateNtpSetting(const std::string& value)
     try
     {
         bus.call_noreply(method);
-        lg2::info("Updated NTP setting: {ENABLED}", "ENABLED", isNtp);
+        info("Updated NTP setting: {ENABLED}", "ENABLED", isNtp);
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error("Failed to update NTP setting: {ERROR}", "ERROR", ex);
+        error("Failed to update NTP setting: {ERROR}", "ERROR", ex);
     }
 }
 
@@ -97,7 +99,7 @@ bool Manager::setCurrentTimeMode(const std::string& mode)
     auto newMode = utils::strToMode(mode);
     if (newMode != timeMode)
     {
-        lg2::info("Time mode has been changed to {MODE}", "MODE", newMode);
+        info("Time mode has been changed to {MODE}", "MODE", newMode);
         timeMode = newMode;
         return true;
     }
@@ -113,12 +115,11 @@ void Manager::onTimeModeChanged(const std::string& mode)
     updateNtpSetting(mode);
 }
 
-std::string Manager::getSetting(const char* path, const char* interface,
-                                const char* setting) const
+std::string Manager::getSetting(const std::string& path,
+                                const std::string& interface,
+                                const std::string& setting) const
 {
-    std::string settingManager = utils::getService(bus, path, interface);
-    return utils::getProperty<std::string>(bus, settingManager.c_str(), path,
-                                           interface, setting);
+    return utils::getProperty<std::string>(bus, path, interface, setting);
 }
 
 } // namespace time

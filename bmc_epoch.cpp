@@ -23,6 +23,9 @@ namespace phosphor
 {
 namespace time
 {
+
+PHOSPHOR_LOG2_USING;
+
 namespace server = sdbusplus::xyz::openbmc_project::Time::server;
 using namespace phosphor::logging;
 
@@ -47,7 +50,7 @@ void BmcEpoch::initialize()
     timeFd = timerfd_create(CLOCK_REALTIME, 0);
     if (timeFd == -1)
     {
-        lg2::error("Failed to create timerfd: {ERRNO}", "ERRNO", errno);
+        error("Failed to create timerfd: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
 
@@ -55,7 +58,7 @@ void BmcEpoch::initialize()
         timeFd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &maxTime, nullptr);
     if (r != 0)
     {
-        lg2::error("Failed to set timerfd: {ERRNO}", "ERRNO", errno);
+        error("Failed to set timerfd: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
 
@@ -64,7 +67,7 @@ void BmcEpoch::initialize()
                         this);
     if (r < 0)
     {
-        lg2::error("Failed to add event: {ERRNO}", "ERRNO", errno);
+        error("Failed to add event: {ERRNO}", "ERRNO", errno);
         elog<InternalFailure>();
     }
     timeChangeEventSource.reset(es);
