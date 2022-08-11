@@ -8,6 +8,8 @@
 namespace settings
 {
 
+PHOSPHOR_LOG2_USING;
+
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
@@ -38,12 +40,12 @@ Objects::Objects(sdbusplus::bus_t& bus) : bus(bus)
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error("Failed to invoke GetSubTree method: {ERROR}", "ERROR", ex);
+        error("Failed to invoke GetSubTree method: {ERROR}", "ERROR", ex);
     }
 
     if (result.empty())
     {
-        lg2::error("Invalid response from mapper");
+        error("Invalid response from mapper");
     }
 
     for (const auto& iter : result)
@@ -78,12 +80,12 @@ Service Objects::service(const Path& path, const Interface& interface) const
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        lg2::error("Error in mapper GetObject: {ERROR}", "ERROR", ex);
+        error("Error in mapper GetObject: {ERROR}", "ERROR", ex);
     }
 
     if (result.empty())
     {
-        lg2::error("Invalid response from mapper");
+        error("Invalid response from mapper");
         elog<InternalFailure>();
     }
 
