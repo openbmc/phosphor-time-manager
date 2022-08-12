@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d116877_ad4b1a66",
+        "filename": "bmc_epoch.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-12T12:06:40Z",
+      "side": 1,
+      "message": "\u003e If we also implement the error method in the current project, will we use the error() method at this time to produce ambiguity?\n\nIf you have a function in the project named \u0027error\u0027 you probably don\u0027t want to use the using, in order to avoid ambiguity.\n\n\u0027error\u0027 probably isn\u0027t a great name for a function in your project though.",
+      "parentUuid": "a6b338b1_7efd7f15",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 13
+      },
+      "revId": "f4f9e53909e011d2fef023bef6f5960a4a2481d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e75b6a8_963f79bc",
         "filename": "utils.hpp",
         "patchSetId": 1
