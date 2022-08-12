@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0922471c_acf15c43",
+        "filename": "bmc_epoch.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-12T01:01:19Z",
+      "side": 1,
+      "message": "It is up to the maintainer to decide. Generally, I prefer shorter more succinct code but some maintainers don’t seem to. This a repo I am responsible to decide.",
+      "parentUuid": "6bba3dc1_57128913",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 13
+      },
+      "revId": "f4f9e53909e011d2fef023bef6f5960a4a2481d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e75b6a8_963f79bc",
         "filename": "utils.hpp",
         "patchSetId": 1
