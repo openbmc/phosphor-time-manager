@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6bba3dc1_57128913",
+        "filename": "bmc_epoch.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-08-12T00:41:05Z",
+      "side": 1,
+      "message": "\u003e It depends on the namespace / using.  Here they inserted PHOPSHOR_LOG2_USING on line 27.\n\nYes, I know, so my question is: which method do we recommend to use, or what is the difference between the two methods?\nBecause I\u0027ve been using lg2::xx this way and I don\u0027t think they make any difference, so I don\u0027t recommend changing here if there is no difference",
+      "parentUuid": "2342c085_3d393c3b",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 13
+      },
+      "revId": "f4f9e53909e011d2fef023bef6f5960a4a2481d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e75b6a8_963f79bc",
         "filename": "utils.hpp",
         "patchSetId": 1
