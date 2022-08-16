@@ -19,8 +19,7 @@ using namespace std::chrono;
 class BmcEpoch : public EpochBase
 {
   public:
-    friend class TestBmcEpoch;
-    BmcEpoch(sdbusplus::bus_t& bus, const char* objPath);
+    BmcEpoch(sdbusplus::bus_t& bus, const char* objPath, Manager& manager);
     ~BmcEpoch();
 
     /**
