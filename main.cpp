@@ -24,8 +24,8 @@ int main()
     // Add sdbusplus ObjectManager
     sdbusplus::server::manager_t bmcEpochObjManager(bus, OBJPATH_BMC);
 
-    phosphor::time::BmcEpoch bmc(bus, OBJPATH_BMC);
     phosphor::time::Manager manager(bus);
+    phosphor::time::BmcEpoch bmc(bus, OBJPATH_BMC, manager);
 
     bus.request_name(BUSNAME);
 

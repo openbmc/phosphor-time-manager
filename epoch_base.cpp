@@ -24,13 +24,15 @@ namespace time
 using namespace phosphor::logging;
 using FailedError = sdbusplus::xyz::openbmc_project::Time::Error::Failed;
 
-EpochBase::EpochBase(sdbusplus::bus_t& bus, const char* objPath) :
-    sdbusplus::server::object_t<EpochTime>(bus, objPath), bus(bus)
+EpochBase::EpochBase(sdbusplus::bus_t& bus, const char* objPath,
+                     Manager& manager) :
+    sdbusplus::server::object_t<EpochTime>(bus, objPath),
+    bus(bus), manager(manager)
 {}
 
 void EpochBase::onModeChanged(Mode mode)
 {
-    timeMode = mode;
+    manager.setTimeMode(mode);
 }
 
 using namespace std::chrono;

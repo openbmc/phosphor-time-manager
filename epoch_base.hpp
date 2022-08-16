@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#include "manager.hpp"
 #include "property_change_listener.hpp"
 
 #include <sdbusplus/bus.hpp>
@@ -25,7 +26,7 @@ class EpochBase :
     public PropertyChangeListner
 {
   public:
-    EpochBase(sdbusplus::bus_t& bus, const char* objPath);
+    EpochBase(sdbusplus::bus_t& bus, const char* objPath, Manager& manager);
 
     /** @brief Notified on time mode changed */
     void onModeChanged(Mode mode) override;
@@ -34,8 +35,8 @@ class EpochBase :
     /** @brief Persistent sdbusplus DBus connection */
     sdbusplus::bus_t& bus;
 
-    /** @brief The current time mode */
-    Mode timeMode = DEFAULT_TIME_MODE;
+    /** @brief The manager to handle OpenBMC time */
+    Manager& manager;
 
     /** @brief Set current time to system
      *
