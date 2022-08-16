@@ -34,6 +34,16 @@ class Manager
     Manager& operator=(Manager&&) = delete;
     ~Manager() = default;
 
+    void setTimeMode(Mode mode)
+    {
+        this->timeMode = mode;
+    }
+
+    Mode getTimeMode()
+    {
+        return this->timeMode;
+    }
+
   private:
     /** @brief Persistent sdbusplus DBus connection */
     sdbusplus::bus_t& bus;
