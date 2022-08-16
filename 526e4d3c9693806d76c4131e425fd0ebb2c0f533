@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d067ffc4_71ef3f50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-08-16T04:52:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "226a9490_4ab8c2fb",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "526e4d3c9693806d76c4131e425fd0ebb2c0f533",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb03deb7_f97f9797",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-08-15T02:19:39Z",
       "side": 1,
       "message": "There is additional change that it calls `getService()` in `getProperty()`",
+      "revId": "526e4d3c9693806d76c4131e425fd0ebb2c0f533",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ec8bece_c4290f00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-08-16T04:52:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb03deb7_f97f9797",
       "revId": "526e4d3c9693806d76c4131e425fd0ebb2c0f533",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
