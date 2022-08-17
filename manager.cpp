@@ -69,15 +69,16 @@ int Manager::onSettingsChanged(sdbusplus::message_t& msg)
 
 void Manager::updateNtpSetting(const std::string& value)
 {
-    bool isNtp =
-        (value == "xyz.openbmc_project.Time.Synchronization.Method.NTP");
-    auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE, SYSTEMD_TIME_PATH,
-                                      SYSTEMD_TIME_INTERFACE, METHOD_SET_NTP);
-    method.append(isNtp, false); // isNtp: 'true/false' means Enable/Disable
-                                 // 'false' meaning no policy-kit
-
     try
     {
+        bool isNtp =
+            (value == "xyz.openbmc_project.Time.Synchronization.Method.NTP");
+        auto method =
+            bus.new_method_call(SYSTEMD_TIME_SERVICE, SYSTEMD_TIME_PATH,
+                                SYSTEMD_TIME_INTERFACE, METHOD_SET_NTP);
+        method.append(isNtp, false); // isNtp: 'true/false' means Enable/Disable
+                                     // 'false' meaning no policy-kit
+
         bus.call_noreply(method);
         lg2::info("Updated NTP setting: {ENABLED}", "ENABLED", isNtp);
     }
@@ -89,17 +90,23 @@ void Manager::updateNtpSetting(const std::string& value)
 
 bool Manager::setCurrentTimeMode(const std::string& mode)
 {
-    auto newMode = utils::strToMode(mode);
-    if (newMode != timeMode)
+    try
     {
-        lg2::info("Time mode has been changed to {MODE}", "MODE", newMode);
-        timeMode = newMode;
-        return true;
+        auto newMode = utils::strToMode(mode);
+        if (newMode != timeMode)
+        {
+            lg2::info("Time mode has been changed to {MODE}", "MODE", newMode);
+            timeMode = newMode;
+            return true;
+        }
     }
-    else
+    catch (const sdbusplus::exception_t& ex)
     {
-        return false;
+        lg2::error("Failed to convert method from string: {ERROR}", "ERROR",
+                   ex);
     }
+
+    return false;
 }
 
 void Manager::onTimeModeChanged(const std::string& mode)
@@ -111,9 +118,18 @@ void Manager::onTimeModeChanged(const std::string& mode)
 std::string Manager::getSetting(const char* path, const char* interface,
                                 const char* setting) const
 {
-    std::string settingManager = utils::getService(bus, path, interface);
-    return utils::getProperty<std::string>(bus, settingManager.c_str(), path,
-                                           interface, setting);
+    try
+    {
+        std::string settingManager = utils::getService(bus, path, interface);
+        return utils::getProperty<std::string>(bus, settingManager.c_str(),
+                                               path, interface, setting);
+    }
+    catch (const std::exception& ex)
+    {
+        lg2::error("Failed to get the TimeSyncMethod property: {ERROR}",
+                   "ERROR", ex);
+        return {};
+    }
 }
 
 } // namespace time

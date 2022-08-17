@@ -44,7 +44,6 @@ Objects::Objects(sdbusplus::bus_t& bus) : bus(bus)
     if (result.empty())
     {
         lg2::error("Invalid response from mapper");
-        elog<InternalFailure>();
     }
 
     for (const auto& iter : result)

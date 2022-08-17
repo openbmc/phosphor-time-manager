@@ -33,7 +33,7 @@ class TestManager : public testing::Test
     }
 };
 
-TEST_F(TestManager, DISABLED_propertyChanged)
+TEST_F(TestManager, propertyChanged)
 {
     notifyPropertyChanged(
         "TimeSyncMethod",
