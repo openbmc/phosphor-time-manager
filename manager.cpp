@@ -4,10 +4,7 @@
 
 #include <assert.h>
 
-#include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/lg2.hpp>
-#include <xyz/openbmc_project/Common/error.hpp>
 
 namespace rules = sdbusplus::bus::match::rules;
 
@@ -24,8 +21,6 @@ namespace phosphor
 {
 namespace time
 {
-
-using namespace phosphor::logging;
 
 Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
 {

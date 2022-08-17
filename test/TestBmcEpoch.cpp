@@ -5,16 +5,12 @@
 
 #include <sdbusplus/bus.hpp>
 
-#include <memory>
-
 #include <gtest/gtest.h>
 
 namespace phosphor
 {
 namespace time
 {
-
-using namespace std::chrono;
 
 class TestBmcEpoch : public testing::Test
 {
@@ -45,10 +41,6 @@ class TestBmcEpoch : public testing::Test
     void setTimeMode(Mode mode)
     {
         bmcEpoch->timeMode = mode;
-    }
-    void triggerTimeChange()
-    {
-        bmcEpoch->onTimeChange(nullptr, -1, 0, bmcEpoch.get());
     }
 };
 
