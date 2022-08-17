@@ -54,6 +54,13 @@ class EpochBase :
      * @return Microseconds since UTC
      */
     std::chrono::microseconds getTime() const;
+
+    /** @brief Shows whether the NTP service is enabled
+     *
+     * @return - true if the NTP service is enabled
+     *           false if the NTP service is disabled
+     */
+    std::optional<bool> getNTP() const;
 };
 
 } // namespace time
