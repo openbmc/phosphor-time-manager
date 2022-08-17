@@ -25,8 +25,6 @@ class EpochBase :
     public PropertyChangeListner
 {
   public:
-    friend class TestEpochBase;
-
     EpochBase(sdbusplus::bus_t& bus, const char* objPath);
 
     /** @brief Notified on time mode changed */
