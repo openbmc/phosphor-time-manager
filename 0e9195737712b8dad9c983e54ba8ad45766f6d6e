@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d55a318_939d06ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-08-18T11:31:15Z",
+      "side": 1,
+      "message": "There is `epoch_base` because it was managing `bmc time` and `host time` before.\nNow the `host time` is removed, so we could simply remove the inheritance and combine the epoch_base and bmc_epoch.",
+      "revId": "0e9195737712b8dad9c983e54ba8ad45766f6d6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
