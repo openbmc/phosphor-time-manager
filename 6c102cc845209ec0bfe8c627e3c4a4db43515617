@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5efb746d_7df43343",
+        "filename": "manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-08-18T12:46:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "636134f0_5b7da803",
+      "range": {
+        "startLine": 105,
+        "startChar": 38,
+        "endLine": 105,
+        "endChar": 45
+      },
+      "revId": "6c102cc845209ec0bfe8c627e3c4a4db43515617",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77e4c131_b9cdedd3",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-18T11:29:20Z",
       "side": 1,
       "message": "The log does not seem right, why `TimeSyncMethod` here?",
+      "range": {
+        "startLine": 129,
+        "startChar": 38,
+        "endLine": 129,
+        "endChar": 53
+      },
+      "revId": "6c102cc845209ec0bfe8c627e3c4a4db43515617",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42cc1fcc_a37dc323",
+        "filename": "manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-08-18T12:46:46Z",
+      "side": 1,
+      "message": "\u003e The log does not seem right, why `TimeSyncMethod` here?\n\nBecause I thought the method was just setting the `TimeSyncMethod` property, I updated it.",
+      "parentUuid": "77e4c131_b9cdedd3",
       "range": {
         "startLine": 129,
         "startChar": 38,
