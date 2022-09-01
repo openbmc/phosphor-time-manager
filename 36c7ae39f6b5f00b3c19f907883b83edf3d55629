@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "509642d4_637f6de6",
+        "filename": "manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-09-01T05:45:59Z",
+      "side": 1,
+      "message": "Please use `mode`, otherwise it looks weird.",
+      "range": {
+        "startLine": 105,
+        "startChar": 38,
+        "endLine": 105,
+        "endChar": 43
+      },
+      "revId": "36c7ae39f6b5f00b3c19f907883b83edf3d55629",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
