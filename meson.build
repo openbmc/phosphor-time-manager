@@ -51,7 +51,6 @@ configure_file(output: 'config.h', configuration: conf_data)
 # Gather sources for the target binaries
 
 phosphor_time_manager_sources = [
-                                 'epoch_base.cpp',
                                  'bmc_epoch.cpp',
                                  'manager.cpp',
                                  'utils.cpp',

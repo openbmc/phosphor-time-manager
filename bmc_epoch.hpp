@@ -1,6 +1,10 @@
 #pragma once
 
-#include "epoch_base.hpp"
+#include "manager.hpp"
+#include "property_change_listener.hpp"
+
+#include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Time/EpochTime/server.hpp>
 
 #include <chrono>
 
@@ -11,16 +15,27 @@ namespace time
 
 using namespace std::chrono;
 
+using EpochTimeIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Time::server::EpochTime>;
+
 /** @class BmcEpoch
  *  @brief OpenBMC BMC EpochTime implementation.
- *  @details A concrete implementation for xyz.openbmc_project.Time.EpochTime
- *  DBus API for BMC's epoch time.
+ *  @details A concrete implementation for
+ * xyz.openbmc_project.Time.EpochTime DBus API for BMC's epoch time.
  */
-class BmcEpoch : public EpochBase
+class BmcEpoch : public EpochTimeIntf, public PropertyChangeListner
 {
   public:
-    BmcEpoch(sdbusplus::bus_t& bus, const char* objPath, Manager& manager);
+    BmcEpoch(sdbusplus::bus_t& bus, const char* objPath, Manager& manager) :
+        EpochTimeIntf(bus, objPath), bus(bus), manager(manager)
+    {
+        initialize();
+    }
+
     ~BmcEpoch();
+
+    /** @brief Notified on time mode changed */
+    void onModeChanged(Mode mode) override;
 
     /**
      * @brief Get value of Elapsed property
@@ -36,6 +51,30 @@ class BmcEpoch : public EpochBase
      * @return The updated elapsed microseconds since UTC
      **/
     uint64_t elapsed(uint64_t value) override;
+
+  protected:
+    /** @brief Persistent sdbusplus DBus connection */
+    sdbusplus::bus_t& bus;
+
+    /** @brief The manager to handle OpenBMC time */
+    Manager& manager;
+
+    /** @brief Set current time to system
+     *
+     * This function set the time to system by invoking systemd
+     * org.freedesktop.timedate1's SetTime method.
+     *
+     * @param[in] timeOfDayUsec - Microseconds since UTC
+     *
+     * @return true or false to indicate if it sets time successfully
+     */
+    bool setTime(const std::chrono::microseconds& timeOfDayUsec);
+
+    /** @brief Get current time
+     *
+     * @return Microseconds since UTC
+     */
+    std::chrono::microseconds getTime() const;
 
   private:
     /** @brief The fd for time change event */
