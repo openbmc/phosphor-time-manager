@@ -34,6 +34,24 @@
       "parentUuid": "d17d87d2_2f1495e3",
       "revId": "723068069aa58423e64ad0276db3a63d8f9e4d5d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9510d5c_9f9b3010",
+        "filename": "test/TestBmcEpoch.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-09-01T05:44:33Z",
+      "side": 0,
+      "message": "OK, in future commits let\u0027s add some case to test this code path.",
+      "parentUuid": "860ec7d9_043be6f3",
+      "revId": "723068069aa58423e64ad0276db3a63d8f9e4d5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
