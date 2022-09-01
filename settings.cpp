@@ -62,32 +62,4 @@ Objects::Objects(sdbusplus::bus_t& bus) : bus(bus)
     }
 }
 
-Service Objects::service(const Path& path, const Interface& interface) const
-{
-    using Interfaces = std::vector<Interface>;
-    auto mapperCall =
-        bus.new_method_call(mapperService, mapperPath, mapperIntf, "GetObject");
-    mapperCall.append(path);
-    mapperCall.append(Interfaces({interface}));
-
-    std::map<Service, Interfaces> result;
-    try
-    {
-        auto response = bus.call(mapperCall);
-        response.read(result);
-    }
-    catch (const sdbusplus::exception_t& ex)
-    {
-        lg2::error("Error in mapper GetObject: {ERROR}", "ERROR", ex);
-    }
-
-    if (result.empty())
-    {
-        lg2::error("Invalid response from mapper");
-        elog<InternalFailure>();
-    }
-
-    return result.begin()->first;
-}
-
 } // namespace settings
