@@ -34,6 +34,24 @@
       "parentUuid": "98015ae3_9f7a2c75",
       "revId": "3de631dc2176135b1e7cf2ca72417aabf9fafdf0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "759a3fae_33f879da",
+        "filename": "epoch_base.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-09-01T05:49:36Z",
+      "side": 1,
+      "message": "\u003e I think it should be synchronous, actually we should wait until NTP is really done before setting the time. otherwise, even if we set the time, it still returns an error.\n\nNo it should not. If it\u0027s blocked, the whole service is blocked and it could cause the caller to block if it\u0027s making sync calls.\n\n\u003e Because we don\u0027t want to see any errors via Redfish if NTP stops but doesn\u0027t stop completing.\n\nIt could be fixed at the caller side, it could add retry there.",
+      "parentUuid": "1ac54cbd_0c136ca3",
+      "revId": "3de631dc2176135b1e7cf2ca72417aabf9fafdf0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
