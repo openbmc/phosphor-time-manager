@@ -46,6 +46,22 @@ std::string getService(sdbusplus::bus_t& bus, const char* path,
     }
 }
 
+MapperResponse getSubTree(sdbusplus::bus_t& bus, const std::string& root,
+                          const Interfaces& interfaces, int32_t depth)
+{
+    auto mapperCall = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                          MAPPER_INTERFACE, "GetSubTree");
+    mapperCall.append(root);
+    mapperCall.append(depth);
+    mapperCall.append(interfaces);
+
+    auto response = bus.call(mapperCall);
+
+    MapperResponse result;
+    response.read(result);
+    return result;
+}
+
 Mode strToMode(const std::string& mode)
 {
     return ModeSetting::convertMethodFromString(mode);

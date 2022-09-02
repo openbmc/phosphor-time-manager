@@ -5,12 +5,21 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
+#include <vector>
+
 namespace phosphor
 {
 namespace time
 {
 namespace utils
 {
+
+using Path = std::string;
+using Service = std::string;
+using Interface = std::string;
+using Interfaces = std::vector<Interface>;
+using MapperResponse =
+    std::vector<std::pair<Path, std::vector<std::pair<Service, Interfaces>>>>;
 
 /** @brief The template function to get property from the requested dbus path
  *
@@ -56,6 +65,18 @@ T getProperty(sdbusplus::bus_t& bus, const char* service, const char* path,
  */
 std::string getService(sdbusplus::bus_t& bus, const char* path,
                        const char* interface);
+
+/** @brief Get sub tree from root, depth and interfaces
+ *
+ * @param[in] bus           - The Dbus bus object
+ * @param[in] root          - The root of the tree to search
+ * @param[in] interfaces    - All interfaces in the subtree to search for
+ * @param[in] depth         - The number of path elements to descend
+ *
+ * @return The name of the service
+ */
+MapperResponse getSubTree(sdbusplus::bus_t& bus, const std::string& root,
+                          const Interfaces& interfaces, int32_t depth);
 
 /** @brief Convert a string to enum Mode
  *
