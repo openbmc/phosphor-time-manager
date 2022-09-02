@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utils.hpp"
+
 #include <sdbusplus/bus.hpp>
 
 #include <string>
@@ -7,9 +9,7 @@
 namespace settings
 {
 
-using Path = std::string;
-using Service = std::string;
-using Interface = std::string;
+using namespace phosphor::time::utils;
 
 constexpr auto root = "/";
 constexpr auto timeSyncIntf = "xyz.openbmc_project.Time.Synchronization";
