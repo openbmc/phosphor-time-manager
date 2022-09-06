@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55bb7194_56e5648d",
+        "filename": "manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-09-06T12:32:57Z",
+      "side": 1,
+      "message": "A `const std::string_view\u0026` is probably slightly better.  That way you can defer the construction of the string into inside this method (if even needed).",
+      "range": {
+        "startLine": 119,
+        "startChar": 32,
+        "endLine": 121,
+        "endChar": 59
+      },
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94d0ddae_9c8fcf38",
+        "filename": "utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-09-06T12:32:57Z",
+      "side": 1,
+      "message": "More string_view.",
+      "range": {
+        "startLine": 25,
+        "startChar": 46,
+        "endLine": 26,
+        "endChar": 53
+      },
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d39e5df_da74a5a2",
+        "filename": "utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-09-06T12:32:57Z",
+      "side": 1,
+      "message": "Suggest string_view on this one also.\n\nWith this change you\u0027ve actually made the code perform worse and that probably isn\u0027t what you intended.\n\nA common pattern is something like this:\n    getProperty(..., \"FOO_INTERFACE\", \"BAR_PROPERTY\");\n    \nBy making the parameter a std::string, you\u0027ve forced the compiler to construct one (slower) only to pass it along on line 46 back to a c-string.\n\nString-view can be either a string or a c-string, so it reduces the conversion factor (constexpr c-string -\u003e string_view is actually constexpr and done by the compiler).",
+      "range": {
+        "startLine": 38,
+        "startChar": 37,
+        "endLine": 39,
+        "endChar": 75
+      },
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2b283c9_a48b763a",
+        "filename": "utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-09-06T12:32:57Z",
+      "side": 1,
+      "message": "This implies there is exactly one service hosting the path+interface.  Is that true?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c02f818_453572e4",
+        "filename": "utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-09-06T12:32:57Z",
+      "side": 1,
+      "message": "Is it possible for the getService and/or new_method_call to fail with an exception?  Is your intention that those properties are exposed directly, but for some reason the property call one is transformed?\n\nThe new_method_call code was already in place but you\u0027ve inserted the getService so I think it is worth re-evaluating this exception policy.  (To be honest I have no idea why one exception is transposed into a more generic std::runtime_error in the original code as that isn\u0027t ideal behavior either).",
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
