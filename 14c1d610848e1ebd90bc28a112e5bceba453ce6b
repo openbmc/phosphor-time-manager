@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ba4179a_ad8531bf",
+        "filename": "utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-09-08T05:17:44Z",
+      "side": 1,
+      "message": "Do you want to handle the dbus exception in this function or let the caller to handle it?\n\nThe current implementation throws, so probably you need to specify this information here.",
+      "revId": "14c1d610848e1ebd90bc28a112e5bceba453ce6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e940e8d_8cedfd4b",
         "filename": "utils.hpp",
         "patchSetId": 1
