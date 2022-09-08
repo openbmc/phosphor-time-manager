@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71011155_48106f47",
+        "filename": "utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-08T06:20:41Z",
+      "side": 1,
+      "message": "\u003e Do you want to handle the dbus exception in this function or let the caller to handle it?\n\u003e \n\u003e The current implementation throws, so probably you need to specify this information here.\n\nAdded @throw",
+      "parentUuid": "6ba4179a_ad8531bf",
+      "revId": "14c1d610848e1ebd90bc28a112e5bceba453ce6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e940e8d_8cedfd4b",
