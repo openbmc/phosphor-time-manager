@@ -52,6 +52,24 @@
       "parentUuid": "1ac54cbd_0c136ca3",
       "revId": "3de631dc2176135b1e7cf2ca72417aabf9fafdf0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46e873e_3afe8786",
+        "filename": "epoch_base.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2022-09-20T19:49:21Z",
+      "side": 1,
+      "message": "We are looking for some way to return a task to know NTP has stopped so webui-vue can get rid of this sleep: \nhttps://github.com/openbmc/webui-vue/blob/master/src/store/modules/Settings/DateTimeStore.js#L59\n\nAny thoughts on how bmcweb can know ntp has completely stopped ?",
+      "parentUuid": "759a3fae_33f879da",
+      "revId": "3de631dc2176135b1e7cf2ca72417aabf9fafdf0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
