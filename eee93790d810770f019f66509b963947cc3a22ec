@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bda0e0cf_3753f41d",
+        "filename": "manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-11-07T09:51:01Z",
+      "side": 1,
+      "message": "Reverted the change",
+      "parentUuid": "55bb7194_56e5648d",
+      "range": {
+        "startLine": 119,
+        "startChar": 32,
+        "endLine": 121,
+        "endChar": 59
+      },
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94d0ddae_9c8fcf38",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-06T12:32:57Z",
       "side": 1,
       "message": "More string_view.",
+      "range": {
+        "startLine": 25,
+        "startChar": 46,
+        "endLine": 26,
+        "endChar": 53
+      },
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d3a2baa_715fd02c",
+        "filename": "utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-11-07T09:51:01Z",
+      "side": 1,
+      "message": "Reverted the change",
+      "parentUuid": "94d0ddae_9c8fcf38",
       "range": {
         "startLine": 25,
         "startChar": 46,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "900e6e77_a630483b",
+        "filename": "utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-11-07T09:51:01Z",
+      "side": 1,
+      "message": "Reverted the change.\nThank you, Patrick, this comment helped me understand the scenarios where we can use char* and std::string 😊. This comment also helped me understand string_view.\nSome functions used internally here like new_method_call() takes only const char* value as input parameter and passing string_view value is not allowed.",
+      "parentUuid": "6d39e5df_da74a5a2",
+      "range": {
+        "startLine": 38,
+        "startChar": 37,
+        "endLine": 39,
+        "endChar": 75
+      },
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2b283c9_a48b763a",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d07bd176_ae18eeb3",
+        "filename": "utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-11-07T09:51:01Z",
+      "side": 1,
+      "message": "reverted the change",
+      "parentUuid": "c2b283c9_a48b763a",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c02f818_453572e4",
@@ -106,6 +202,24 @@
       "writtenOn": "2022-09-06T12:32:57Z",
       "side": 1,
       "message": "Is it possible for the getService and/or new_method_call to fail with an exception?  Is your intention that those properties are exposed directly, but for some reason the property call one is transformed?\n\nThe new_method_call code was already in place but you\u0027ve inserted the getService so I think it is worth re-evaluating this exception policy.  (To be honest I have no idea why one exception is transposed into a more generic std::runtime_error in the original code as that isn\u0027t ideal behavior either).",
+      "revId": "eee93790d810770f019f66509b963947cc3a22ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9aca0bc_b5642ec3",
+        "filename": "utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-11-07T09:51:01Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8c02f818_453572e4",
       "revId": "eee93790d810770f019f66509b963947cc3a22ec",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
