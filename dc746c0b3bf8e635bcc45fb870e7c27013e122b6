@@ -16,6 +16,24 @@
       "message": "Why is this line removed?",
       "revId": "dc746c0b3bf8e635bcc45fb870e7c27013e122b6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "372bf9d8_eb14fe1c",
+        "filename": "utils.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-11-17T13:37:42Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "fe2d64a9_bf3b183e",
+      "revId": "dc746c0b3bf8e635bcc45fb870e7c27013e122b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
