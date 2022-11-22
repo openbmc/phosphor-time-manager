@@ -27,8 +27,7 @@ Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
     using namespace sdbusplus::bus::match::rules;
     settingsMatches.emplace_back(
         bus, propertiesChanged(settings.timeSyncMethod, settings::timeSyncIntf),
-        std::bind(std::mem_fn(&Manager::onSettingsChanged), this,
-                  std::placeholders::_1));
+        [&](sdbusplus::message_t &m) { onSettingsChanged(m); });
 
     // Check the settings daemon to process the new settings
     auto mode = getSetting(settings.timeSyncMethod.c_str(),
