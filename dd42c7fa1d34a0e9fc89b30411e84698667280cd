@@ -1,0 +1,9 @@
+Code-Review+1: Patrick Williams <patrick@stwcx.xyz>
+Code-Review+2: Lei YU <yulei.sh@bytedance.com>
+Code-Review+1: George Liu <liuxiwei@inspur.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Pavithra Barithaya <pavithra.b@ibm.com>
+Submitted-at: Fri, 25 Nov 2022 03:48:11 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-time-manager/+/56477
+Project: openbmc/phosphor-time-manager
+Branch: refs/heads/master
