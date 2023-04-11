@@ -26,7 +26,7 @@ class TestBmcEpoch : public testing::Test
         // BmcEpoch requires sd_event to init
         sd_event_default(&event);
         bus.attach_event(event, SD_EVENT_PRIORITY_NORMAL);
-        bmcEpoch = std::make_unique<BmcEpoch>(bus, OBJPATH_BMC, manager);
+        bmcEpoch = std::make_unique<BmcEpoch>(bus, objpathBmc, manager);
     }
 
     ~TestBmcEpoch()
