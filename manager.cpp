@@ -11,10 +11,10 @@ namespace rules = sdbusplus::bus::match::rules;
 namespace // anonymous
 {
 
-constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
-constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
-constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
-constexpr auto METHOD_SET_NTP = "SetNTP";
+constexpr auto systemdTimeService = "org.freedesktop.timedate1";
+constexpr auto systemdTimePath = "/org/freedesktop/timedate1";
+constexpr auto systemdTimeInterface = "org.freedesktop.timedate1";
+constexpr auto methodSetNtp = "SetNTP";
 } // namespace
 
 namespace phosphor
@@ -33,15 +33,15 @@ Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
 
     // Check the settings daemon to process the new settings
     auto mode = getSetting(settings.timeSyncMethod.c_str(),
-                           settings::timeSyncIntf, PROPERTY_TIME_MODE);
+                           settings::timeSyncIntf, propertyTimeMode);
 
-    onPropertyChanged(PROPERTY_TIME_MODE, mode);
+    onPropertyChanged(propertyTimeMode, mode);
 }
 
 void Manager::onPropertyChanged(const std::string& key,
                                 const std::string& value)
 {
-    assert(key == PROPERTY_TIME_MODE);
+    assert(key == propertyTimeMode);
 
     // Notify listeners
     setCurrentTimeMode(value);
@@ -74,9 +74,8 @@ void Manager::updateNtpSetting(const std::string& value)
     {
         bool isNtp =
             (value == "xyz.openbmc_project.Time.Synchronization.Method.NTP");
-        auto method =
-            bus.new_method_call(SYSTEMD_TIME_SERVICE, SYSTEMD_TIME_PATH,
-                                SYSTEMD_TIME_INTERFACE, METHOD_SET_NTP);
+        auto method = bus.new_method_call(systemdTimeService, systemdTimePath,
+                                          systemdTimeInterface, methodSetNtp);
         method.append(isNtp, false); // isNtp: 'true/false' means Enable/Disable
                                      // 'false' meaning no policy-kit
 

@@ -25,7 +25,7 @@ struct Objects
      * @param[in] bus - The D-bus bus object
      */
     Objects() = delete;
-    explicit Objects(sdbusplus::bus_t&);
+    explicit Objects(sdbusplus::bus_t& /*bus*/);
     Objects(const Objects&) = delete;
     Objects& operator=(const Objects&) = delete;
     Objects(Objects&&) = default;

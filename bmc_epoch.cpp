@@ -26,10 +26,10 @@ namespace time
 {
 namespace // anonymous
 {
-constexpr auto SYSTEMD_TIME_SERVICE = "org.freedesktop.timedate1";
-constexpr auto SYSTEMD_TIME_PATH = "/org/freedesktop/timedate1";
-constexpr auto SYSTEMD_TIME_INTERFACE = "org.freedesktop.timedate1";
-constexpr auto METHOD_SET_TIME = "SetTime";
+constexpr auto systemdTimeService = "org.freedesktop.timedate1";
+constexpr auto systemdTimePath = "/org/freedesktop/timedate1";
+constexpr auto systemdTimeInterface = "org.freedesktop.timedate1";
+constexpr auto methodSetTime = "SetTime";
 } // namespace
 
 PHOSPHOR_LOG2_USING;
@@ -109,7 +109,9 @@ int BmcEpoch::onTimeChange(sd_event_source* /* es */, int fd,
     // We are not interested in the data here.
     // So read until there is no new data here in the FD
     while (read(fd, time.data(), time.max_size()) > 0)
+    {
         ;
+    }
 
     return 0;
 }
@@ -121,8 +123,8 @@ void BmcEpoch::onModeChanged(Mode mode)
 
 bool BmcEpoch::setTime(const microseconds& usec)
 {
-    auto method = bus.new_method_call(SYSTEMD_TIME_SERVICE, SYSTEMD_TIME_PATH,
-                                      SYSTEMD_TIME_INTERFACE, METHOD_SET_TIME);
+    auto method = bus.new_method_call(systemdTimeService, systemdTimePath,
+                                      systemdTimeInterface, methodSetTime);
     method.append(static_cast<int64_t>(usec.count()),
                   false,  // relative
                   false); // user_interaction
@@ -140,7 +142,7 @@ bool BmcEpoch::setTime(const microseconds& usec)
     return true;
 }
 
-microseconds BmcEpoch::getTime() const
+microseconds BmcEpoch::getTime()
 {
     auto now = system_clock::now();
     return duration_cast<microseconds>(now.time_since_epoch());
