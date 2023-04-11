@@ -13,11 +13,7 @@ PHOSPHOR_LOG2_USING;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
-constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
-constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
-constexpr auto mapperIntf = "xyz.openbmc_project.ObjectMapper";
-
-Objects::Objects(sdbusplus::bus_t& bus) : bus(bus)
+Objects::Objects(sdbusplus::bus_t& bus)
 {
     Interfaces settingsIntfs = {timeSyncIntf};
     MapperResponse result;
@@ -39,9 +35,9 @@ Objects::Objects(sdbusplus::bus_t& bus) : bus(bus)
     for (const auto& iter : result)
     {
         const Path& path = iter.first;
-        for (const auto& service_iter : iter.second)
+        for (const auto& serviceIter : iter.second)
         {
-            for (const Interface& interface : service_iter.second)
+            for (const Interface& interface : serviceIter.second)
             {
                 if (timeSyncIntf == interface)
                 {
