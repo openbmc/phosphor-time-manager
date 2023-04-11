@@ -116,7 +116,7 @@ class Manager
                                  sd_bus_error* retError);
 
     /** @brief The string of time mode property */
-    static constexpr auto PROPERTY_TIME_MODE = "TimeSyncMethod";
+    static constexpr auto propertyTimeMode = "TimeSyncMethod";
 };
 
 } // namespace time
