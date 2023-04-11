@@ -39,9 +39,9 @@ Objects::Objects(sdbusplus::bus_t& bus) : bus(bus)
     for (const auto& iter : result)
     {
         const Path& path = iter.first;
-        for (const auto& service_iter : iter.second)
+        for (const auto& serviceIter : iter.second)
         {
-            for (const Interface& interface : service_iter.second)
+            for (const Interface& interface : serviceIter.second)
             {
                 if (timeSyncIntf == interface)
                 {

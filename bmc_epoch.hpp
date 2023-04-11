@@ -74,7 +74,7 @@ class BmcEpoch : public EpochTimeIntf, public PropertyChangeListner
      *
      * @return Microseconds since UTC
      */
-    std::chrono::microseconds getTime() const;
+    static std::chrono::microseconds getTime();
 
   private:
     /** @brief The fd for time change event */
@@ -96,7 +96,7 @@ class BmcEpoch : public EpochTimeIntf, public PropertyChangeListner
     /** @brief The deleter of sd_event_source */
     std::function<void(sd_event_source*)> sdEventSourceDeleter =
         [](sd_event_source* p) {
-            if (p)
+            if (p != nullptr)
             {
                 sd_event_source_unref(p);
             }
