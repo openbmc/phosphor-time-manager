@@ -7,9 +7,9 @@ namespace time
 
 namespace // anonymous
 {
-constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
-constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
-constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+constexpr auto mapperBusname = "xyz.openbmc_project.ObjectMapper";
+constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
+constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
 } // namespace
 
 namespace utils
@@ -20,8 +20,8 @@ PHOSPHOR_LOG2_USING;
 std::string getService(sdbusplus::bus_t& bus, const char* path,
                        const char* interface)
 {
-    auto mapper = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                      MAPPER_INTERFACE, "GetObject");
+    auto mapper = bus.new_method_call(mapperBusname, mapperPath,
+                                      mapperInterface, "GetObject");
 
     mapper.append(path, std::vector<std::string>({interface}));
     try
@@ -51,8 +51,8 @@ std::string getService(sdbusplus::bus_t& bus, const char* path,
 MapperResponse getSubTree(sdbusplus::bus_t& bus, const std::string& root,
                           const Interfaces& interfaces, int32_t depth)
 {
-    auto mapperCall = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                          MAPPER_INTERFACE, "GetSubTree");
+    auto mapperCall = bus.new_method_call(mapperBusname, mapperPath,
+                                          mapperInterface, "GetSubTree");
     mapperCall.append(root);
     mapperCall.append(depth);
     mapperCall.append(interfaces);
