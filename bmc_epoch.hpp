@@ -74,7 +74,7 @@ class BmcEpoch : public EpochTimeIntf, public PropertyChangeListner
      *
      * @return Microseconds since UTC
      */
-    std::chrono::microseconds getTime() const;
+    static std::chrono::microseconds getTime();
 
   private:
     /** @brief The fd for time change event */
