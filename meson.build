@@ -1,7 +1,7 @@
 project('phosphor-time-manager',
         'cpp',
          version: '0.1',
-         meson_version: '>=0.57.0',
+         meson_version: '>=0.58.0',
          default_options: [ 'warning_level=3',
                             'werror=true',
                             'cpp_std=c++20',
@@ -66,7 +66,7 @@ libtimemanager = static_library('libtimemanager',
 
 systemd = dependency ('systemd')
 systemd_system_unit_dir = systemd.get_variable(
-    pkgconfig : 'systemdsystemunitdir',
+    'systemdsystemunitdir',
     pkgconfig_define: ['prefix', get_option('prefix')])
 configure_file(input : 'xyz.openbmc_project.Time.Manager.service',
                output : 'xyz.openbmc_project.Time.Manager.service',
