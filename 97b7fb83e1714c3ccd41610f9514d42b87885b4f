@@ -16,6 +16,24 @@
       "message": "This looks unnecessary to me.\nCould you elaborate how do you get/form the .clang-tidy rules?",
       "revId": "97b7fb83e1714c3ccd41610f9514d42b87885b4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fadf1ae2_c449b0c4",
+        "filename": "bmc_epoch.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-04-17T07:10:10Z",
+      "side": 1,
+      "message": "I have been taking the bmcweb repo - as a reference for adding necessary clang-tidy checks (https://github.com/openbmc/bmcweb/blob/d9f466b3b92f242343dcdecae83b40579f92c506/.clang-tidy#L282) and I see that it has enabled readability-implicit-bool-conversion [https://clang.llvm.org/extra/clang-tidy/checks/readability/implicit-bool-conversion.html#readability-implicit-bool-conversion]\n\nDo you have any strong preference for not having this check?",
+      "parentUuid": "d4b150f1_f42ab559",
+      "revId": "97b7fb83e1714c3ccd41610f9514d42b87885b4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
