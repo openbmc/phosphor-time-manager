@@ -34,6 +34,24 @@
       "parentUuid": "d4b150f1_f42ab559",
       "revId": "97b7fb83e1714c3ccd41610f9514d42b87885b4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c4d2c64_9e68ced3",
+        "filename": "bmc_epoch.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2023-04-18T05:20:14Z",
+      "side": 1,
+      "message": "\u003e I have been taking the bmcweb repo\n\nGot it.\n\n\u003e readability-implicit-bool-conversion \n\nMy preference is to allow `AllowPointerConditions`.\nBut I guess it could be better to ask such questions in the community and see if we could get a agreed .clang-tidy rule for all C++ repos, like how .clang-format does.\n\nCould you initiate such a discussion?",
+      "parentUuid": "fadf1ae2_c449b0c4",
+      "revId": "97b7fb83e1714c3ccd41610f9514d42b87885b4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
