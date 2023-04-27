@@ -32,7 +32,7 @@ class BmcEpoch : public EpochTimeIntf, public PropertyChangeListner
         initialize();
     }
 
-    ~BmcEpoch();
+    ~BmcEpoch() override;
 
     /** @brief Notified on time mode changed */
     void onModeChanged(Mode mode) override;
