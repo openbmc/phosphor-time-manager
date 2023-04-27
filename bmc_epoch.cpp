@@ -65,7 +65,7 @@ void BmcEpoch::initialize()
         elog<InternalFailure>();
     }
 
-    sd_event_source* es;
+    sd_event_source* es = nullptr;
     r = sd_event_add_io(bus.get_event(), &es, timeFd, EPOLLIN, onTimeChange,
                         this);
     if (r < 0)

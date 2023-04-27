@@ -18,7 +18,7 @@ class TestBmcEpoch : public testing::Test
   public:
     sdbusplus::bus_t bus;
     Manager manager;
-    sd_event* event;
+    sd_event* event = nullptr;
     std::unique_ptr<BmcEpoch> bmcEpoch;
 
     TestBmcEpoch() : bus(sdbusplus::bus::new_default()), manager(bus)
