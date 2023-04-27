@@ -2,9 +2,9 @@
 
 #include "utils.hpp"
 
-#include <assert.h>
-
 #include <phosphor-logging/lg2.hpp>
+
+#include <cassert>
 
 namespace rules = sdbusplus::bus::match::rules;
 

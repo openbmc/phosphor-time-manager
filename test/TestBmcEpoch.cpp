@@ -29,7 +29,7 @@ class TestBmcEpoch : public testing::Test
         bmcEpoch = std::make_unique<BmcEpoch>(bus, objpathBmc, manager);
     }
 
-    ~TestBmcEpoch()
+    ~TestBmcEpoch() override
     {
         bus.detach_event();
         sd_event_unref(event);

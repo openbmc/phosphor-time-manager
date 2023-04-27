@@ -10,8 +10,7 @@ namespace time
 class PropertyChangeListner
 {
   public:
-    virtual ~PropertyChangeListner()
-    {}
+    virtual ~PropertyChangeListner() = default;
 
     /** @brief Notified on time mode is changed */
     virtual void onModeChanged(Mode mode) = 0;
