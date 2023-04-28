@@ -34,6 +34,11 @@ class BmcEpoch : public EpochTimeIntf, public PropertyChangeListner
 
     ~BmcEpoch() override;
 
+    BmcEpoch(const BmcEpoch&) = delete;
+    BmcEpoch(BmcEpoch&&) = delete;
+    BmcEpoch& operator=(const BmcEpoch&) = delete;
+    BmcEpoch& operator=(BmcEpoch&&) = delete;
+
     /** @brief Notified on time mode changed */
     void onModeChanged(Mode mode) override;
 
