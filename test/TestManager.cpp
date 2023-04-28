@@ -6,8 +6,6 @@
 
 #include <gtest/gtest.h>
 
-using ::testing::_;
-
 namespace phosphor
 {
 namespace time
