@@ -17,8 +17,7 @@ class TestManager : public testing::Test
     sdbusplus::bus_t bus;
     Manager manager;
 
-    TestManager() : bus(sdbusplus::bus::new_default()), manager(bus)
-    {}
+    TestManager() : bus(sdbusplus::bus::new_default()), manager(bus) {}
 
     void notifyPropertyChanged(const std::string& key, const std::string& value)
     {
