@@ -13,21 +13,21 @@ C++ preprocessor symbols that control which code is compiled into the program.
 - Compile phosphor-time-manager with default options:
 
   ```
-     meson builddir
+     meson setup builddir
      ninja -C builddir
   ```
 
 - Compile phosphor-time-manager with some configurable options:
 
   ```
-     meson builddir -Dbuildtype=minsize  -Dtests=disabled
+     meson setup builddir -Dbuildtype=minsize  -Dtests=disabled
      ninja -C builddir
   ```
 
 - Generate test coverage report:
 
   ```
-     meson builddir -Db_coverage=true -Dtests=enabled
+     meson setup builddir -Db_coverage=true -Dtests=enabled
      ninja coverage -C builddir test
   ```
 
