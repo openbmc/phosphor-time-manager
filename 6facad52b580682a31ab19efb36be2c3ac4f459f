@@ -34,6 +34,24 @@
       "parentUuid": "97706ee9_55ea1526",
       "revId": "6facad52b580682a31ab19efb36be2c3ac4f459f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85417649_40b6827c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-05-17T05:57:29Z",
+      "side": 1,
+      "message": "The command \"meson build\" causes a deprecation warning with meson 0.64.0.",
+      "parentUuid": "3539fee0_e068d896",
+      "revId": "6facad52b580682a31ab19efb36be2c3ac4f459f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
