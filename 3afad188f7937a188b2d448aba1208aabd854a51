@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5508282_109ec8a1",
+        "filename": ".clang-tidy",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2023-07-18T06:11:10Z",
+      "side": 1,
+      "message": "This is to let clang-tidy to ignore the config.h file, otherwise it complains about the quoted define.",
+      "parentUuid": "9b715874_3fbc2059",
+      "range": {
+        "startLine": 306,
+        "startChar": 23,
+        "endLine": 306,
+        "endChar": 26
+      },
+      "revId": "3afad188f7937a188b2d448aba1208aabd854a51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "488e7269_0c9edfce",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-18T06:05:27Z",
       "side": 1,
       "message": "Since this is a default value, and users can get the actual value through DBus, so here I prefer to define the value in settings.hpp",
+      "range": {
+        "startLine": 22,
+        "startChar": 5,
+        "endLine": 22,
+        "endChar": 34
+      },
+      "revId": "3afad188f7937a188b2d448aba1208aabd854a51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a5c1d7c_81d8c317",
+        "filename": "meson_options.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2023-07-18T06:11:10Z",
+      "side": 1,
+      "message": "This gives user the flexibility to define their own default object path in config, instead of hard-coding one.",
+      "parentUuid": "488e7269_0c9edfce",
       "range": {
         "startLine": 22,
         "startChar": 5,
