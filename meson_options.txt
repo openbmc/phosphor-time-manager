@@ -17,3 +17,10 @@ option ( 'default_time_mode', type : 'combo',
           choices: ['Mode::Manual', 'Mode::NTP'],
           value : 'Mode::Manual',
           description : 'The default time mode')
+
+option(
+    'default_time_sync_object_path',
+    type: 'string',
+    value: '/xyz/openbmc_project/time/sync_method',
+    description: 'Default object path for time sync setting'
+)

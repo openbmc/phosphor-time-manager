@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "utils.hpp"
 
 #include <sdbusplus/bus.hpp>
@@ -33,7 +35,7 @@ struct Objects
     ~Objects() = default;
 
     /** @brief time sync method settings object */
-    Path timeSyncMethod;
+    Path timeSyncMethod = DEFAULT_TIME_SYNC_OBJECT_PATH;
 };
 
 } // namespace settings
