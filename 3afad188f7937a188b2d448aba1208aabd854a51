@@ -48,6 +48,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27a55bb6_5edc36d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2023-07-18T06:42:44Z",
+      "side": 1,
+      "message": "Will submit if no future comments in a few days.\n@Patrick you could rebase to this patch to get CI passed.",
+      "revId": "3afad188f7937a188b2d448aba1208aabd854a51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "488e7269_0c9edfce",
