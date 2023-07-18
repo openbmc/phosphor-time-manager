@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b715874_3fbc2059",
+        "filename": ".clang-tidy",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-07-18T06:05:27Z",
+      "side": 1,
+      "message": "Is this fixed on purpose?",
+      "range": {
+        "startLine": 306,
+        "startChar": 23,
+        "endLine": 306,
+        "endChar": 26
+      },
+      "revId": "3afad188f7937a188b2d448aba1208aabd854a51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "488e7269_0c9edfce",
+        "filename": "meson_options.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-07-18T06:05:27Z",
+      "side": 1,
+      "message": "Since this is a default value, and users can get the actual value through DBus, so here I prefer to define the value in settings.hpp",
+      "range": {
+        "startLine": 22,
+        "startChar": 5,
+        "endLine": 22,
+        "endChar": 34
+      },
+      "revId": "3afad188f7937a188b2d448aba1208aabd854a51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
