@@ -13,6 +13,7 @@ using namespace phosphor::time::utils;
 
 constexpr auto root = "/";
 constexpr auto timeSyncIntf = "xyz.openbmc_project.Time.Synchronization";
+constexpr auto timePath = "/xyz/openbmc_project/time/sync_method";
 
 /** @class Objects
  *  @brief Fetch paths of settings D-bus objects of interest upon construction

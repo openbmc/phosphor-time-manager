@@ -13,7 +13,7 @@ PHOSPHOR_LOG2_USING;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
-Objects::Objects(sdbusplus::bus_t& bus)
+Objects::Objects(sdbusplus::bus_t& bus) : timeSyncMethod(timePath)
 {
     Interfaces settingsIntfs = {timeSyncIntf};
     MapperResponse result;
