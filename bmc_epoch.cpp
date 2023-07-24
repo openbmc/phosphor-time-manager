@@ -11,14 +11,13 @@
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Time/error.hpp>
 
+#include <chrono>
+
 // Need to do this since its not exported outside of the kernel.
 // Refer : https://gist.github.com/lethean/446cea944b7441228298
 #ifndef TFD_TIMER_CANCEL_ON_SET
 #define TFD_TIMER_CANCEL_ON_SET (1 << 1)
 #endif
-
-// Needed to make sure timerfd does not misfire even though we set CANCEL_ON_SET
-#define TIME_T_MAX (time_t)((1UL << ((sizeof(time_t) << 3) - 1)) - 1)
 
 namespace phosphor
 {
@@ -37,6 +36,7 @@ PHOSPHOR_LOG2_USING;
 namespace server = sdbusplus::xyz::openbmc_project::Time::server;
 using namespace phosphor::logging;
 using FailedError = sdbusplus::xyz::openbmc_project::Time::Error::Failed;
+using namespace std::chrono;
 
 void BmcEpoch::initialize()
 {
@@ -46,8 +46,8 @@ void BmcEpoch::initialize()
     // Subscribe time change event
     // Choose the MAX time that is possible to avoid mis fires.
     constexpr itimerspec maxTime = {
-        {0, 0},          // it_interval
-        {TIME_T_MAX, 0}, // it_value
+        {0, 0},                                     // it_interval
+        {system_clock::duration::max().count(), 0}, // it_value
     };
 
     timeFd = timerfd_create(CLOCK_REALTIME, 0);
