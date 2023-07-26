@@ -3,7 +3,8 @@
 # command : meson configure -Dfeature_name=enabled
 
 option( 'tests', type : 'feature',
-        description: 'Build unit tests'
+         value: 'enabled',
+         description: 'Build unit tests'
       )
 
 # Commandline variables list
