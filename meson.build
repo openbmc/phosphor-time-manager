@@ -69,10 +69,11 @@ systemd = dependency ('systemd')
 systemd_system_unit_dir = systemd.get_variable(
     'systemdsystemunitdir',
     pkgconfig_define: ['prefix', get_option('prefix')])
-configure_file(input : 'xyz.openbmc_project.Time.Manager.service',
-               output : 'xyz.openbmc_project.Time.Manager.service',
-               copy : true,
-               install_dir : systemd_system_unit_dir)
+
+filesystem = import('fs')
+filesystem.copyfile('xyz.openbmc_project.Time.Manager.service',
+                    install: true,
+                    install_dir: systemd_system_unit_dir)
 
 #############################################################################
 
