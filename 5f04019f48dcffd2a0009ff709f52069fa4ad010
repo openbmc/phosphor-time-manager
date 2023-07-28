@@ -16,6 +16,24 @@
       "message": "Is it better to make it a `service.in` file and install it as a real configure_file?",
       "revId": "5f04019f48dcffd2a0009ff709f52069fa4ad010",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cbcf122_19a36163",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-28T09:38:28Z",
+      "side": 0,
+      "message": "There is nothing in the service file, that can be user setting during compilation time , i dont think its worth to make it a configure_file as we are not updating any config option ? what do you think ?",
+      "parentUuid": "714c35fe_b1341946",
+      "revId": "5f04019f48dcffd2a0009ff709f52069fa4ad010",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
