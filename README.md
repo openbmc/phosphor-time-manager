@@ -12,21 +12,21 @@ C++ preprocessor symbols that control which code is compiled into the program.
 
 - Compile phosphor-time-manager with default options:
 
-  ```
+  ```bash
      meson setup builddir
      ninja -C builddir
   ```
 
 - Compile phosphor-time-manager with some configurable options:
 
-  ```
+  ```bash
      meson setup builddir -Dbuildtype=minsize  -Dtests=disabled
      ninja -C builddir
   ```
 
 - Generate test coverage report:
 
-  ```
+  ```bash
      meson setup builddir -Db_coverage=true -Dtests=enabled
      ninja coverage -C builddir test
   ```
@@ -44,7 +44,7 @@ set the time. For example on an authenticated session:
 
 - To get BMC's time:
 
-  ```
+  ```bash
   ### With busctl on BMC
   busctl get-property xyz.openbmc_project.Time.Manager \
       /xyz/openbmc_project/time/bmc xyz.openbmc_project.Time.EpochTime Elapsed
@@ -55,7 +55,7 @@ set the time. For example on an authenticated session:
 
 - To set BMC's time:
 
-  ```
+  ```bash
   ### With busctl on BMC
   busctl set-property xyz.openbmc_project.Time.Manager \
       /xyz/openbmc_project/time/bmc xyz.openbmc_project.Time.EpochTime \
@@ -85,7 +85,7 @@ A summary of which cases the time can be set on BMC or HOST:
 
 - To set an NTP [server](https://tf.nist.gov/tf-cgi/servers.cgi):
 
-  ```
+  ```bash
   ### With busctl on BMC
   busctl set-property  xyz.openbmc_project.Network \
      /xyz/openbmc_project/network/eth0 \
@@ -100,7 +100,7 @@ A summary of which cases the time can be set on BMC or HOST:
 
 - To go into NTP mode
 
-  ```
+  ```bash
   ### With busctl on BMC
   busctl set-property xyz.openbmc_project.Settings \
       /xyz/openbmc_project/time/sync_method xyz.openbmc_project.Time.Synchronization \
