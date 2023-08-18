@@ -7,8 +7,8 @@ or set the BMC's time via this interface.
 ## Configuration
 
 phosphor-time-manager is configured by setting `-D` flags that correspond to
-options in `phosphor-time-manager/meson_options.txt`. The option names become
-C++ preprocessor symbols that control which code is compiled into the program.
+options in `phosphor-time-manager/meson.options`. The option names become C++
+preprocessor symbols that control which code is compiled into the program.
 
 - Compile phosphor-time-manager with default options:
 
