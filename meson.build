@@ -85,6 +85,6 @@ executable('phosphor-time-manager',
            dependencies : deps,
            install : true)
 
-if get_option('tests').enabled()
+if get_option('tests').allowed()
     subdir('test')
 endif
