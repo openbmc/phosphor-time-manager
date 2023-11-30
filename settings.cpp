@@ -10,6 +10,7 @@ namespace settings
 
 PHOSPHOR_LOG2_USING;
 
+using namespace phosphor::time::utils;
 using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
