@@ -13,8 +13,6 @@ namespace phosphor
 namespace time
 {
 
-using namespace std::chrono;
-
 using EpochTimeIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Time::server::EpochTime>;
 

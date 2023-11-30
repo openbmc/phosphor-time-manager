@@ -11,8 +11,6 @@
 namespace settings
 {
 
-using namespace phosphor::time::utils;
-
 constexpr auto root = "/";
 constexpr auto timeSyncIntf = "xyz.openbmc_project.Time.Synchronization";
 
@@ -35,7 +33,7 @@ struct Objects
     ~Objects() = default;
 
     /** @brief time sync method settings object */
-    Path timeSyncMethod = DEFAULT_TIME_SYNC_OBJECT_PATH;
+    phosphor::time::utils::Path timeSyncMethod = DEFAULT_TIME_SYNC_OBJECT_PATH;
 };
 
 } // namespace settings
