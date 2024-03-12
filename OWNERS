@@ -33,7 +33,6 @@
 
 owners:
 - mine260309@gmail.com
-- vishwa@linux.vnet.ibm.com
 
 reviewers:
 - liuxiwei@ieisystem.com
@@ -51,6 +50,3 @@ openbmc:
 - name: Lei Yu
   email: mine260309@gmail.com
   discord: LeiYU
-- name: Vishwanatha Subbanna
-  email: vishwa@linux.vnet.ibm.com
-  discord: vishwa
