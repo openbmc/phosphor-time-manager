@@ -37,10 +37,14 @@ owners:
 
 reviewers:
 - liuxiwei@ieisystem.com
+- pavithrabarithaya07@gmail.com
 
 matchers:
 
 openbmc:
+- name: Pavithra Barithaya
+  email: pavithrabarithaya07@gmail.com
+  discord: Pavithra B
 - name: George Liu
   email: liuxiwei@ieisystem.com
   discord: George Liu
