@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcd6cfd6_7ef448ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002050
+      },
+      "writtenOn": "2024-04-02T12:04:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b60410d_5beee7fe",
+      "range": {
+        "startLine": 18,
+        "startChar": 52,
+        "endLine": 18,
+        "endChar": 58
+      },
+      "revId": "44305236ad1f6a6422131d566e56a2f2660fad06",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32603510_3e8aa607",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-02T08:56:50Z",
       "side": 1,
       "message": "we can use debug() alone rather than lg2::debug().",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 19
+      },
+      "revId": "44305236ad1f6a6422131d566e56a2f2660fad06",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc257337_6e8301e1",
+        "filename": "manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1002050
+      },
+      "writtenOn": "2024-04-02T12:04:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32603510_3e8aa607",
       "range": {
         "startLine": 57,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbcb95ad_e8de3c38",
+        "filename": "manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1002050
+      },
+      "writtenOn": "2024-04-02T12:04:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a53590a_86936f5d",
+      "range": {
+        "startLine": 63,
+        "startChar": 8,
+        "endLine": 63,
+        "endChar": 19
+      },
+      "revId": "44305236ad1f6a6422131d566e56a2f2660fad06",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "823f8af5_d30eacdd",
@@ -87,6 +159,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25d4135c_f9b21ad8",
+        "filename": "manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002050
+      },
+      "writtenOn": "2024-04-02T12:04:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "823f8af5_d30eacdd",
+      "revId": "44305236ad1f6a6422131d566e56a2f2660fad06",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd746834_c8672ec1",
@@ -100,6 +190,30 @@
       "writtenOn": "2024-04-02T08:56:50Z",
       "side": 1,
       "message": "can we pass the parameters by reference?",
+      "range": {
+        "startLine": 72,
+        "startChar": 40,
+        "endLine": 73,
+        "endChar": 65
+      },
+      "revId": "44305236ad1f6a6422131d566e56a2f2660fad06",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67079853_1a1e3312",
+        "filename": "utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002050
+      },
+      "writtenOn": "2024-04-02T12:04:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd746834_c8672ec1",
       "range": {
         "startLine": 72,
         "startChar": 40,
