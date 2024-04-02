@@ -48,6 +48,9 @@ class Manager
     /** @brief Persistent sdbusplus DBus connection */
     sdbusplus::bus_t& bus;
 
+    /** @brief The match of systemd timedate property change */
+    std::vector<sdbusplus::bus::match_t> timedateMatches;
+
     /** @brief The match of settings property change */
     std::vector<sdbusplus::bus::match_t> settingsMatches;
 
@@ -85,6 +88,14 @@ class Manager
      */
     void onTimeModeChanged(const std::string& mode);
 
+    /** @brief Callback to handle change in NTP
+     *
+     *  @param[in] msg - sdbusplus dbusmessage
+     *
+     *  @return 0 on success, < 0 on failure.
+     */
+    int onTimedateChanged(sdbusplus::message_t& msg);
+
     /** @brief Callback to handle change in a setting
      *
      *  @param[in] msg - sdbusplus dbusmessage
@@ -97,8 +108,12 @@ class Manager
      *
      * @param[in] key - The name of property that is changed
      * @param[in] value - The value of the property
+     * @param[in] forceSet - true: Force sync NTP settings to systemd time
+     *                             service, only be used during initialization
+     *                       false: This is default value
      */
-    void onPropertyChanged(const std::string& key, const std::string& value);
+    void onPropertyChanged(const std::string& key, const std::string& value,
+                           bool forceSet = false);
 
     /** @brief Update the NTP setting to systemd time service
      *

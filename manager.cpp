@@ -15,6 +15,7 @@ constexpr auto systemdTimeService = "org.freedesktop.timedate1";
 constexpr auto systemdTimePath = "/org/freedesktop/timedate1";
 constexpr auto systemdTimeInterface = "org.freedesktop.timedate1";
 constexpr auto methodSetNtp = "SetNTP";
+constexpr auto propertyNtp = "NTP";
 } // namespace
 
 namespace phosphor
@@ -27,6 +28,9 @@ PHOSPHOR_LOG2_USING;
 Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
 {
     using namespace sdbusplus::bus::match::rules;
+    timedateMatches.emplace_back(
+        bus, propertiesChanged(systemdTimePath, systemdTimeInterface),
+        [&](sdbusplus::message_t& m) { onTimedateChanged(m); });
     settingsMatches.emplace_back(
         bus, propertiesChanged(settings.timeSyncMethod, settings::timeSyncIntf),
         [&](sdbusplus::message_t& m) { onSettingsChanged(m); });
@@ -35,17 +39,29 @@ Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
     auto mode = getSetting(settings.timeSyncMethod.c_str(),
                            settings::timeSyncIntf, propertyTimeMode);
 
-    onPropertyChanged(propertyTimeMode, mode);
+    onPropertyChanged(propertyTimeMode, mode, true);
 }
 
 void Manager::onPropertyChanged(const std::string& key,
-                                const std::string& value)
+                                const std::string& value, bool forceSet)
 {
     assert(key == propertyTimeMode);
 
-    // Notify listeners
-    setCurrentTimeMode(value);
-    onTimeModeChanged(value);
+    bool newNtpMode = (settings::ntpSync == value);
+    bool oldNtpMode = (Mode::NTP == getTimeMode());
+    if (forceSet || (newNtpMode != oldNtpMode))
+    {
+        // Notify listeners
+        onTimeModeChanged(value);
+        setCurrentTimeMode(value);
+        debug("NTP property changed in phosphor-settings, update to systemd"
+              " time service.");
+    }
+    else
+    {
+        debug("NTP mode is already the same, skip setting to systemd time"
+              " service again.");
+    }
 }
 
 int Manager::onSettingsChanged(sdbusplus::message_t& msg)
@@ -63,6 +79,55 @@ int Manager::onSettingsChanged(sdbusplus::message_t& msg)
     for (const auto& p : properties)
     {
         onPropertyChanged(p.first, std::get<std::string>(p.second));
+    }
+
+    return 0;
+}
+
+int Manager::onTimedateChanged(sdbusplus::message_t& msg)
+{
+    using Properties = std::map<std::string, std::variant<std::string, bool>>;
+
+    std::string interface;
+    Properties properties;
+
+    msg.read(interface, properties);
+
+    auto iter = properties.find(propertyNtp);
+    if (iter == properties.end())
+    {
+        return -1;
+    }
+
+    try
+    {
+        bool newNtpMode = std::get<bool>(iter->second);
+        bool oldNtpMode = (Mode::NTP == getTimeMode());
+        if (newNtpMode != oldNtpMode)
+        {
+            const auto& timeMode = newNtpMode ? settings::ntpSync
+                                              : settings::manualSync;
+            std::string settingManager = utils::getService(
+                bus, settings.timeSyncMethod.c_str(), settings::timeSyncIntf);
+            utils::setProperty(bus, settingManager, settings.timeSyncMethod,
+                               settings::timeSyncIntf, propertyTimeMode,
+                               timeMode);
+            setCurrentTimeMode(timeMode);
+            debug("NTP property changed in systemd time service, update to"
+                  " phosphor-settings.");
+        }
+        else
+        {
+            debug("NTP mode is already the same, skip setting to"
+                  " phosphor-settings again.");
+        }
+    }
+    catch (const std::exception& ex)
+    {
+        error(
+            "Failed to set property: {ERROR}, path: {PATH}, interface: {INTERFACE}, name: {NAME}",
+            "ERROR", ex, "PATH", settings.timeSyncMethod.c_str(), "INTERFACE",
+            settings::timeSyncIntf, "NAME", propertyTimeMode);
     }
 
     return 0;
