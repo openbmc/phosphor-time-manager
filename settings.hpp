@@ -13,6 +13,9 @@ namespace settings
 
 constexpr auto root = "/";
 constexpr auto timeSyncIntf = "xyz.openbmc_project.Time.Synchronization";
+constexpr auto ntpSync = "xyz.openbmc_project.Time.Synchronization.Method.NTP";
+constexpr auto manualSync =
+    "xyz.openbmc_project.Time.Synchronization.Method.Manual";
 
 /** @class Objects
  *  @brief Fetch paths of settings D-bus objects of interest upon construction
