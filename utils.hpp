@@ -58,6 +58,42 @@ T getProperty(sdbusplus::bus_t& bus, const char* service, const char* path,
     }
 }
 
+/** @brief The template function to set property to the requested dbus path
+ *
+ * @param[in] bus          - The Dbus bus object
+ * @param[in] service      - The Dbus service name
+ * @param[in] path         - The Dbus object path
+ * @param[in] interface    - The Dbus interface
+ * @param[in] propertyName - The property name to set
+ * @param[in] value - the value to set the property to
+ *
+ */
+template <typename T>
+void setProperty(sdbusplus::bus_t& bus, const std::string& service,
+                 const std::string& path, const std::string& interface,
+                 const std::string& propertyName, T& value)
+{
+    std::variant<T> propertyValue(value);
+
+    auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                      "org.freedesktop.DBus.Properties", "Set");
+
+    method.append(interface, propertyName, propertyValue);
+
+    try
+    {
+        auto reply = bus.call(method);
+    }
+    catch (const sdbusplus::exception_t& ex)
+    {
+        error("SetProperty call failed, path:{PATH}, interface:{INTF}, "
+              "propertyName:{NAME}, error:{ERROR}",
+              "PATH", path, "INTF", interface, "NAME", propertyName, "ERROR",
+              ex);
+        throw std::runtime_error("SetProperty call failed");
+    }
+}
+
 /** @brief Get service name from object path and interface
  *
  * @param[in] bus          - The Dbus bus object
