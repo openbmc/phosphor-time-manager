@@ -144,6 +144,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "256c9d1e_79fd70a9",
+        "filename": "manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-04-03T00:24:55Z",
+      "side": 1,
+      "message": "setProperty has been thrown and logged the same content so that `ex` can be output directly there.",
+      "range": {
+        "startLine": 129,
+        "startChar": 16,
+        "endLine": 133,
+        "endChar": 38
+      },
+      "revId": "44305236ad1f6a6422131d566e56a2f2660fad06",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "823f8af5_d30eacdd",
         "filename": "manager.hpp",
         "patchSetId": 2
