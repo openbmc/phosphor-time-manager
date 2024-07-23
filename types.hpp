@@ -2,6 +2,7 @@
 
 #include <xyz/openbmc_project/Time/Synchronization/server.hpp>
 
+static constexpr auto objmgrpath = "/xyz/openbmc_project/time";
 static constexpr auto objpathBmc = "/xyz/openbmc_project/time/bmc";
 static constexpr auto busname = "xyz.openbmc_project.Time.Manager";
 
