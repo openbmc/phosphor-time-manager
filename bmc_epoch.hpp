@@ -99,11 +99,11 @@ class BmcEpoch : public EpochTimeIntf, public PropertyChangeListner
     /** @brief The deleter of sd_event_source */
     std::function<void(sd_event_source*)> sdEventSourceDeleter =
         [](sd_event_source* p) {
-        if (p)
-        {
-            sd_event_source_unref(p);
-        }
-    };
+            if (p)
+            {
+                sd_event_source_unref(p);
+            }
+        };
     using SdEventSource =
         std::unique_ptr<sd_event_source, decltype(sdEventSourceDeleter)>;
 

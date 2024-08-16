@@ -105,8 +105,8 @@ int Manager::onTimedateChanged(sdbusplus::message_t& msg)
         bool oldNtpMode = (Mode::NTP == getTimeMode());
         if (newNtpMode != oldNtpMode)
         {
-            const auto& timeMode = newNtpMode ? settings::ntpSync
-                                              : settings::manualSync;
+            const auto& timeMode =
+                newNtpMode ? settings::ntpSync : settings::manualSync;
             std::string settingManager = utils::getService(
                 bus, settings.timeSyncMethod.c_str(), settings::timeSyncIntf);
             utils::setProperty(bus, settingManager, settings.timeSyncMethod,
