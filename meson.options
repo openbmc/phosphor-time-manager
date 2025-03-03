@@ -2,10 +2,12 @@
 
 # command : meson configure -Dfeature_name=enabled
 
-option( 'tests', type : 'feature',
-         value: 'enabled',
-         description: 'Build unit tests'
-      )
+option(
+    'tests',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Build unit tests',
+)
 
 # Commandline variables list
 # Value can be assigned from commandline to below variables
@@ -14,14 +16,17 @@ option( 'tests', type : 'feature',
 
 # Ex: meson configure -Ddefault_time_mode=Mode::Manual
 
-option ( 'default_time_mode', type : 'combo',
-          choices: ['Mode::Manual', 'Mode::NTP'],
-          value : 'Mode::Manual',
-          description : 'The default time mode')
+option(
+    'default_time_mode',
+    type: 'combo',
+    choices: ['Mode::Manual', 'Mode::NTP'],
+    value: 'Mode::Manual',
+    description: 'The default time mode',
+)
 
 option(
     'default_time_sync_object_path',
     type: 'string',
     value: '/xyz/openbmc_project/time/sync_method',
-    description: 'Default object path for time sync setting'
+    description: 'Default object path for time sync setting',
 )
