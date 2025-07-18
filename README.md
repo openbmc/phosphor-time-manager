@@ -14,21 +14,23 @@ preprocessor symbols that control which code is compiled into the program.
 
   ```bash
      meson setup builddir
-     ninja -C builddir
+     meson compile -C builddir
   ```
 
 - Compile phosphor-time-manager with some configurable options:
 
   ```bash
-     meson setup builddir -Dbuildtype=minsize  -Dtests=disabled
-     ninja -C builddir
+     meson setup builddir -Dbuildtype=minsize  -Dtests=false
+     meson compile -C builddir
   ```
 
 - Generate test coverage report:
 
   ```bash
-     meson setup builddir -Db_coverage=true -Dtests=enabled
-     ninja coverage -C builddir test
+     meson setup builddir -Db_coverage=true -Dtests=true
+     meson compile -C builddir
+     meson test -C builddir
+     ninja -C builddir coverage
   ```
 
 ### General usage
