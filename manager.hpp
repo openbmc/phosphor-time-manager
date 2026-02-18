@@ -44,6 +44,23 @@ class Manager
         return this->timeMode;
     }
 
+    /** @brief Enable command-line override mode
+     *  @details When enabled, the manager will ignore D-Bus property changes
+     *           from settings daemon and will not update settings daemon
+     *  @param[in] mode - The mode to run in
+     */
+    void enableCmdlineOverride(Mode mode)
+    {
+        this->cmdlineOverride = true;
+        this->timeMode = mode;
+    }
+
+    /** @brief Check if command-line override is enabled */
+    bool isCmdlineOverride() const
+    {
+        return this->cmdlineOverride;
+    }
+
   private:
     /** @brief Persistent sdbusplus DBus connection */
     sdbusplus::bus_t& bus;
@@ -59,6 +76,9 @@ class Manager
 
     /** @brief The current time mode */
     Mode timeMode = DEFAULT_TIME_MODE;
+
+    /** @brief Flag to indicate command-line override is active */
+    bool cmdlineOverride = false;
 
     /** @brief Get setting from settingsd service
      *

@@ -2,11 +2,49 @@
 
 #include "bmc_epoch.hpp"
 #include "manager.hpp"
+#include "utils.hpp"
 
+#include <CLI/CLI.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/server/manager.hpp>
 
-int main()
+#include <string>
+
+PHOSPHOR_LOG2_USING;
+
+int main(int argc, char** argv)
 {
+    CLI::App app{"phosphor-time-manager - OpenBMC Time Management Service"};
+
+    std::string cmdlineMode;
+    bool useCmdlineMode = false;
+
+    // Add --mode option
+    app.add_option(
+           "--mode", cmdlineMode,
+           "Run in specified time synchronization mode (ntp or manual)\n"
+           "This mode will NOT update settings daemon and will ignore D-Bus property changes")
+        ->check(CLI::IsMember({"ntp", "manual"}))
+        ->group("Time Synchronization");
+
+    // Parse command line
+    try
+    {
+        app.parse(argc, argv);
+    }
+    catch (const CLI::ParseError& e)
+    {
+        return app.exit(e);
+    }
+
+    // Check if mode was specified
+    if (!cmdlineMode.empty())
+    {
+        useCmdlineMode = true;
+        lg2::info("Command-line mode specified: {MODE}", "MODE", cmdlineMode);
+    }
+
     auto bus = sdbusplus::bus::new_default();
     sd_event* event = nullptr;
 
@@ -26,6 +64,29 @@ int main()
 
     phosphor::time::Manager manager(bus);
     phosphor::time::BmcEpoch bmc(bus, objpathBmc, manager);
+
+    // Enable command-line override mode if specified
+    if (useCmdlineMode)
+    {
+        phosphor::time::Mode mode;
+        if (cmdlineMode == "ntp")
+        {
+            mode = phosphor::time::Mode::NTP;
+            lg2::info("Command-line mode: NTP");
+        }
+        else
+        {
+            mode = phosphor::time::Mode::Manual;
+            lg2::info("Command-line mode: Manual");
+        }
+
+        manager.enableCmdlineOverride(mode);
+    }
+    else
+    {
+        lg2::info("Running in normal mode");
+        lg2::info("Using settings from settings daemon");
+    }
 
     bus.request_name(busname);
 

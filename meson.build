@@ -36,6 +36,8 @@ phosphor_logging_dep = dependency('phosphor-logging')
 phosphor_dbus_interfaces_dep = dependency('phosphor-dbus-interfaces')
 deps = [sdbusplus_dep, phosphor_logging_dep, phosphor_dbus_interfaces_dep]
 
+cli11_dep = dependency('CLI11', required: true)
+
 ###########################################################################
 
 # Get the config data and enable options
@@ -90,6 +92,7 @@ filesystem.copyfile(
 executable(
     'phosphor-time-manager',
     'main.cpp',
+    cli11_dep,
     link_with: libtimemanager,
     dependencies: deps,
     install: true,
