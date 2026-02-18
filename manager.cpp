@@ -45,6 +45,16 @@ Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
 void Manager::onPropertyChanged(const std::string& key,
                                 const std::string& value, bool forceSet)
 {
+    // If command-line override is active, ignore settings daemon changes
+    // unless this is a forced set during initialization
+    if (cmdlineOverride && !forceSet)
+    {
+        info(
+            "Command-line override active, ignoring settings change: {KEY}={VALUE}",
+            "KEY", key, "VALUE", value);
+        return;
+    }
+
     assert(key == propertyTimeMode);
 
     bool newNtpMode = (settings::ntpSync == value);
@@ -66,6 +76,14 @@ void Manager::onPropertyChanged(const std::string& key,
 
 int Manager::onSettingsChanged(sdbusplus::message_t& msg)
 {
+    // If command-line override is active, ignore settings daemon D-Bus signals
+    if (cmdlineOverride)
+    {
+        info(
+            "Command-line override active, ignoring settings daemon D-Bus signal");
+        return 0;
+    }
+
     using Interface = std::string;
     using Property = std::string;
     using Value = std::string;
@@ -105,16 +123,31 @@ int Manager::onTimedateChanged(sdbusplus::message_t& msg)
         bool oldNtpMode = (Mode::NTP == getTimeMode());
         if (newNtpMode != oldNtpMode)
         {
-            const auto& timeMode =
-                newNtpMode ? settings::ntpSync : settings::manualSync;
-            std::string settingManager = utils::getService(
-                bus, settings.timeSyncMethod.c_str(), settings::timeSyncIntf);
-            utils::setProperty(bus, settingManager, settings.timeSyncMethod,
-                               settings::timeSyncIntf, propertyTimeMode,
-                               timeMode);
-            setCurrentTimeMode(timeMode);
-            debug("NTP property changed in systemd time service, update to"
-                  " phosphor-settings.");
+            // If command-line override is active, don't update settings daemon
+            if (cmdlineOverride)
+            {
+                info(
+                    "Command-line override active, not updating settings daemon from systemd timedate change");
+                // Still update local mode for consistency with systemd
+                const auto& timeMode =
+                    newNtpMode ? settings::ntpSync : settings::manualSync;
+                setCurrentTimeMode(timeMode);
+            }
+            else
+            {
+                // Normal mode: update settings daemon
+                const auto& timeMode =
+                    newNtpMode ? settings::ntpSync : settings::manualSync;
+                std::string settingManager =
+                    utils::getService(bus, settings.timeSyncMethod.c_str(),
+                                      settings::timeSyncIntf);
+                utils::setProperty(bus, settingManager, settings.timeSyncMethod,
+                                   settings::timeSyncIntf, propertyTimeMode,
+                                   timeMode);
+                setCurrentTimeMode(timeMode);
+                debug("NTP property changed in systemd time service, update to"
+                      " phosphor-settings.");
+            }
         }
         else
         {
