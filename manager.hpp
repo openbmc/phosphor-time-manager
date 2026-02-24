@@ -54,7 +54,7 @@ class Manager
     /** @brief The match of settings property change */
     std::vector<sdbusplus::bus::match_t> settingsMatches;
 
-    /** @brief Settings objects of intereset */
+    /** @brief Settings objects of interest */
     settings::Objects settings;
 
     /** @brief The current time mode */
