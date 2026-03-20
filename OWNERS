@@ -32,10 +32,10 @@
 # data within them will be kept sorted.
 
 owners:
+- liuxiwei@ieisystem.com
 - mine260309@gmail.com
 
 reviewers:
-- liuxiwei@ieisystem.com
 - pavithrabarithaya07@gmail.com
 
 matchers:
