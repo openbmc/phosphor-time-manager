@@ -44,7 +44,7 @@ void BmcEpoch::initialize()
         sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
     // Subscribe time change event
-    // Choose the MAX time that is possible to avoid mis fires.
+    // Choose the MAX time that is possible to avoid misfires.
     constexpr itimerspec maxTime = {
         {0, 0},                                     // it_interval
         {system_clock::duration::max().count(), 0}, // it_value
