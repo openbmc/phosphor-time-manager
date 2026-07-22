@@ -36,7 +36,9 @@ PHOSPHOR_LOG2_USING;
 namespace server = sdbusplus::xyz::openbmc_project::Time::server;
 using namespace phosphor::logging;
 using FailedError = sdbusplus::xyz::openbmc_project::Time::Error::Failed;
-using namespace std::chrono;
+using std::chrono::duration_cast;
+using std::chrono::microseconds;
+using std::chrono::system_clock;
 
 void BmcEpoch::initialize()
 {
