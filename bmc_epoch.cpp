@@ -5,13 +5,13 @@
 #include <sys/timerfd.h>
 #include <unistd.h>
 
+#include <chrono>
+
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Time/error.hpp>
-
-#include <chrono>
 
 // Need to do this since its not exported outside of the kernel.
 // Refer : https://gist.github.com/lethean/446cea944b7441228298
