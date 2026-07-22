@@ -36,12 +36,12 @@ class Manager
 
     void setTimeMode(Mode mode)
     {
-        this->timeMode = mode;
+        timeMode = mode;
     }
 
-    Mode getTimeMode()
+    Mode getTimeMode() const
     {
-        return this->timeMode;
+        return timeMode;
     }
 
   private:
