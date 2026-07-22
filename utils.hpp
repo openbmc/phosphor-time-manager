@@ -80,7 +80,7 @@ void setProperty(sdbusplus::bus_t& bus, const std::string& service,
 
     try
     {
-        auto reply = bus.call(method);
+        bus.call(method);
     }
     catch (const sdbusplus::exception_t& ex)
     {
