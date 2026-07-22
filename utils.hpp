@@ -22,8 +22,6 @@ using Interfaces = std::vector<Interface>;
 using MapperResponse =
     std::vector<std::pair<Path, std::vector<std::pair<Service, Interfaces>>>>;
 
-PHOSPHOR_LOG2_USING;
-
 /** @brief The template function to get property from the requested dbus path
  *
  * @param[in] bus          - The Dbus bus object
@@ -50,10 +48,11 @@ T getProperty(sdbusplus::bus_t& bus, const char* service, const char* path,
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        error("GetProperty call failed, path:{PATH}, interface:{INTF}, "
-              "propertyName:{NAME}, error:{ERROR}",
-              "PATH", path, "INTF", interface, "NAME", propertyName, "ERROR",
-              ex);
+        lg2::error(
+            "GetProperty call failed, path:{PATH}, interface:{INTF}, "
+            "propertyName:{NAME}, error:{ERROR}",
+            "PATH", path, "INTF", interface, "NAME", propertyName, "ERROR",
+            ex);
         throw std::runtime_error("GetProperty call failed");
     }
 }
@@ -86,10 +85,11 @@ void setProperty(sdbusplus::bus_t& bus, const std::string& service,
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        error("SetProperty call failed, path:{PATH}, interface:{INTF}, "
-              "propertyName:{NAME}, error:{ERROR}",
-              "PATH", path, "INTF", interface, "NAME", propertyName, "ERROR",
-              ex);
+        lg2::error(
+            "SetProperty call failed, path:{PATH}, interface:{INTF}, "
+            "propertyName:{NAME}, error:{ERROR}",
+            "PATH", path, "INTF", interface, "NAME", propertyName, "ERROR",
+            ex);
         throw std::runtime_error("SetProperty call failed");
     }
 }
