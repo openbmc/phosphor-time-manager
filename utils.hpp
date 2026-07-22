@@ -22,8 +22,6 @@ using Interfaces = std::vector<Interface>;
 using MapperResponse =
     std::vector<std::pair<Path, std::vector<std::pair<Service, Interfaces>>>>;
 
-PHOSPHOR_LOG2_USING;
-
 /** @brief The template function to get property from the requested dbus path
  *
  * @param[in] bus          - The Dbus bus object
