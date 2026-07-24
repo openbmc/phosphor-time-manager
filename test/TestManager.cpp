@@ -37,7 +37,9 @@ TEST_F(TestManager, propertyChanged)
         "xyz.openbmc_project.Time.Synchronization.Method.NTP");
     EXPECT_EQ(Mode::NTP, manager.getTimeMode());
 
-    ASSERT_DEATH(notifyPropertyChanged("invalid property", "whatever"), "");
+    // Invalid property should be ignored, mode stays unchanged
+    notifyPropertyChanged("invalid property", "whatever");
+    EXPECT_EQ(Mode::NTP, manager.getTimeMode());
 }
 
 } // namespace time
