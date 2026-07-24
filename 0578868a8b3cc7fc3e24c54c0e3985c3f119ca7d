@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d23a1fd3_9fe68044",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003004
+      },
+      "writtenOn": "2026-07-24T07:04:31Z",
+      "side": 1,
+      "message": "Looks good to me. Thanks for cleaning up the header and avoiding namespace leakage.",
+      "revId": "0578868a8b3cc7fc3e24c54c0e3985c3f119ca7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
