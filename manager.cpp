@@ -4,8 +4,6 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <cassert>
-
 namespace rules = sdbusplus::match_rules;
 
 namespace // anonymous
@@ -22,8 +20,6 @@ namespace phosphor
 {
 namespace time
 {
-
-PHOSPHOR_LOG2_USING;
 
 Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
 {
@@ -45,7 +41,11 @@ Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
 void Manager::onPropertyChanged(const std::string& key,
                                 const std::string& value, bool forceSet)
 {
-    assert(key == propertyTimeMode);
+    if (key != propertyTimeMode)
+    {
+        lg2::error("Unexpected property key: {KEY}", "KEY", key);
+        return;
+    }
 
     bool newNtpMode = (settings::ntpSync == value);
     bool oldNtpMode = (Mode::NTP == getTimeMode());
@@ -54,13 +54,13 @@ void Manager::onPropertyChanged(const std::string& key,
         // Notify listeners
         onTimeModeChanged(value);
         setCurrentTimeMode(value);
-        debug("NTP property changed in phosphor-settings, update to systemd"
-              " time service.");
+        lg2::debug("NTP property changed in phosphor-settings, update to systemd"
+                   " time service.");
     }
     else
     {
-        debug("NTP mode is already the same, skip setting to systemd time"
-              " service again.");
+        lg2::debug("NTP mode is already the same, skip setting to systemd time"
+                   " service again.");
     }
 }
 
@@ -113,18 +113,18 @@ int Manager::onTimedateChanged(sdbusplus::message_t& msg)
                                settings::timeSyncIntf, propertyTimeMode,
                                timeMode);
             setCurrentTimeMode(timeMode);
-            debug("NTP property changed in systemd time service, update to"
-                  " phosphor-settings.");
+            lg2::debug("NTP property changed in systemd time service, update to"
+                       " phosphor-settings.");
         }
         else
         {
-            debug("NTP mode is already the same, skip setting to"
-                  " phosphor-settings again.");
+            lg2::debug("NTP mode is already the same, skip setting to"
+                       " phosphor-settings again.");
         }
     }
     catch (const std::exception& ex)
     {
-        error("Failed to sync NTP: {ERROR}", "ERROR", ex);
+        lg2::error("Failed to sync NTP: {ERROR}", "ERROR", ex);
     }
 
     return 0;
@@ -142,11 +142,11 @@ void Manager::updateNtpSetting(const std::string& value)
                                      // 'false' meaning no policy-kit
 
         bus.call_noreply(method);
-        info("Updated NTP setting: {ENABLED}", "ENABLED", isNtp);
+        lg2::info("Updated NTP setting: {ENABLED}", "ENABLED", isNtp);
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        error("Failed to update NTP setting: {ERROR}", "ERROR", ex);
+        lg2::error("Failed to update NTP setting: {ERROR}", "ERROR", ex);
     }
 }
 
@@ -157,14 +157,14 @@ bool Manager::setCurrentTimeMode(const std::string& mode)
         auto newMode = utils::strToMode(mode);
         if (newMode != timeMode)
         {
-            info("Time mode has been changed to {MODE}", "MODE", newMode);
+            lg2::info("Time mode has been changed to {MODE}", "MODE", newMode);
             timeMode = newMode;
             return true;
         }
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        error("Failed to convert mode from string: {ERROR}", "ERROR", ex);
+        lg2::error("Failed to convert mode from string: {ERROR}", "ERROR", ex);
     }
 
     return false;
@@ -187,7 +187,7 @@ std::string Manager::getSetting(const char* path, const char* interface,
     }
     catch (const std::exception& ex)
     {
-        error(
+        lg2::error(
             "Failed to get property: {ERROR}, path: {PATH}, interface: {INTERFACE}, name: {NAME}",
             "ERROR", ex, "PATH", path, "INTERFACE", interface, "NAME", setting);
         return {};
