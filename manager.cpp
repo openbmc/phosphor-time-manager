@@ -35,7 +35,14 @@ Manager::Manager(sdbusplus::bus_t& bus) : bus(bus), settings(bus)
     auto mode = getSetting(settings.timeSyncMethod.c_str(),
                            settings::timeSyncIntf, propertyTimeMode);
 
-    onPropertyChanged(propertyTimeMode, mode, true);
+    if (!mode.empty())
+    {
+        onPropertyChanged(propertyTimeMode, mode, true);
+    }
+    else
+    {
+        error("Failed to initialize time mode from settings.");
+    }
 }
 
 void Manager::onPropertyChanged(const std::string& key,
