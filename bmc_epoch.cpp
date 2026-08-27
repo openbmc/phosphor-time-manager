@@ -11,7 +11,10 @@
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Time/error.hpp>
 
+#include <array>
 #include <chrono>
+#include <ctime>
+#include <string>
 
 // Need to do this since its not exported outside of the kernel.
 // Refer : https://gist.github.com/lethean/446cea944b7441228298
@@ -39,6 +42,23 @@ using FailedError = sdbusplus::xyz::openbmc_project::Time::Error::Failed;
 using std::chrono::duration_cast;
 using std::chrono::microseconds;
 using std::chrono::system_clock;
+
+/** @brief Convert microseconds-since-epoch to a human-readable UTC string.
+ *
+ *  @param[in] us - Microseconds since the Unix epoch
+ *  @return       - String in the human readable form
+ */
+std::string toUtcString(std::chrono::microseconds us)
+{
+    const auto secondsSinceEpoch =
+        std::chrono::duration_cast<std::chrono::seconds>(us).count();
+    const std::time_t timeT = static_cast<std::time_t>(secondsSinceEpoch);
+    std::tm utc{};
+    gmtime_r(&timeT, &utc);
+    std::array<char, 32> buf{};
+    std::strftime(buf.data(), buf.size(), "%Y-%m-%d %H:%M:%S UTC", &utc);
+    return {buf.data()};
+}
 
 void BmcEpoch::initialize()
 {
@@ -76,6 +96,8 @@ void BmcEpoch::initialize()
         elog<InternalFailure>();
     }
     timeChangeEventSource.reset(es);
+
+    previousEpoch = getTime();
 }
 
 BmcEpoch::~BmcEpoch()
@@ -104,7 +126,7 @@ uint64_t BmcEpoch::elapsed(uint64_t value)
 }
 
 int BmcEpoch::onTimeChange(sd_event_source* /* es */, int fd,
-                           uint32_t /* revents */, void* /* userdata */)
+                           uint32_t /* revents */, void* userdata)
 {
     std::array<char, 64> time{};
 
@@ -113,6 +135,32 @@ int BmcEpoch::onTimeChange(sd_event_source* /* es */, int fd,
     while (read(fd, time.data(), time.max_size()) > 0)
     {
         ;
+    }
+
+    auto* self = static_cast<BmcEpoch*>(userdata);
+    if (self != nullptr)
+    {
+        const auto newTime = getTime();
+        const auto prevTime = self->previousEpoch;
+        const auto deltaSeconds =
+            duration_cast<std::chrono::seconds>(newTime - prevTime).count();
+
+        info("TIME_CHANGE_AUDIT: system clock changed | "
+             "previous={PREVIOUS_TIME} "
+             "new={NEW_TIME} "
+             "delta_seconds={DELTA_SECONDS}",
+             "mode={MODE}", "PREVIOUS_TIME", toUtcString(prevTime), "NEW_TIME",
+             toUtcString(newTime), "DELTA_SECONDS", deltaSeconds, "MODE",
+             utils::modeToStr(self->manager.getTimeMode()));
+
+        self->previousEpoch = newTime;
+
+        constexpr itimerspec maxTime = {
+            {0, 0},
+            {std::numeric_limits<time_t>::max(), 0},
+        };
+        timerfd_settime(fd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET,
+                        &maxTime, nullptr);
     }
 
     return 0;
@@ -141,6 +189,7 @@ bool BmcEpoch::setTime(const microseconds& usec)
         using namespace xyz::openbmc_project::Time;
         elog<FailedError>(Failed::REASON(ex.what()));
     }
+
     return true;
 }
 
