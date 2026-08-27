@@ -30,3 +30,10 @@ option(
     value: '/xyz/openbmc_project/time/sync_method',
     description: 'Default object path for time sync setting',
 )
+
+option(
+    'install-tools',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Install diagnostic scripts (e.g. bmc_time_status.py)',
+)
