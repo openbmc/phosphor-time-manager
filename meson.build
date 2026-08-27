@@ -98,3 +98,15 @@ executable(
 if get_option('tests').allowed()
     subdir('test')
 endif
+
+#############################################################################
+
+# Install diagnostic tools
+
+if get_option('install-tools').allowed()
+    install_data(
+        'scripts/bmc_time_status.py',
+        install_dir: get_option('bindir'),
+        install_mode: 'rwxr-xr-x',
+    )
+endif
