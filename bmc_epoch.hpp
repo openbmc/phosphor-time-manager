@@ -83,6 +83,11 @@ class BmcEpoch : public EpochTimeIntf, public PropertyChangeListener
     /** @brief The fd for time change event */
     int timeFd = -1;
 
+    /** @brief Snapshot of the last known epoch — updated on every clock
+     *         change so onTimeChange() can compute before/after delta.
+     */
+    std::chrono::microseconds previousEpoch{};
+
     /** @brief Initialize timerFd related resource */
     void initialize();
 
