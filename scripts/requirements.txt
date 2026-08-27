@@ -1,0 +1,4 @@
+# Requirements for bmc_time_status.py remote mode (--bmc flag).
+# Only needed when running from a developer workstation.
+# Not required when running directly on the BMC.
+paramiko==3.4.0
