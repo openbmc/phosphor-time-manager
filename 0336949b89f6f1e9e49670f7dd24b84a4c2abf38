@@ -16,6 +16,23 @@
       "message": "The commit message states that TIME_CHANGE_AUDIT records MODE (NTP/Manual), but I don\u0027t see MODE included in the audit log emitted from onTimeChange(). Should this field be added to match the documented behavior and support bmc_time_status.py parsing?",
       "revId": "0336949b89f6f1e9e49670f7dd24b84a4c2abf38",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6892bf71_c5806a92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003004
+      },
+      "writtenOn": "2026-09-07T06:19:32Z",
+      "side": 1,
+      "message": "Was the backward time-adjustment case tested? It would be useful to verify that negative DELTA_SECONDS values are logged correctly when the clock is moved backwards.",
+      "revId": "0336949b89f6f1e9e49670f7dd24b84a4c2abf38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
