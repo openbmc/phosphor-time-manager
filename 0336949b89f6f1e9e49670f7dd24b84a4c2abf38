@@ -50,6 +50,60 @@
       "message": "The Tested section mentions that NTP mode rejects setTime() and no audit entry is written. Since the audit is generated from the time-change callback, was it verified that NTP synchronization events do not generate TIME_CHANGE_AUDIT entries?",
       "revId": "0336949b89f6f1e9e49670f7dd24b84a4c2abf38",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27805817_1060288f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-09-07T06:30:55Z",
+      "side": 1,
+      "message": "I didn\u0027t quite get this but these were the audit entries when we changed the time \n\nIn this you can also see the negative delta seconds logged.[TIME_CHANGE_AUDIT]\nAug 27 20:05:00.000965 bmc phosphor-time-manager[1201]: TIME_CHANGE_AUDIT: system clock changed | previous\u003d2026-08-27 18:41:05 UTC new\u003d2026-08-27 20:05:00 UTC delta_seconds\u003d5034\nAug 27 15:09:00.002262 bmc phosphor-time-manager[1201]: TIME_CHANGE_AUDIT: system clock changed | previous\u003d2026-08-27 20:05:00 UTC new\u003d2026-08-27 15:09:00 UTC delta_seconds\u003d-17759\nSep 02 13:23:00.002549 bmc phosphor-time-manager[1176]: TIME_CHANGE_AUDIT: system clock changed | previous\u003d2026-09-02 07:39:15 UTC new\u003d2026-09-02 13:23:00 UTC delta_seconds\u003d20624\nSep 02 12:05:00.002461 bmc phosphor-time-manager[1176]: TIME_CHANGE_AUDIT: system clock changed | previous\u003d2026-09-02 13:23:00 UTC new\u003d2026-09-02 12:05:00 UTC delta_seconds\u003d-4679\nSep 02 06:52:34.733085 bmc phosphor-time-manager[1176]: TIME_CHANGE_AUDIT: system clock changed | previous\u003d2026-09-02 12:05:00 UTC new\u003d2026-09-02 06:52:34 UTC delta_seconds\u003d-18745",
+      "parentUuid": "81b0b5f6_7da5060a",
+      "revId": "0336949b89f6f1e9e49670f7dd24b84a4c2abf38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c506f62_b7b405e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-09-07T06:30:55Z",
+      "side": 1,
+      "message": "yes, I did verify the test case",
+      "parentUuid": "6892bf71_c5806a92",
+      "revId": "0336949b89f6f1e9e49670f7dd24b84a4c2abf38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5aabd15_80a6f60c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-09-07T06:30:55Z",
+      "side": 1,
+      "message": "It is already present as part of the bmc_time_status logs, let me edit the commit message.",
+      "parentUuid": "e2d4d363_d8c6b76f",
+      "revId": "0336949b89f6f1e9e49670f7dd24b84a4c2abf38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
