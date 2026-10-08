@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "419c3f18_b5bfbd21",
+        "filename": "meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2026-10-08T06:56:48Z",
+      "side": 1,
+      "message": "Usually we do not install python scripts into BMC, is this `install-tools` option really needed?",
+      "revId": "de45001bc77c6b31105b60c7262bc5e2c9f8a027",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9b9d095_39cb710b",
         "filename": "scripts/bmc_time_status.py",
         "patchSetId": 7
