@@ -33,6 +33,40 @@
       "message": "@mine260309@gmail.com Gentle reminder, can you please have a look at this!",
       "revId": "de45001bc77c6b31105b60c7262bc5e2c9f8a027",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9b9d095_39cb710b",
+        "filename": "scripts/bmc_time_status.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2026-10-08T06:55:55Z",
+      "side": 1,
+      "message": "while collected \u003c max_entries only increments collected when a TIME_CHANGE_AUDIT entry is found. However, after journal.Reader.get_previous() reaches the beginning of the journal, it returns {} rather than raising StopIteration. That means a system with no matching audit entry, or fewer entries than requested, can loop forever.\n\nAdd if not entry: break immediately after entry \u003d reader.get_previous().",
+      "revId": "de45001bc77c6b31105b60c7262bc5e2c9f8a027",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dee8e1a_d6cdf86a",
+        "filename": "scripts/bmc_time_status.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2026-10-08T06:55:55Z",
+      "side": 1,
+      "message": "The lg2 call in bmc_epoch.cpp only emits PREVIOUS_TIME, NEW_TIME, and DELTA_SECONDS, so the mode is always blank.",
+      "revId": "de45001bc77c6b31105b60c7262bc5e2c9f8a027",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
