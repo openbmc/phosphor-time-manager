@@ -1,5 +1,4 @@
 #include "manager.hpp"
-#include "mocked_property_change_listener.hpp"
 #include "types.hpp"
 
 #include <sdbusplus/bus.hpp>

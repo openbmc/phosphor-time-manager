@@ -14,7 +14,6 @@ test_list = [
     'TestBmcEpoch.cpp',
     'TestManager.cpp',
     'TestUtils.cpp',
-    'mocked_property_change_listener.hpp',
 ]
 
 ###################################################################################
