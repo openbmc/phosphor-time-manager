@@ -117,7 +117,7 @@ A summary of which cases the time can be set on BMC or HOST:
 ### Special note on changing NTP setting
 
 Starting from OpenBMC 2.6 (with systemd v239), systemd's timedated introduces a
-new beahvior that it checks the NTP services' status during setting time,
+new behavior that it checks the NTP services' status during setting time,
 instead of checking the NTP setting:
 
 - When NTP server is set to disabled, and the NTP service is stopping but not
